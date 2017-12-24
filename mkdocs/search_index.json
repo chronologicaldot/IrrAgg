@@ -1,0 +1,624 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "IrrAgg\n\n\nA collection of utilities for using Anti-Grain Geometry with Irrlicht.\n\n\nAnti-Grain Geometry (AGG) is a collection of C++ utilities that work together to render vector graphics, especially into arrays of primitive pixels.\n\n\nIrrlicht is an easy-to-use 2D and 3D rendering engine, created with C++ and aimed at game creation.\n\n\nIrrAgg is a collection of utilities that enable the easy application of AGG functionality to Irrlicht image surfaces with little or no knowledge of the workings of AGG on the part of the user.\n\n\nMost functionality is applied to the IImage implementation (CImage) of Irrlicht so that they can be rendered in Irrlicht.\n\n\n\n\nAPI\n\n\nUsage Guide\n\n\nExamples\n\n\n\n\nRequirements\n\n\n\n\nAnti-Grain Geometry (2.5 or similar)\n\n\nIrrlicht (1.8, 1.9 or similar)\n\n\n\n\nBoth Anti-Grain Geometry (completed) and Irrlicht (development) are relatively stable in regards to the relevant APIs, so multiple versions of these two libraries will likely be compatible.\n\n\nProject layout\n\n\nchangelog.txt # Change log.\nlicense.txt   # Licensing.\nReadme.md     # Project summary page (for Github).\nmkdocs.yml    # Documentation configuration file.\ninclude/      # Header files directory.\nsrc/          # Source code directory.\ndocs/         # Documentation directory.\ndebug/        # Debugging files directory.\nexamples/     # Usage examples directory.\n\n\n\nFurther Information\n\n\nMore information about using AGG with Irrlicht can be found in \nthis blog article\n.", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#irragg", 
+            "text": "A collection of utilities for using Anti-Grain Geometry with Irrlicht.  Anti-Grain Geometry (AGG) is a collection of C++ utilities that work together to render vector graphics, especially into arrays of primitive pixels.  Irrlicht is an easy-to-use 2D and 3D rendering engine, created with C++ and aimed at game creation.  IrrAgg is a collection of utilities that enable the easy application of AGG functionality to Irrlicht image surfaces with little or no knowledge of the workings of AGG on the part of the user.  Most functionality is applied to the IImage implementation (CImage) of Irrlicht so that they can be rendered in Irrlicht.   API  Usage Guide  Examples", 
+            "title": "IrrAgg"
+        }, 
+        {
+            "location": "/#requirements", 
+            "text": "Anti-Grain Geometry (2.5 or similar)  Irrlicht (1.8, 1.9 or similar)   Both Anti-Grain Geometry (completed) and Irrlicht (development) are relatively stable in regards to the relevant APIs, so multiple versions of these two libraries will likely be compatible.", 
+            "title": "Requirements"
+        }, 
+        {
+            "location": "/#project-layout", 
+            "text": "changelog.txt # Change log.\nlicense.txt   # Licensing.\nReadme.md     # Project summary page (for Github).\nmkdocs.yml    # Documentation configuration file.\ninclude/      # Header files directory.\nsrc/          # Source code directory.\ndocs/         # Documentation directory.\ndebug/        # Debugging files directory.\nexamples/     # Usage examples directory.", 
+            "title": "Project layout"
+        }, 
+        {
+            "location": "/#further-information", 
+            "text": "More information about using AGG with Irrlicht can be found in  this blog article .", 
+            "title": "Further Information"
+        }, 
+        {
+            "location": "/usage/", 
+            "text": "table {\n    border: 1px solid #cccccc;\n    background-color: #eeeeee;\n    margin: 1em;\n}\n\n\n\n\nUsage\n\n\nMuch of IrrAgg revolves around rendering vector paths onto an IImage, an abstract object created using Irrlicht via IVideoDriver::createImage. Please see \nCreating and Using IImage\n for more info.\n\n\nRendering to an IImage is can be done in one of two ways:\n\n\n\n\nvia the function irr::vecg::renderVectorPath.\n\n\nvia the class irr::vecg::engine::RendererARGB32.\n\n\n\n\nBoth methods can be used on the same IImage instance.\n\n\nA number of other convenience functions and structures are available to aid in rendering with either approach. Please see \nUseful Objects and Functions\n.\n\n\nMost of your rendering needs can be done using pre-existing components, such as ArrayVertexSource. However, you may wish to create specialized classes for handling vertices. See \nAGG Vertex Sources\n for more details.\n\n\nWARNING:\n Using templates can hide bugs that only appear as segmentation faults. AGG uses templates for speed, but IrrAgg provides its rendering engine as an alternative to direct rendering (using renderVectorPath) to help prevent these hidden bugs.\n\n\nDrawing Modes\n\n\nAnti-Grain Geometry provides various modes of drawing, most of which are not wrapped by this library.\n\n\nThere are three modes of drawing provided by IrrAgg: \nNORMAL\n, \nBRUSH\n, and \nBSPLINE\n. These are given as values of the enum \nEPathStroke\n (file: irragg_path_stroke.h) and can be passed to a number of rendering functions to indicate how the path should be drawn.\n\n\n\n\nNORMAL: Renders a solid, closed polygon.\n\n\nBRUSH: Renders the vector path with lines. Functions rendering this way will also accept a \nstroke width\n value to determine how thick the lines will be.\n\n\nBSPLINE: Renders a smooth curve. Functions rendering this way will also accept a \nstroke width\n value and a \nresolution\n value, which indicates how many segments should be used between primary points in order to smooth out the curve.\n\n\n\n\nCreating and Using IImage\n\n\nCreating\n\n\nAn IImage is created using the \nIVideoDriver\n interface method \ncreateImage\n. Once the IImage has been created, you can render to it with IrrAgg functions. Currently, IrrAgg only supports the color format ECF_A8R8G8B8.\n\n\nirr::video::E_DRIVER_TYPE  driverType = irr::video::EDT_BURNINGSVIDEO;\nirr::core::dimension2d  screenSize(1200, 800);\nirr::core::dimension2d  imageSize(512, 512);\n\nirr::IrrlichtDevice*  device = irr::createDevice(driverType, screenSize);\nirr::IVideoDriver*  videoDriver = device-\ngetVideoDriver();\nirr::video::IImage*  image = videoDriver-\ncreateImage(irr::video::ECF_A8R8G8B8, imageSize);\n\n\n\n\nRendering\n\n\nThese images must be converted to driver textures prior to rendering. By default, Irrlicht will resize images to powers of 2. This can be changed by setting a driver feature. The following example is a continuation of the previous one and shows disabling mipmap creation, power-of-two resizing, and rendering.\n\n\nirr::video::ITexture*  texture;\nirr::core::vectore2di  placeOnScreen(30,30);\n\nvideoDriver-\nsetTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS, false);\nvideoDriver-\nsetTextureCreationFlag(irr::video::ETCF_ALLOW_NON_POWER_2, true);\ntexture = videoDriver-\naddTexture(irr::io::path(\ntexture name\n), image);\n\n// ... Later, usually within the main rendering loop\nvideoDriver-\ndraw2DImage(texture, placeOnScreen);\n\n\n\n\nExporting\n\n\nAn IImage can be written to file using the \nIVideoDriver\n interface of Irrlicht. Some common formats such as PNG and JPEG are supported. The following example illustrates how to do this and assumes the image creation example code has been used.\n\n\nvideoDriver-\nwriteImageToFile(image, irr::io::path(\ndesired/file/path.png\n);\n\n\n\n\n\n\nUseful Objects and Functions\n\n\nAll functions and objects belonging to IrrAgg are in the sub namespace \"vecg\" within the namespace \"irr\" with the exception of the matrix conversion functions.\n\n\nStandard Rendering Functions\n\n\nFunction List\n\n\n\n\nrenderVectorPath() \n class VertexSource \n\n\nrenderTriangle()\n\n\nrenderEllipse()\n\n\nrenderRoundedRectangle()\n\n\n\n\nStandard Rendering Objects\n\n\nMost IrrAgg objects are intended to fulfill the role of VertexSource, which is a generic template name referring to any class with the following methods:\n- void rewind( unsigned )\n- unsigned vertex( double\n x, double\n y )\n\n\nSee \nCreating a Standard Vertex Source\n for more information.\n\n\nObject List\n\n\n\n\nVertexSourceBase\n\n\nVertexSourcePump \n class VertexSource \n\n\nVertexSourceFuncPump\n\n\nTrianglePath\n\n\n\n\nEngine-Based Rendering\n\n\nThese utilities are form a simple, convenient package for rendering vector graphics.\n\n\nObject List\n\n\n\n\nPointSource\n\n\nRendererARGB32\n\n\n\n\n\n\nAGG Vertex Sources\n\n\nNearly if not all of the functionality of AGG is based on templates. The basic rendering functions of IrrAgg - such as renderVectorPath - limit the need for templates but are templated in order to mimic the functionality of AGG. On the other hand, structures like RendererARGB32 are not templated and don't require any templates to perform rendering.\n\n\nFor rendering vectors, AGG requires a path of some sort. This path can be created from a standard vertex source (used with renderVectorPath) or by a class inheriting PointSource (and rendered with RendererARGB32).\n\n\nCreating a Standard Vertex Source\n\n\nIn this method, the path of vertices for AGG is defined by user-created class with two special methods that are called within AGG. Such classes are called \"vertex sources\" because they control the vertices that define the path rendered by AGG. IrrAGG has a number of rendering functions that accept these \"vertex sources.\n\n\nThe vertex source class must have the following two methods:\n\n\n\n\nunsigned vertex( double\n x, double\n y )\n\n\nvoid rewind( unsigned )\n\n\n\n\nThe vertex method must set the values of \"x\" and \"y\" and be \"incremented\". It must then return an unsigned integer represeting a flag. Flag values are:\n\n\n\n\nagg::path_cmd_move_to\n\n\nagg::path_cmd_line_to\n\n\nagg::path_cmd_end_poly\n\n\nagg::path_cmd_stop\n\n\n\n\nThe flag agg::path_cmd_stop must eventually be returned or AGG will run indefinitely.\n\n\nImplementing PointSource\n\n\nIn this method, the path of vertices for rendering is defined by the following virtual methods from class irr::vecg::PointSource:\n\n\n\n\nsize_t \ngetPointCount\n()\n\n\nPoint2D \ngetPoint\n( unsigned \nstep\n )\n\n\n\n\nBoth of these methods should be overridden.\n\n\nRather than being passed directly to AGG or renderVectorPath, descendents of PointSource are passed to small rendering engines.\n\n\n\nclass MyShape : public irr::vecg::PointSource\n{\npublic:\n    virtual size_t\n        getPointCount() const\n    {\n        return 5;\n    }\n\n    virtual irr::vecg::Point2D\n        getPoint( unsigned  step )\n    {\n        switch(step) {\n        case 0: return irr::vecg::Point2D(50, 30);\n        case 1: return irr::vecg::Point2D(200, 50);\n        case 2: return irr::vecg::Point2D(150, 300);\n        case 3: return irr::vecg::Point2D(80, 200);\n        default: return irr::vecg::Point2D(100,100);\n        }\n    }\n};\n\nint main()\n{\n    //...\n\n    MyShape  shape;\n    irr::vecg::engine::RendererARGB32  renderer;\n    renderer.setRenderTarget( image );\n    renderer.setDrawingColor( irr::video::SColor(0xffffffff) );\n    renderer.bufferPoints( shape );\n    renderer.draw();\n\n    //...\n}", 
+            "title": "Usage"
+        }, 
+        {
+            "location": "/usage/#usage", 
+            "text": "Much of IrrAgg revolves around rendering vector paths onto an IImage, an abstract object created using Irrlicht via IVideoDriver::createImage. Please see  Creating and Using IImage  for more info.  Rendering to an IImage is can be done in one of two ways:   via the function irr::vecg::renderVectorPath.  via the class irr::vecg::engine::RendererARGB32.   Both methods can be used on the same IImage instance.  A number of other convenience functions and structures are available to aid in rendering with either approach. Please see  Useful Objects and Functions .  Most of your rendering needs can be done using pre-existing components, such as ArrayVertexSource. However, you may wish to create specialized classes for handling vertices. See  AGG Vertex Sources  for more details.  WARNING:  Using templates can hide bugs that only appear as segmentation faults. AGG uses templates for speed, but IrrAgg provides its rendering engine as an alternative to direct rendering (using renderVectorPath) to help prevent these hidden bugs.", 
+            "title": "Usage"
+        }, 
+        {
+            "location": "/usage/#drawing-modes", 
+            "text": "Anti-Grain Geometry provides various modes of drawing, most of which are not wrapped by this library.  There are three modes of drawing provided by IrrAgg:  NORMAL ,  BRUSH , and  BSPLINE . These are given as values of the enum  EPathStroke  (file: irragg_path_stroke.h) and can be passed to a number of rendering functions to indicate how the path should be drawn.   NORMAL: Renders a solid, closed polygon.  BRUSH: Renders the vector path with lines. Functions rendering this way will also accept a  stroke width  value to determine how thick the lines will be.  BSPLINE: Renders a smooth curve. Functions rendering this way will also accept a  stroke width  value and a  resolution  value, which indicates how many segments should be used between primary points in order to smooth out the curve.", 
+            "title": "Drawing Modes"
+        }, 
+        {
+            "location": "/usage/#creating-and-using-iimage", 
+            "text": "", 
+            "title": "Creating and Using IImage"
+        }, 
+        {
+            "location": "/usage/#creating", 
+            "text": "An IImage is created using the  IVideoDriver  interface method  createImage . Once the IImage has been created, you can render to it with IrrAgg functions. Currently, IrrAgg only supports the color format ECF_A8R8G8B8.  irr::video::E_DRIVER_TYPE  driverType = irr::video::EDT_BURNINGSVIDEO;\nirr::core::dimension2d  screenSize(1200, 800);\nirr::core::dimension2d  imageSize(512, 512);\n\nirr::IrrlichtDevice*  device = irr::createDevice(driverType, screenSize);\nirr::IVideoDriver*  videoDriver = device- getVideoDriver();\nirr::video::IImage*  image = videoDriver- createImage(irr::video::ECF_A8R8G8B8, imageSize);", 
+            "title": "Creating"
+        }, 
+        {
+            "location": "/usage/#rendering", 
+            "text": "These images must be converted to driver textures prior to rendering. By default, Irrlicht will resize images to powers of 2. This can be changed by setting a driver feature. The following example is a continuation of the previous one and shows disabling mipmap creation, power-of-two resizing, and rendering.  irr::video::ITexture*  texture;\nirr::core::vectore2di  placeOnScreen(30,30);\n\nvideoDriver- setTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS, false);\nvideoDriver- setTextureCreationFlag(irr::video::ETCF_ALLOW_NON_POWER_2, true);\ntexture = videoDriver- addTexture(irr::io::path( texture name ), image);\n\n// ... Later, usually within the main rendering loop\nvideoDriver- draw2DImage(texture, placeOnScreen);", 
+            "title": "Rendering"
+        }, 
+        {
+            "location": "/usage/#exporting", 
+            "text": "An IImage can be written to file using the  IVideoDriver  interface of Irrlicht. Some common formats such as PNG and JPEG are supported. The following example illustrates how to do this and assumes the image creation example code has been used.  videoDriver- writeImageToFile(image, irr::io::path( desired/file/path.png );", 
+            "title": "Exporting"
+        }, 
+        {
+            "location": "/usage/#useful-objects-and-functions", 
+            "text": "All functions and objects belonging to IrrAgg are in the sub namespace \"vecg\" within the namespace \"irr\" with the exception of the matrix conversion functions.", 
+            "title": "Useful Objects and Functions"
+        }, 
+        {
+            "location": "/usage/#standard-rendering-functions", 
+            "text": "", 
+            "title": "Standard Rendering Functions"
+        }, 
+        {
+            "location": "/usage/#function-list", 
+            "text": "renderVectorPath()   class VertexSource   renderTriangle()  renderEllipse()  renderRoundedRectangle()", 
+            "title": "Function List"
+        }, 
+        {
+            "location": "/usage/#standard-rendering-objects", 
+            "text": "Most IrrAgg objects are intended to fulfill the role of VertexSource, which is a generic template name referring to any class with the following methods:\n- void rewind( unsigned )\n- unsigned vertex( double  x, double  y )  See  Creating a Standard Vertex Source  for more information.", 
+            "title": "Standard Rendering Objects"
+        }, 
+        {
+            "location": "/usage/#object-list", 
+            "text": "VertexSourceBase  VertexSourcePump   class VertexSource   VertexSourceFuncPump  TrianglePath", 
+            "title": "Object List"
+        }, 
+        {
+            "location": "/usage/#engine-based-rendering", 
+            "text": "These utilities are form a simple, convenient package for rendering vector graphics.", 
+            "title": "Engine-Based Rendering"
+        }, 
+        {
+            "location": "/usage/#object-list_1", 
+            "text": "PointSource  RendererARGB32", 
+            "title": "Object List"
+        }, 
+        {
+            "location": "/usage/#agg-vertex-sources", 
+            "text": "Nearly if not all of the functionality of AGG is based on templates. The basic rendering functions of IrrAgg - such as renderVectorPath - limit the need for templates but are templated in order to mimic the functionality of AGG. On the other hand, structures like RendererARGB32 are not templated and don't require any templates to perform rendering.  For rendering vectors, AGG requires a path of some sort. This path can be created from a standard vertex source (used with renderVectorPath) or by a class inheriting PointSource (and rendered with RendererARGB32).", 
+            "title": "AGG Vertex Sources"
+        }, 
+        {
+            "location": "/usage/#creating-a-standard-vertex-source", 
+            "text": "In this method, the path of vertices for AGG is defined by user-created class with two special methods that are called within AGG. Such classes are called \"vertex sources\" because they control the vertices that define the path rendered by AGG. IrrAGG has a number of rendering functions that accept these \"vertex sources.  The vertex source class must have the following two methods:   unsigned vertex( double  x, double  y )  void rewind( unsigned )   The vertex method must set the values of \"x\" and \"y\" and be \"incremented\". It must then return an unsigned integer represeting a flag. Flag values are:   agg::path_cmd_move_to  agg::path_cmd_line_to  agg::path_cmd_end_poly  agg::path_cmd_stop   The flag agg::path_cmd_stop must eventually be returned or AGG will run indefinitely.", 
+            "title": "Creating a Standard Vertex Source"
+        }, 
+        {
+            "location": "/usage/#implementing-pointsource", 
+            "text": "In this method, the path of vertices for rendering is defined by the following virtual methods from class irr::vecg::PointSource:   size_t  getPointCount ()  Point2D  getPoint ( unsigned  step  )   Both of these methods should be overridden.  Rather than being passed directly to AGG or renderVectorPath, descendents of PointSource are passed to small rendering engines.  \nclass MyShape : public irr::vecg::PointSource\n{\npublic:\n    virtual size_t\n        getPointCount() const\n    {\n        return 5;\n    }\n\n    virtual irr::vecg::Point2D\n        getPoint( unsigned  step )\n    {\n        switch(step) {\n        case 0: return irr::vecg::Point2D(50, 30);\n        case 1: return irr::vecg::Point2D(200, 50);\n        case 2: return irr::vecg::Point2D(150, 300);\n        case 3: return irr::vecg::Point2D(80, 200);\n        default: return irr::vecg::Point2D(100,100);\n        }\n    }\n};\n\nint main()\n{\n    //...\n\n    MyShape  shape;\n    irr::vecg::engine::RendererARGB32  renderer;\n    renderer.setRenderTarget( image );\n    renderer.setDrawingColor( irr::video::SColor(0xffffffff) );\n    renderer.bufferPoints( shape );\n    renderer.draw();\n\n    //...\n}", 
+            "title": "Implementing PointSource"
+        }, 
+        {
+            "location": "/api/", 
+            "text": "table {\n    border: 1px solid #cccccc;\n    background-color: #eeeeee;\n    margin: 1em;\n    padding-left: 5%;\n    font-size: 1em;\n    /*table-layout: fixed;*/\n    width: 95%;\n}\n\n\n\n\nAPI\n\n\nAll functions and objects belonging to IrrAgg are within the sub-namespace \"vecg\" within the namespace \"irr\" unless otherwise specified. Some exceptions are the conversion functions, which are within the sub-namespace \"core\" in the namespace \"irr\".\n\n\n\n\nStandard Utilities\n\n\n\n\nStandalone functions\n\n\n\n\nisImageSupported( IImage* ): bool\n\n\nFile:\n \nirragg_format_support.h\n\n\nReturns true if the current format of the image is supported by IrrAgg.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nimage\n\n\nirr::video::IImage*\n\n\n\n\n\n\n\n\n\n\n\n\nisImageARGB32( irr::video::IImage* ): bool\n\n\nFile:\n \nirragg_format_support.h\n\n\nReturns true if the image is in the color format irr::video::ECF_A8R8G8B8, arranged as alpha-red-green-blue with 8 bits each.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nimage\n\n\nirr::video::IImage*\n\n\n\n\n\n\n\n\n\n\n\n\nconvertSColorToAGGrgba( const SColor\n ): agg::rgba\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst irr::video::SColor\n\n\n\n\n\n\n\n\n\n\n\n\nconvertAGGrgbaToSColor( const rgba\n ): irr::video::SColor\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst agg::rgba\n\n\n\n\n\n\n\n\n\n\n\n\nconvertSColorfToAGGrgba( const SColorf\n ): agg::rgba\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst irr::video::SColorf\n\n\n\n\n\n\n\n\n\n\n\n\nconvertAGGrgbaToSColorf( const rgba\n ): irr::video::SColorf\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst ::agg::rgba\n\n\n\n\n\n\n\n\n\n\n\n\nconvertSColorHSLtoSColor( const SColorHSL\n ): irr::video::SColor\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst irr::video::SColorHSL\n\n\n\n\n\n\n\n\n\n\n\n\nconvertSColorToSColorHSL( const SColor\n ): irr::video::SColorHSL\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst irr::video::SColor\n\n\n\n\n\n\n\n\n\n\n\n\nconvertCMatrix4ToAGGaffine( const CMatrix4\n double \n ): agg::trans_affine\n\n\nFile:\n \nirragg_matrix.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nm\n\n\nconst irr::core::CMatrix4\n double \n\n\n\n\n\n\n\n\n\n\n\n\nconvertAGGaffineToCMatrix4( const trans_affine\n ): core::CMatrix4\n double \n\n\nFile:\n \nirragg_matrix.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nm\n\n\nconst agg::trans_affine\n\n\n\n\n\n\n\n\n\n\n\n\nclass Point2D\n\n\nFile:\n \nirragg_point.h\n\n\nA generic point class used especially for engine-based rendering but also stored in other classes.\n\n\n\n\n\n\n\n\nMember\n\n\nType\n\n\nPurpose\n\n\n\n\n\n\n\n\n\n\nx\n\n\ndouble\n\n\nX-axis coordinate\n\n\n\n\n\n\ny\n\n\ndouble\n\n\nY-axis coordinate\n\n\n\n\n\n\n\n\n\n\nclass StaticSizeVertexSource\n size_t \n\n\nFile:\n \nirragg_array_path2d.h\n\n\nInherits:\n \nVertexSourceBase\n\n\nA static-size storage class that can be rendered using either renderVectorPath() or a rendering engine. Its template parameter is its size.\n\n\nSee \nExample usage\n.\n\n\n\n\n\n\n\n\nMember\n\n\nType\n\n\nPurpose\n\n\n\n\n\n\n\n\n\n\n_x\n\n\ndouble[]\n\n\nContains the X-axis values of the path points\n\n\n\n\n\n\n_y\n\n\ndouble[]\n\n\nContains the Y-axis values of the path points\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMethod\n\n\nReturn\n\n\n\n\n\n\n\n\n\n\n(cstor)\n\n\n\n\n\n\n\n\nset( size_t, double, double )\n\n\nStaticSizeVertexSource\n\n\n\n\n\n\ngetPointCount()\n\n\nsize_t\n\n\n\n\n\n\nrewind( unsigned )\n\n\nvoid\n\n\n\n\n\n\nvertex( double\n, double\n )\n\n\nunsigned\n\n\n\n\n\n\ngetPoint( size_t )\n\n\nPoint2D\n\n\n\n\n\n\n\n\n\n\n(cstor)\n\n\nInitializes the class.\n\n\n\n\nset( size_t, double, double ): StaticSizeVertexSource\n\n\nSet point coordinates of the point at the given index.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nindex\n\n\nsize_t\n\n\n\n\n\n\n\n\nx\n\n\ndouble\n\n\n\n\n\n\n\n\ny\n\n\ndouble\n\n\n\n\n\n\n\n\n\n\n\n\ngetPointCount(): size_t\n\n\nReturns the size of the class.\n\n\n\n\nrewind( unsigned ): void\n\n\nResets the iterator incrementing along the path.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nid\n\n\nunsigned\n\n\n\n\n\n\n\n\n\n\n\n\nvertex( double\n, double\n ): unsigned\n\n\nSets the axial positions of the next point in the path.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nx\n\n\ndouble*\n\n\n\n\n\n\n\n\ny\n\n\ndouble*\n\n\n\n\n\n\n\n\n\n\n\n\ngetPoint( size_t ): Point2D\n\n\nGet the point at the given index.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nindex\n\n\nsize_t\n\n\n\n\n\n\n\n\n\n\n\n\nArrayVertexSource\n\n\nFile:\n \nirragg_array_path2d.h\n\n\nInherits:\n \nVertexSourceBase\n\n\nA dynamically-sized storage class that can be rendered using either renderVectorPath() or a rendering engine.\n\n\n\n\n\n\n\n\nMethod\n\n\nReturn\n\n\n\n\n\n\n\n\n\n\n(cstor)\n\n\n\n\n\n\n\n\n(copy cstor)\n\n\n\n\n\n\n\n\n(cstor) ( const array\n Point2D \n )\n\n\n\n\n\n\n\n\n(cstor) ( const array\n vector2di \n )\n\n\n\n\n\n\n\n\n(cstor) ( const size_t, const double\n, const double\n )\n\n\n\n\n\n\n\n\nsetFrom( const ArrayVertexSource\n )\n\n\nvoid\n\n\n\n\n\n\nsetFrom( const array\n Point2D \n )\n\n\nvoid\n\n\n\n\n\n\nsetFrom( const array\n vector2di \n )\n\n\nvoid\n\n\n\n\n\n\nsetFrom( const size_t, const double\n, const double\n )\n\n\nvoid\n\n\n\n\n\n\nadd( double, double )\n\n\nArrayVertexSource\n\n\n\n\n\n\ngetPointCount()\n\n\nsize_t\n\n\n\n\n\n\nrewind( unsigned )\n\n\nvoid\n\n\n\n\n\n\nvertex( double\n, double\n )\n\n\nunsigned\n\n\n\n\n\n\ngetPoint( size_t )\n\n\nPoint2D\n\n\n\n\n\n\n\n\n\n\n(cstor)\n\n\nInitializes the class.\n\n\n\n\n(copy cstor)\n\n\nInitializes the class by copying data from another instance.\n\n\n\n\n(cstor) ( const array\n Point2D \n )\n\n\nInitializes the class using points data from the given array.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ndata_array\n\n\nconst irr::core::array\n Point2D \n\n\n\n\n\n\n\n\n\n\n\n\n(cstor) ( const array\n vector2di \n )\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ndata_array\n\n\nconst irr::core::array\n irr::core::vector2di \n\n\n\n\n\n\n\n\n\n\n\n\n(cstor) ( const size_t, const double\n, const double\n )\n\n\nConstruct a vertex source from two arrays of size num_values.\n\n\nWARNING: Does NOT check for premature array end!\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nnum_values\n\n\nconst size_t\n\n\n\n\n\n\n\n\nx_values\n\n\nconst double*\n\n\n\n\n\n\n\n\ny_values\n\n\nconst double*\n\n\n\n\n\n\n\n\n\n\n\n\nsetFrom( const ArrayVertexSource\n ): void\n\n\nSets this vertex source from the points in the given array.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nother\n\n\nconst ArrayVertexSource\n\n\n\n\n\n\n\n\n\n\n\n\nsetFrom( const array\n Point2D \n ): void\n\n\nInitializes the class using points data from the given array.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ndata_array\n\n\nconst irr::core::array\n Point2D \n\n\n\n\n\n\n\n\n\n\n\n\nsetFrom( const array\n vector2di \n ): void\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ndata_array\n\n\nconst irr::core::array\n irr::core::vector2di \n\n\n\n\n\n\n\n\n\n\n\n\nsetFrom( const size_t, const double\n, const double\n ): void\n\n\nConstruct a vertex source from two arrays of size num_values.\n\n\nWARNING: Does NOT check for premature array end!\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nnum_values\n\n\nconst size_t\n\n\n\n\n\n\n\n\nx_values\n\n\nconst double*\n\n\n\n\n\n\n\n\ny_values\n\n\nconst double*\n\n\n\n\n\n\n\n\n\n\n\n\nadd( double, double ): ArrayVertexSource\n\n\nAdd the point (x,y) to the array.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nx\n\n\ndouble\n\n\n\n\n\n\n\n\ny\n\n\ndouble\n\n\n\n\n\n\n\n\n\n\n\n\nadd( const Point2D\n ): ArrayVertexSource\n\n\nAdd the point (x,y) to the array.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\npoint\n\n\nconst Point2D\n\n\n\n\n\n\n\n\n\n\n\n\npop( size_t ): size_t\n\n\nRemove last points in the array. Returns the number of remaining points.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nnum_points_to_remove\n\n\nsize_t\n\n\n1\n\n\n\n\n\n\n\n\n\n\nclear(): void\n\n\nDelete all points stored in this instance.\n\n\n\n\ngetPointCount(): size_t\n\n\nReturn the number of points stored in this instance.\n\n\n\n\nprepare( size_t ): void\n\n\nPerforms space allocation in preparation for adding points.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nnum_points_to_expect\n\n\nsize_t\n\n\n\n\n\n\n\n\n\n\n\n\nStandard Vertex Source Rendering\n\n\n\n\nStandalone functions\n\n\n\n\nrenderVectorPath( \n VertexSource \n, IImage, SColor, EPathStroke::Value, unsigned, unsigned ): bool\n\n\nFile:\n \nirragg_standalone.h\n\n\nRender the path given by \nvertex_source\n onto \ntarget\n. There will automatically be a check for supported image type and rendering will be delegated to the function with the appropriate path stroke type. Returns true if successful.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nvertex_source\n\n\ntemplate \n VertexSource \n\n\n\n\n\n\n\n\ntarget\n\n\nirr::video::IImage*\n\n\n\n\n\n\n\n\ncolor\n\n\nirr::video::SColor\n\n\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\nEPathStroke::NORMAL\n\n\n\n\n\n\nstroke_width\n\n\nunsigned\n\n\n1\n\n\n\n\n\n\nresolution\n\n\nunsigned\n\n\n20\n\n\n\n\n\n\n\n\n\n\nrenderTriangle( double, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool\n\n\nFile:\n \nirragg_shapes.h\n\n\nRender a triangle defined by the points \n(x1, y1), (x2, y2), (x3, y3)\n with the given color \ncolor\n onto \ntarget\n. Returns true if successful.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ntarget\n\n\nirr::video::IImage*\n\n\n\n\n\n\n\n\nx1\n\n\ndouble\n\n\n\n\n\n\n\n\ny1\n\n\ndouble\n\n\n\n\n\n\n\n\nx2\n\n\ndouble\n\n\n\n\n\n\n\n\ny2\n\n\ndouble\n\n\n\n\n\n\n\n\nx3\n\n\ndouble\n\n\n\n\n\n\n\n\ny3\n\n\ndouble\n\n\n\n\n\n\n\n\ncolor\n\n\nirr::video::SColor\n\n\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\nEPathStroke::NORMAL\n\n\n\n\n\n\nstroke_width\n\n\nirr::u32\n\n\n\n\n\n\n\n\nresolution\n\n\nirr::u3\n\n\n\n\n\n\n\n\n\n\n\n\nrenderEllipse( IImage, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool\n\n\nFile:\n \nirragg_shapes.h\n\n\nRender an ellipse centered at the point \n(x,y)\n with the given vertical radius of \naltitude\n, horizontal radius of \nradius\n, and color \ncolor\n onto \ntarget\n. Returns true if successful.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ntarget\n\n\nirr::video::IImage*\n\n\n\n\n\n\n\n\nx\n\n\ndouble\n\n\n\n\n\n\n\n\ny\n\n\ndouble\n\n\n\n\n\n\n\n\naltitude\n\n\ndouble\n\n\n\n\n\n\n\n\nradius\n\n\ndouble\n\n\n\n\n\n\n\n\ncolor\n\n\nirr::video::SColor\n\n\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\nEPathStroke::NORMAL\n\n\n\n\n\n\nstroke_width\n\n\nirr::u32\n\n\n\n\n\n\n\n\nresolution\n\n\nirr::u32\n\n\n\n\n\n\n\n\n\n\n\n\nrenderRoundedRectangle( IImage*, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool\n\n\nFile:\n \nirragg_shapes.h\n\n\nRender a rectangle - defined by the given x,y coordinates - with rounded corners of the given radius and color onto \ntarget\n. Returns true if successful.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ntarget\n\n\nirr::video::IImage*\n\n\n\n\n\n\n\n\nx1\n\n\ndouble\n\n\n\n\n\n\n\n\ny1\n\n\ndouble\n\n\n\n\n\n\n\n\nx2\n\n\ndouble\n\n\n\n\n\n\n\n\ny2\n\n\ndouble\n\n\n\n\n\n\n\n\nradius\n\n\ndouble\n\n\n\n\n\n\n\n\ncolor\n\n\nirr::video::SColor\n\n\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\nEPathStroke::NORMAL\n\n\n\n\n\n\nstroke_width\n\n\nirr::u32\n\n\n\n\n\n\n\n\nresolution\n\n\nirr::u32\n\n\n\n\n\n\n\n\n\n\n\n\nrenderRoundedRectangle( IImage*, double, double, double, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool\n\n\nFile:\n \nirragg_shapes.h\n\n\nRender a rectangle - defined by the given x,y coordinates - with rounded corners of the given radius and color onto \ntarget\n. Returns true if successful.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ntarget\n\n\nirr::video::IImage*\n\n\n\n\n\n\n\n\nx1\n\n\ndouble\n\n\n\n\n\n\n\n\ny1\n\n\ndouble\n\n\n\n\n\n\n\n\nx2\n\n\ndouble\n\n\n\n\n\n\n\n\ny2\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_x_bottom\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_y_bottom\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_x_top\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_y_top\n\n\ndouble\n\n\n\n\n\n\n\n\ncolor\n\n\nirr::video::SColor\n\n\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\nEPathStroke::NORMAL\n\n\n\n\n\n\nstroke_width\n\n\nirr::u32\n\n\n\n\n\n\n\n\nresolution\n\n\nirr::u32\n\n\n\n\n\n\n\n\n\n\n\n\nrenderRoundedRectangle( IImage*, double, double, double, double, double, double, double, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool\n\n\nFile:\n \nirragg_shapes.h\n\n\nRender a rectangle - defined by the given x,y coordinates - with rounded corners of the given radius and color onto \ntarget\n. Returns true if successful.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ntarget\n\n\nirr::video::IImage*\n\n\n\n\n\n\n\n\nx1\n\n\ndouble\n\n\n\n\n\n\n\n\ny1\n\n\ndouble\n\n\n\n\n\n\n\n\nx2\n\n\ndouble\n\n\n\n\n\n\n\n\ny2\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_upper_left_x\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_upper_left_y\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_upper_right_x\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_upper_right_y\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_lower_left_x\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_lower_left_y\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_lower_right_x\n\n\ndouble\n\n\n\n\n\n\n\n\nradius_lower_right_y\n\n\ndouble\n\n\n\n\n\n\n\n\ncolor\n\n\nirr::video::SColor\n\n\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\nEPathStroke::NORMAL\n\n\n\n\n\n\nstroke_width\n\n\nirr::u32\n\n\n\n\n\n\n\n\nresolution\n\n\nirr::u32\n\n\n\n\n\n\n\n\n\n\n\n\nVertexSourceBase\n\n\nFile:\n \nirragg_vertexsources.h\n\n\nMeant to be inherited, it contains two primitives representing a polygon's origin value (absolute positioning) and a \"step\" value, used for tracking incrementing.\n\n\nWARNING: It does not contain any methods necessary for rendering via renderVectorPath. Those methods must be implemented by the class inheriting this one. See \nCreating a Standard Vertex Source\n for more details.\n\n\n\n\n\n\n\n\nMember\n\n\nType\n\n\nPurpose\n\n\n\n\n\n\n\n\n\n\n_step\n\n\nunsigned\n\n\nThe current increment along the vector path.\n\n\n\n\n\n\n_origin_x\n\n\ndouble\n\n\nThe X-axis value to which all points along the path are relative.\n\n\n\n\n\n\n_origin_y\n\n\ndouble\n\n\nThe Y-axis value to which all points along the path are relative.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMethod\n\n\nReturn\n\n\n\n\n\n\n\n\n\n\n(cstor) ()\n\n\n\n\n\n\n\n\n(cstor) ( double, double )\n\n\n\n\n\n\n\n\nsetOrigin( double, double )\n\n\nvoid\n\n\n\n\n\n\ngetOrigin()\n\n\nPoint2D\n\n\n\n\n\n\n\n\n\n\n(cstor)\n\n\nInitializes the class.\n\n\n\n\n(cstor) ( double, double )\n\n\nInitializes the class and sets the coordinates of the origin.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nx\n\n\ndouble\n\n\n\n\n\n\n\n\ny\n\n\ndouble\n\n\n\n\n\n\n\n\n\n\n\n\nsetOrigin( double, double ): void\n\n\nSets the absolute central position of the polygon (for shapes) or the start of a path.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nx\n\n\ndouble\n\n\n\n\n\n\n\n\ny\n\n\ndouble\n\n\n\n\n\n\n\n\n\n\n\n\ngetOrigin(): Point2D\n\n\nGets the absolute central position of the polygon (for shapes) or the start of a path.\n\n\n\n\nVertexSourcePump \n class VertexSource \n\n\nFile:\n \nirragg_vertexsources.h\n\n\nInherits:\n \nVertexSourceBase\n\n\nThis class acts as a Vertex Source that can be passed directly to certain rendering functions such as \nrenderVertexSource\n VertexSource \n. Meant for creating a single polygon, this class is a vertex source template for wrapping a class having the following methods:\n\n\n\n\ngetPoint\n( unsigned ): Point2D\n\n\ngetPointCount\n(): unsigned\n\n\n\n\nThe method \ngetPoint\n will be passed \nstep\n - an unsigned int representing the increment along the path/curve/polygon that is currently being requested. The method must return an instance of Point2D to represent that point.\n\n\nThe method \ngetPointCount\n should return the number of points along the path/curve/polygon that the object is able to return. This value can be varied but should not change when the polygon is being rendered.\n\n\n\n\n\n\n\n\nMethod\n\n\nReturn\n\n\n\n\n\n\n\n\n\n\n(cstor) ( template \n VertexSource \n )\n\n\n\n\n\n\n\n\nrewind( unsigned )\n\n\nvoid\n\n\n\n\n\n\nvertex( double\n, double\n )\n\n\nvoid\n\n\n\n\n\n\n\n\n\n\n(cstor) ( \n VertexSource \n )\n\n\nInitializes the class and sets the vertex source.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nsource\n\n\ntemplate \n VertexSource \n\n\n\n\n\n\n\n\n\n\n\n\nrewind( unsigned ): void\n\n\nResets the iterator incrementing along the path.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nid\n\n\nunsigned\n\n\n\n\n\n\n\n\n\n\n\n\nvertex( double\n, double\n ): unsigned\n\n\nSets the axial positions of the next point in the path.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nx\n\n\ndouble*\n\n\n\n\n\n\n\n\ny\n\n\ndouble*\n\n\n\n\n\n\n\n\n\n\n\n\nVertexSourceFunction\n\n\nFile:\n \nirragg_vertexsources.h\n\n\nA function pointer that accepts unsigned and returns Point2D.\n\n\ntypedef Point2D (*VertexSourceFunction)(unsigned)\n\n\n\n\n\n\nVertexSourceFuncPump\n\n\nFile:\n \nirragg_vertexsources.h\n\n\nThis class acts as a Vertex Source that can be passed directly to certain rendering functions such as \nrenderVertexSource\n VertexSource \n. This class acts as a wrapper for functions that define a vector path so that they do not need to be implemented as a class.\n\n\n\n\n\n\n\n\nMethod\n\n\nReturn\n\n\n\n\n\n\n\n\n\n\n(cstor) ( unsigned, VertexSourceFunction )\n\n\n\n\n\n\n\n\nrewind( unsigned )\n\n\nvoid\n\n\n\n\n\n\nvertex( double\n, double\n )\n\n\nunsigned\n\n\n\n\n\n\n\n\n\n\n(cstor) ( unsigned,  VertexSourceFunction )\n\n\nInitializes the class and sets the point count and the function to be used.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nnum_points\n\n\nunsigned\n\n\n\n\n\n\n\n\nfunction\n\n\nVertexSourceFunction\n\n\n\n\n\n\n\n\n\n\n\n\nrewind( unsigned ): void\n\n\nResets the iterator incrementing along the path.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nid\n\n\nunsigned\n\n\n\n\n\n\n\n\n\n\n\n\nvertex( double\n, double\n ): unsigned\n\n\nSets the axial positions of the next point in the path.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nx\n\n\ndouble*\n\n\n\n\n\n\n\n\ny\n\n\ndouble*\n\n\n\n\n\n\n\n\n\n\n\n\nTrianglePath\n\n\nFile:\n \nirragg_shapes.h\n\n\nInherits:\n \nVertexSourceBase\n\n\nThis class acts as a Vertex Source that can be passed directly to \nrenderVertexSource\n VertexSource \n to render a triangle defined by the points \npoint_a\n, \npoint_b\n, and \npoint_c\n. Its origin can be set via the members it inherits from \nVertexSourceBase\n: \nsetOrigin()\n.\n\n\n\n\n\n\n\n\nMember\n\n\nType\n\n\nPurpose\n\n\n\n\n\n\n\n\n\n\npoint_a\n\n\nirr::core::vector2d\n double \n\n\n\n\n\n\n\n\npoint_b\n\n\nirr::core::vector2d\n double \n\n\n\n\n\n\n\n\npoint_c\n\n\nirr::core::vector2d\n double \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMethod\n\n\nReturn\n\n\n\n\n\n\n\n\n\n\n(cstor) ()\n\n\n\n\n\n\n\n\n(cstor) ( vector2d\n double \n, vector2d\n double \n, vector2d\n double \n )\n\n\n\n\n\n\n\n\nrewind( unsigned )\n\n\nvoid\n\n\n\n\n\n\nvertex( double\n, double\n )\n\n\nunsigned\n\n\n\n\n\n\n\n\n\n\n(cstor) ()\n\n\n\n\n(cstor) ( vector2d\n double \n, vector2d\n double \n, vector2d\n double \n )\n\n\nInitializes the class and sets the defining points of the triangle.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\na\n\n\nirr::core::vector2d\n double \n\n\n\n\n\n\n\n\nb\n\n\nirr::core::vector2d\n double \n\n\n\n\n\n\n\n\nc\n\n\nirr::core::vector2d\n double \n\n\n\n\n\n\n\n\n\n\n\n\nrewind( unsigned ): void\n\n\nResets the iterator incrementing along the path.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nid\n\n\nunsigned\n\n\n\n\n\n\n\n\n\n\n\n\nvertex( double\n, double\n ): unsigned\n\n\nSets the axial positions of the next point in the path.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nx\n\n\ndouble*\n\n\n\n\n\n\n\n\ny\n\n\ndouble*\n\n\n\n\n\n\n\n\n\n\n\n\nEngine-Based Rendering\n\n\n\n\nclass PointSource\n\n\nFile:\n \nirragg_point.h\n\n\nNamespace:\n irr::vecg\n\n\n\n\n\n\n\n\nMethod\n\n\nReturn\n\n\n\n\n\n\n\n\n\n\nvirtual getPointCount\n\n\nsize_t\n\n\n\n\n\n\nvirtual getPoint( size_t )\n\n\nPoint2D\n\n\n\n\n\n\n\n\n\n\nvirtual getPointCount(): size_t\n\n\nReturns the number of points in the path.\n\n\n\n\nvirtual getPoint( size_t ): Point2D\n\n\nReturns the point at the given step value.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nstep\n\n\nsize_t\n\n\n\n\n\n\n\n\n\n\n\n\nclass RendererARGB32\n\n\nFile:\n \nirragg_engine.h\n\n\nNamespace:\n irr::vecg::engine\n\n\nThis class is a self-contained structure that provides a convenient drawing interface for rendering vector graphics onto an IImage. It can render paths designated by descendents of PointSource or ArrayVertexSource. All of the paths drawn are affected by the set drawing color and drawing matrix.\n\n\n\n\n\n\n\n\nMethod\n\n\nReturn\n\n\n\n\n\n\n\n\n\n\n[cstor] ()\n\n\n\n\n\n\n\n\n[cstor] ( IImage*, bool )\n\n\n\n\n\n\n\n\n[dstor] ()\n\n\n\n\n\n\n\n\nsetRenderTarget( IImage*, bool )\n\n\nbool\n\n\n\n\n\n\nsetDrawingColor( SColor )\n\n\nvoid\n\n\n\n\n\n\nsetDrawingColor( agg::rgba )\n\n\nvoid\n\n\n\n\n\n\nsetStrokeWidth( double )\n\n\nvoid\n\n\n\n\n\n\nsetDrawingMatrixFull( CMatrix4\n double \n )\n\n\nvoid\n\n\n\n\n\n\nsetDrawingMatrixFull( agg::trans_affine )\n\n\nvoid\n\n\n\n\n\n\nsetDrawingMatrix( double, double, double, double )\n\n\nvoid\n\n\n\n\n\n\nsetDrawingMatrixTranslation( double, double )\n\n\nvoid\n\n\n\n\n\n\nsetDrawingMatrixFull( double, double, double, double, double, double )\n\n\nvoid\n\n\n\n\n\n\nbufferPoints( PointSource* )\n\n\nbool\n\n\n\n\n\n\nbufferPoints( ArrayVertexSource\n )\n\n\nbool\n\n\n\n\n\n\ndraw( EPathStroke::Value )\n\n\nbool\n\n\n\n\n\n\ndrawNormal()\n\n\nbool\n\n\n\n\n\n\ndrawStroked()\n\n\nbool\n\n\n\n\n\n\ndrawBSpline()\n\n\nbool\n\n\n\n\n\n\ndrawPointSource( PointSource*, EPathStroke::Value )\n\n\nbool\n\n\n\n\n\n\ndrawArrayVertexSource( ArrayVertexSource\n, EPathStroke::Value )\n\n\nbool\n\n\n\n\n\n\ndrawTriangle( vector2d\n double \n, vector2d\n double \n, vector2d\n double \n, EPathStroke::Value )\n\n\nbool\n\n\n\n\n\n\ndrawRectangle( vector2d\n double \n, vector2d\n double \n, EPathStroke::Value )\n\n\nbool\n\n\n\n\n\n\ndrawCircle( double, vector2d\n double \n, EPathStroke::Value )\n\n\nbool\n\n\n\n\n\n\n\n\n\n\n(cstor) ()\n\n\n\n\n(cstor) ( IImage*, bool )\n\n\nInitializes the class with the given image as a render target and sets whether to drop it upon class destruction. It rejects target images of the wrong color format.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ntarget\n\n\nIImage*\n\n\n\n\n\n\n\n\ndrop_with_destruct\n\n\nbool\n\n\n\n\n\n\n\n\n\n\n\n\n(dstor) ()\n\n\nDestructor, which also destroys the target if set to do so.\n\n\n\n\nsetRenderTarget( IImage*, bool ): bool\n\n\nSets the render target (if it is of the correct color format) and whether to drop it on class destruction.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ntarget\n\n\nIImage*\n\n\n\n\n\n\n\n\ndrop_with_destruct\n\n\nbool\n\n\n\n\n\n\n\n\n\n\n\n\nsetDrawingColor( SColor ): void\n\n\nSets the color for rendering paths and shapes.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nirr::video::SColor\n\n\n\n\n\n\n\n\n\n\n\n\nsetDrawingColor( rgba ): void\n\n\nSets the color for rendering paths and shapes.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nagg::rgba\n\n\n\n\n\n\n\n\n\n\n\n\nsetStrokeWidth( double ): void\n\n\nSets the width of rendered paths.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nstroke_width\n\n\ndouble\n\n\n\n\n\n\n\n\n\n\n\n\nsetDrawingMatrixFull( drawing_matrix: irr::core::CMatrix4\n double \n ): void\n\n\nSets the matrix used for rendering shapes and paths.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\n\n\nsetDrawingMatrixFull( drawing_matrix: agg::trans_affine ): void\n\n\nSets the matrix used for rendering shapes and paths.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\n\n\nsetDrawingMatrix( s00: double, s10: double, s01: double, s11: double ): void\n\n\nSets the rotation/scale/shear part of the matrix used for rendering shapes and paths.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\n\n\nsetDrawingMatrixTranslation( x: double, y: double ): void\n\n\nSets the translation part of the matrix used for rendering shapes and paths.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\n\n\nsetDrawingMatrixFull( s00: double, s10: double, s01: double, s11: double, tx: double, ty: double ): void\n\n\nSets the matrix used for rendering shapes and paths.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ns00\n\n\ndouble\n\n\n\n\n\n\n\n\ns10\n\n\ndouble\n\n\n\n\n\n\n\n\ns01\n\n\ndouble\n\n\n\n\n\n\n\n\ns11\n\n\ndouble\n\n\n\n\n\n\n\n\ntx\n\n\ndouble\n\n\n\n\n\n\n\n\nty\n\n\ndouble\n\n\n\n\n\n\n\n\n\n\n\n\nbufferPoints( PointSource* ): bool\n\n\nCopies and prepares-for-rendering points taken from the given source.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nsource\n\n\nPointSource*\n\n\n\n\n\n\n\n\n\n\n\n\nbufferPoints( ArrayVertexSource\n ): bool\n\n\nCopies and prepares-for-rendering points taken from the given source.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nsource\n\n\nArrayVertexSource\n\n\n\n\n\n\n\n\n\n\n\n\ndraw( EPathStroke::Value ): bool\n\n\nDraws the path formed by the buffered points onto the target image.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\n\n\n\n\n\n\n\n\n\n\ndrawNormal(): bool\n\n\nUses standard-fill-style to draw the path formed by the buffered points.\n\n\n\n\ndrawStroked(): bool\n\n\nDraws as line segments the path formed by the buffered points.\n\n\n\n\ndrawBSpline(): bool\n\n\nDraws as a bezier curve the path formed by the buffered points.\n\n\n\n\ndrawPointSource( PointSource*, EPathStroke::Value ): bool\n\n\nDraws the points from the given point source onto the target image.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nsource\n\n\nPointSource*\n\n\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\n\n\n\n\n\n\n\n\n\n\ndrawArrayVertexSource( ArrayVertexSource\n, EPathStroke::Value ): bool\n\n\nDraws the points from the given array vertex source onto the target image.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nsource\n\n\nArrayVertexSource\n\n\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\n\n\n\n\n\n\n\n\n\n\ndrawTriangle( vector2d\n double \n, vector2d\n double \n, vector2d\n double \n, EPathStroke::Value ): bool\n\n\nDraws a triangle onto the target image.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\npoint_a\n\n\nirr::core::vector2d\n double \n\n\n\n\n\n\n\n\npoint_b\n\n\nirr::core::vector2d\n double \n\n\n\n\n\n\n\n\npoint_c\n\n\nirr::core::vector2d\n double \n\n\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\nEPathStroke::NORMAL\n\n\n\n\n\n\n\n\n\n\ndrawRectangle( vector2d\n double \n, vector2d\n double \n, EPathStroke::Value ): bool\n\n\nDraws a rectangle onto the target image.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nupper_left_corner\n\n\nirr::core::vector2d\n double \n\n\n\n\n\n\n\n\nlower_right_corner\n\n\nirr::core::vector2d\n double \n\n\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\nEPathStroke::NORMAL\n\n\n\n\n\n\n\n\n\n\ndrawCircle( double, vector2d\n double \n, EPathStroke::Value ): bool\n\n\nDraws a circle of the given radius and center onto the target image.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nradius\n\n\ndouble\n\n\n\n\n\n\n\n\ncenter\n\n\nirr::core::vector2d\n double \n\n\nirr::core::vector2d\n double \n(0)\n\n\n\n\n\n\npath_stroke_type\n\n\nEPathStroke::Value\n\n\nEPathStroke::NORMAL", 
+            "title": "API"
+        }, 
+        {
+            "location": "/api/#api", 
+            "text": "All functions and objects belonging to IrrAgg are within the sub-namespace \"vecg\" within the namespace \"irr\" unless otherwise specified. Some exceptions are the conversion functions, which are within the sub-namespace \"core\" in the namespace \"irr\".", 
+            "title": "API"
+        }, 
+        {
+            "location": "/api/#standard-utilities", 
+            "text": "", 
+            "title": "Standard Utilities"
+        }, 
+        {
+            "location": "/api/#standalone-functions", 
+            "text": "", 
+            "title": "Standalone functions"
+        }, 
+        {
+            "location": "/api/#isimagesupported-iimage-bool", 
+            "text": "File:   irragg_format_support.h  Returns true if the current format of the image is supported by IrrAgg.     Parameter  Type  Default      image  irr::video::IImage*", 
+            "title": "isImageSupported( IImage* ): bool"
+        }, 
+        {
+            "location": "/api/#isimageargb32-irrvideoiimage-bool", 
+            "text": "File:   irragg_format_support.h  Returns true if the image is in the color format irr::video::ECF_A8R8G8B8, arranged as alpha-red-green-blue with 8 bits each.     Parameter  Type  Default      image  irr::video::IImage*", 
+            "title": "isImageARGB32( irr::video::IImage* ): bool"
+        }, 
+        {
+            "location": "/api/#convertscolortoaggrgba-const-scolor-aggrgba", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const irr::video::SColor", 
+            "title": "convertSColorToAGGrgba( const SColor&amp; ): agg::rgba"
+        }, 
+        {
+            "location": "/api/#convertaggrgbatoscolor-const-rgba-irrvideoscolor", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const agg::rgba", 
+            "title": "convertAGGrgbaToSColor( const rgba&amp; ): irr::video::SColor"
+        }, 
+        {
+            "location": "/api/#convertscolorftoaggrgba-const-scolorf-aggrgba", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const irr::video::SColorf", 
+            "title": "convertSColorfToAGGrgba( const SColorf&amp; ): agg::rgba"
+        }, 
+        {
+            "location": "/api/#convertaggrgbatoscolorf-const-rgba-irrvideoscolorf", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const ::agg::rgba", 
+            "title": "convertAGGrgbaToSColorf( const rgba&amp; ): irr::video::SColorf"
+        }, 
+        {
+            "location": "/api/#convertscolorhsltoscolor-const-scolorhsl-irrvideoscolor", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const irr::video::SColorHSL", 
+            "title": "convertSColorHSLtoSColor( const SColorHSL&amp; ): irr::video::SColor"
+        }, 
+        {
+            "location": "/api/#convertscolortoscolorhsl-const-scolor-irrvideoscolorhsl", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const irr::video::SColor", 
+            "title": "convertSColorToSColorHSL( const SColor&amp; ): irr::video::SColorHSL"
+        }, 
+        {
+            "location": "/api/#convertcmatrix4toaggaffine-const-cmatrix4-double-aggtrans_affine", 
+            "text": "File:   irragg_matrix.h  Namespace:  irr::core     Parameter  Type  Default      m  const irr::core::CMatrix4  double", 
+            "title": "convertCMatrix4ToAGGaffine( const CMatrix4&lt; double &gt;&amp; ): agg::trans_affine"
+        }, 
+        {
+            "location": "/api/#convertaggaffinetocmatrix4-const-trans_affine-corecmatrix4-double", 
+            "text": "File:   irragg_matrix.h  Namespace:  irr::core     Parameter  Type  Default      m  const agg::trans_affine", 
+            "title": "convertAGGaffineToCMatrix4( const trans_affine&amp; ): core::CMatrix4&lt; double &gt;"
+        }, 
+        {
+            "location": "/api/#class-point2d", 
+            "text": "File:   irragg_point.h  A generic point class used especially for engine-based rendering but also stored in other classes.     Member  Type  Purpose      x  double  X-axis coordinate    y  double  Y-axis coordinate", 
+            "title": "class Point2D"
+        }, 
+        {
+            "location": "/api/#class-staticsizevertexsource-size_t", 
+            "text": "File:   irragg_array_path2d.h  Inherits:   VertexSourceBase  A static-size storage class that can be rendered using either renderVectorPath() or a rendering engine. Its template parameter is its size.  See  Example usage .     Member  Type  Purpose      _x  double[]  Contains the X-axis values of the path points    _y  double[]  Contains the Y-axis values of the path points        Method  Return      (cstor)     set( size_t, double, double )  StaticSizeVertexSource    getPointCount()  size_t    rewind( unsigned )  void    vertex( double , double  )  unsigned    getPoint( size_t )  Point2D", 
+            "title": "class StaticSizeVertexSource&lt; size_t &gt;"
+        }, 
+        {
+            "location": "/api/#cstor", 
+            "text": "Initializes the class.", 
+            "title": "(cstor)"
+        }, 
+        {
+            "location": "/api/#set-size_t-double-double-staticsizevertexsource", 
+            "text": "Set point coordinates of the point at the given index.     Parameter  Type  Default      index  size_t     x  double     y  double", 
+            "title": "set( size_t, double, double ): StaticSizeVertexSource&amp;"
+        }, 
+        {
+            "location": "/api/#getpointcount-size_t", 
+            "text": "Returns the size of the class.", 
+            "title": "getPointCount(): size_t"
+        }, 
+        {
+            "location": "/api/#rewind-unsigned-void", 
+            "text": "Resets the iterator incrementing along the path.     Parameter  Type  Default      id  unsigned", 
+            "title": "rewind( unsigned ): void"
+        }, 
+        {
+            "location": "/api/#vertex-double-double-unsigned", 
+            "text": "Sets the axial positions of the next point in the path.     Parameter  Type  Default      x  double*     y  double*", 
+            "title": "vertex( double, double ): unsigned"
+        }, 
+        {
+            "location": "/api/#getpoint-size_t-point2d", 
+            "text": "Get the point at the given index.     Parameter  Type  Default      index  size_t", 
+            "title": "getPoint( size_t ): Point2D"
+        }, 
+        {
+            "location": "/api/#arrayvertexsource", 
+            "text": "File:   irragg_array_path2d.h  Inherits:   VertexSourceBase  A dynamically-sized storage class that can be rendered using either renderVectorPath() or a rendering engine.     Method  Return      (cstor)     (copy cstor)     (cstor) ( const array  Point2D   )     (cstor) ( const array  vector2di   )     (cstor) ( const size_t, const double , const double  )     setFrom( const ArrayVertexSource  )  void    setFrom( const array  Point2D   )  void    setFrom( const array  vector2di   )  void    setFrom( const size_t, const double , const double  )  void    add( double, double )  ArrayVertexSource    getPointCount()  size_t    rewind( unsigned )  void    vertex( double , double  )  unsigned    getPoint( size_t )  Point2D", 
+            "title": "ArrayVertexSource"
+        }, 
+        {
+            "location": "/api/#cstor_1", 
+            "text": "Initializes the class.", 
+            "title": "(cstor)"
+        }, 
+        {
+            "location": "/api/#copy-cstor", 
+            "text": "Initializes the class by copying data from another instance.", 
+            "title": "(copy cstor)"
+        }, 
+        {
+            "location": "/api/#cstor-const-array-point2d", 
+            "text": "Initializes the class using points data from the given array.     Parameter  Type  Default      data_array  const irr::core::array  Point2D", 
+            "title": "(cstor) ( const array&lt; Point2D &gt;&amp; )"
+        }, 
+        {
+            "location": "/api/#cstor-const-array-vector2di", 
+            "text": "Parameter  Type  Default      data_array  const irr::core::array  irr::core::vector2di", 
+            "title": "(cstor) ( const array&lt; vector2di &gt;&amp; )"
+        }, 
+        {
+            "location": "/api/#cstor-const-size_t-const-double-const-double", 
+            "text": "Construct a vertex source from two arrays of size num_values.  WARNING: Does NOT check for premature array end!     Parameter  Type  Default      num_values  const size_t     x_values  const double*     y_values  const double*", 
+            "title": "(cstor) ( const size_t, const double, const double )"
+        }, 
+        {
+            "location": "/api/#setfrom-const-arrayvertexsource-void", 
+            "text": "Sets this vertex source from the points in the given array.     Parameter  Type  Default      other  const ArrayVertexSource", 
+            "title": "setFrom( const ArrayVertexSource&amp; ): void"
+        }, 
+        {
+            "location": "/api/#setfrom-const-array-point2d-void", 
+            "text": "Initializes the class using points data from the given array.     Parameter  Type  Default      data_array  const irr::core::array  Point2D", 
+            "title": "setFrom( const array&lt; Point2D &gt;&amp; ): void"
+        }, 
+        {
+            "location": "/api/#setfrom-const-array-vector2di-void", 
+            "text": "Parameter  Type  Default      data_array  const irr::core::array  irr::core::vector2di", 
+            "title": "setFrom( const array&lt; vector2di &gt;&amp; ): void"
+        }, 
+        {
+            "location": "/api/#setfrom-const-size_t-const-double-const-double-void", 
+            "text": "Construct a vertex source from two arrays of size num_values.  WARNING: Does NOT check for premature array end!     Parameter  Type  Default      num_values  const size_t     x_values  const double*     y_values  const double*", 
+            "title": "setFrom( const size_t, const double, const double ): void"
+        }, 
+        {
+            "location": "/api/#add-double-double-arrayvertexsource", 
+            "text": "Add the point (x,y) to the array.     Parameter  Type  Default      x  double     y  double", 
+            "title": "add( double, double ): ArrayVertexSource&amp;"
+        }, 
+        {
+            "location": "/api/#add-const-point2d-arrayvertexsource", 
+            "text": "Add the point (x,y) to the array.     Parameter  Type  Default      point  const Point2D", 
+            "title": "add( const Point2D&amp; ): ArrayVertexSource&amp;"
+        }, 
+        {
+            "location": "/api/#pop-size_t-size_t", 
+            "text": "Remove last points in the array. Returns the number of remaining points.     Parameter  Type  Default      num_points_to_remove  size_t  1", 
+            "title": "pop( size_t ): size_t"
+        }, 
+        {
+            "location": "/api/#clear-void", 
+            "text": "Delete all points stored in this instance.", 
+            "title": "clear(): void"
+        }, 
+        {
+            "location": "/api/#getpointcount-size_t_1", 
+            "text": "Return the number of points stored in this instance.", 
+            "title": "getPointCount(): size_t"
+        }, 
+        {
+            "location": "/api/#prepare-size_t-void", 
+            "text": "Performs space allocation in preparation for adding points.     Parameter  Type  Default      num_points_to_expect  size_t", 
+            "title": "prepare( size_t ): void"
+        }, 
+        {
+            "location": "/api/#standard-vertex-source-rendering", 
+            "text": "", 
+            "title": "Standard Vertex Source Rendering"
+        }, 
+        {
+            "location": "/api/#standalone-functions_1", 
+            "text": "", 
+            "title": "Standalone functions"
+        }, 
+        {
+            "location": "/api/#rendervectorpath-vertexsource-iimage-scolor-epathstrokevalue-unsigned-unsigned-bool", 
+            "text": "File:   irragg_standalone.h  Render the path given by  vertex_source  onto  target . There will automatically be a check for supported image type and rendering will be delegated to the function with the appropriate path stroke type. Returns true if successful.     Parameter  Type  Default      vertex_source  template   VertexSource      target  irr::video::IImage*     color  irr::video::SColor     path_stroke_type  EPathStroke::Value  EPathStroke::NORMAL    stroke_width  unsigned  1    resolution  unsigned  20", 
+            "title": "renderVectorPath( &lt; VertexSource &gt;&amp;, IImage, SColor, EPathStroke::Value, unsigned, unsigned ): bool"
+        }, 
+        {
+            "location": "/api/#rendertriangle-double-double-double-double-double-double-scolor-epathstrokevalue-u32-u32-bool", 
+            "text": "File:   irragg_shapes.h  Render a triangle defined by the points  (x1, y1), (x2, y2), (x3, y3)  with the given color  color  onto  target . Returns true if successful.     Parameter  Type  Default      target  irr::video::IImage*     x1  double     y1  double     x2  double     y2  double     x3  double     y3  double     color  irr::video::SColor     path_stroke_type  EPathStroke::Value  EPathStroke::NORMAL    stroke_width  irr::u32     resolution  irr::u3", 
+            "title": "renderTriangle( double, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool"
+        }, 
+        {
+            "location": "/api/#renderellipse-iimage-double-double-double-double-scolor-epathstrokevalue-u32-u32-bool", 
+            "text": "File:   irragg_shapes.h  Render an ellipse centered at the point  (x,y)  with the given vertical radius of  altitude , horizontal radius of  radius , and color  color  onto  target . Returns true if successful.     Parameter  Type  Default      target  irr::video::IImage*     x  double     y  double     altitude  double     radius  double     color  irr::video::SColor     path_stroke_type  EPathStroke::Value  EPathStroke::NORMAL    stroke_width  irr::u32     resolution  irr::u32", 
+            "title": "renderEllipse( IImage, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool"
+        }, 
+        {
+            "location": "/api/#renderroundedrectangle-iimage-double-double-double-double-double-scolor-epathstrokevalue-u32-u32-bool", 
+            "text": "File:   irragg_shapes.h  Render a rectangle - defined by the given x,y coordinates - with rounded corners of the given radius and color onto  target . Returns true if successful.     Parameter  Type  Default      target  irr::video::IImage*     x1  double     y1  double     x2  double     y2  double     radius  double     color  irr::video::SColor     path_stroke_type  EPathStroke::Value  EPathStroke::NORMAL    stroke_width  irr::u32     resolution  irr::u32", 
+            "title": "renderRoundedRectangle( IImage*, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool"
+        }, 
+        {
+            "location": "/api/#renderroundedrectangle-iimage-double-double-double-double-double-double-double-double-scolor-epathstrokevalue-u32-u32-bool", 
+            "text": "File:   irragg_shapes.h  Render a rectangle - defined by the given x,y coordinates - with rounded corners of the given radius and color onto  target . Returns true if successful.     Parameter  Type  Default      target  irr::video::IImage*     x1  double     y1  double     x2  double     y2  double     radius_x_bottom  double     radius_y_bottom  double     radius_x_top  double     radius_y_top  double     color  irr::video::SColor     path_stroke_type  EPathStroke::Value  EPathStroke::NORMAL    stroke_width  irr::u32     resolution  irr::u32", 
+            "title": "renderRoundedRectangle( IImage*, double, double, double, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool"
+        }, 
+        {
+            "location": "/api/#renderroundedrectangle-iimage-double-double-double-double-double-double-double-double-double-double-double-double-scolor-epathstrokevalue-u32-u32-bool", 
+            "text": "File:   irragg_shapes.h  Render a rectangle - defined by the given x,y coordinates - with rounded corners of the given radius and color onto  target . Returns true if successful.     Parameter  Type  Default      target  irr::video::IImage*     x1  double     y1  double     x2  double     y2  double     radius_upper_left_x  double     radius_upper_left_y  double     radius_upper_right_x  double     radius_upper_right_y  double     radius_lower_left_x  double     radius_lower_left_y  double     radius_lower_right_x  double     radius_lower_right_y  double     color  irr::video::SColor     path_stroke_type  EPathStroke::Value  EPathStroke::NORMAL    stroke_width  irr::u32     resolution  irr::u32", 
+            "title": "renderRoundedRectangle( IImage*, double, double, double, double, double, double, double, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool"
+        }, 
+        {
+            "location": "/api/#vertexsourcebase", 
+            "text": "File:   irragg_vertexsources.h  Meant to be inherited, it contains two primitives representing a polygon's origin value (absolute positioning) and a \"step\" value, used for tracking incrementing.  WARNING: It does not contain any methods necessary for rendering via renderVectorPath. Those methods must be implemented by the class inheriting this one. See  Creating a Standard Vertex Source  for more details.     Member  Type  Purpose      _step  unsigned  The current increment along the vector path.    _origin_x  double  The X-axis value to which all points along the path are relative.    _origin_y  double  The Y-axis value to which all points along the path are relative.        Method  Return      (cstor) ()     (cstor) ( double, double )     setOrigin( double, double )  void    getOrigin()  Point2D", 
+            "title": "VertexSourceBase"
+        }, 
+        {
+            "location": "/api/#cstor_2", 
+            "text": "Initializes the class.", 
+            "title": "(cstor)"
+        }, 
+        {
+            "location": "/api/#cstor-double-double", 
+            "text": "Initializes the class and sets the coordinates of the origin.     Parameter  Type  Default      x  double     y  double", 
+            "title": "(cstor) ( double, double )"
+        }, 
+        {
+            "location": "/api/#setorigin-double-double-void", 
+            "text": "Sets the absolute central position of the polygon (for shapes) or the start of a path.     Parameter  Type  Default      x  double     y  double", 
+            "title": "setOrigin( double, double ): void"
+        }, 
+        {
+            "location": "/api/#getorigin-point2d", 
+            "text": "Gets the absolute central position of the polygon (for shapes) or the start of a path.", 
+            "title": "getOrigin(): Point2D"
+        }, 
+        {
+            "location": "/api/#vertexsourcepump-class-vertexsource", 
+            "text": "File:   irragg_vertexsources.h  Inherits:   VertexSourceBase  This class acts as a Vertex Source that can be passed directly to certain rendering functions such as  renderVertexSource  VertexSource  . Meant for creating a single polygon, this class is a vertex source template for wrapping a class having the following methods:   getPoint ( unsigned ): Point2D  getPointCount (): unsigned   The method  getPoint  will be passed  step  - an unsigned int representing the increment along the path/curve/polygon that is currently being requested. The method must return an instance of Point2D to represent that point.  The method  getPointCount  should return the number of points along the path/curve/polygon that the object is able to return. This value can be varied but should not change when the polygon is being rendered.     Method  Return      (cstor) ( template   VertexSource   )     rewind( unsigned )  void    vertex( double , double  )  void", 
+            "title": "VertexSourcePump &lt; class VertexSource &gt;"
+        }, 
+        {
+            "location": "/api/#cstor-vertexsource", 
+            "text": "Initializes the class and sets the vertex source.     Parameter  Type  Default      source  template   VertexSource", 
+            "title": "(cstor) ( &lt; VertexSource &gt; )"
+        }, 
+        {
+            "location": "/api/#rewind-unsigned-void_1", 
+            "text": "Resets the iterator incrementing along the path.     Parameter  Type  Default      id  unsigned", 
+            "title": "rewind( unsigned ): void"
+        }, 
+        {
+            "location": "/api/#vertex-double-double-unsigned_1", 
+            "text": "Sets the axial positions of the next point in the path.     Parameter  Type  Default      x  double*     y  double*", 
+            "title": "vertex( double, double ): unsigned"
+        }, 
+        {
+            "location": "/api/#vertexsourcefunction", 
+            "text": "File:   irragg_vertexsources.h  A function pointer that accepts unsigned and returns Point2D.  typedef Point2D (*VertexSourceFunction)(unsigned)", 
+            "title": "VertexSourceFunction"
+        }, 
+        {
+            "location": "/api/#vertexsourcefuncpump", 
+            "text": "File:   irragg_vertexsources.h  This class acts as a Vertex Source that can be passed directly to certain rendering functions such as  renderVertexSource  VertexSource  . This class acts as a wrapper for functions that define a vector path so that they do not need to be implemented as a class.     Method  Return      (cstor) ( unsigned, VertexSourceFunction )     rewind( unsigned )  void    vertex( double , double  )  unsigned", 
+            "title": "VertexSourceFuncPump"
+        }, 
+        {
+            "location": "/api/#cstor-unsigned-vertexsourcefunction", 
+            "text": "Initializes the class and sets the point count and the function to be used.     Parameter  Type  Default      num_points  unsigned     function  VertexSourceFunction", 
+            "title": "(cstor) ( unsigned,  VertexSourceFunction )"
+        }, 
+        {
+            "location": "/api/#rewind-unsigned-void_2", 
+            "text": "Resets the iterator incrementing along the path.     Parameter  Type  Default      id  unsigned", 
+            "title": "rewind( unsigned ): void"
+        }, 
+        {
+            "location": "/api/#vertex-double-double-unsigned_2", 
+            "text": "Sets the axial positions of the next point in the path.     Parameter  Type  Default      x  double*     y  double*", 
+            "title": "vertex( double, double ): unsigned"
+        }, 
+        {
+            "location": "/api/#trianglepath", 
+            "text": "File:   irragg_shapes.h  Inherits:   VertexSourceBase  This class acts as a Vertex Source that can be passed directly to  renderVertexSource  VertexSource   to render a triangle defined by the points  point_a ,  point_b , and  point_c . Its origin can be set via the members it inherits from  VertexSourceBase :  setOrigin() .     Member  Type  Purpose      point_a  irr::core::vector2d  double      point_b  irr::core::vector2d  double      point_c  irr::core::vector2d  double          Method  Return      (cstor) ()     (cstor) ( vector2d  double  , vector2d  double  , vector2d  double   )     rewind( unsigned )  void    vertex( double , double  )  unsigned", 
+            "title": "TrianglePath"
+        }, 
+        {
+            "location": "/api/#cstor_3", 
+            "text": "", 
+            "title": "(cstor) ()"
+        }, 
+        {
+            "location": "/api/#cstor-vector2d-double-vector2d-double-vector2d-double", 
+            "text": "Initializes the class and sets the defining points of the triangle.     Parameter  Type  Default      a  irr::core::vector2d  double      b  irr::core::vector2d  double      c  irr::core::vector2d  double", 
+            "title": "(cstor) ( vector2d&lt; double &gt;, vector2d&lt; double &gt;, vector2d&lt; double &gt; )"
+        }, 
+        {
+            "location": "/api/#rewind-unsigned-void_3", 
+            "text": "Resets the iterator incrementing along the path.     Parameter  Type  Default      id  unsigned", 
+            "title": "rewind( unsigned ): void"
+        }, 
+        {
+            "location": "/api/#vertex-double-double-unsigned_3", 
+            "text": "Sets the axial positions of the next point in the path.     Parameter  Type  Default      x  double*     y  double*", 
+            "title": "vertex( double, double ): unsigned"
+        }, 
+        {
+            "location": "/api/#engine-based-rendering", 
+            "text": "", 
+            "title": "Engine-Based Rendering"
+        }, 
+        {
+            "location": "/api/#class-pointsource", 
+            "text": "File:   irragg_point.h  Namespace:  irr::vecg     Method  Return      virtual getPointCount  size_t    virtual getPoint( size_t )  Point2D", 
+            "title": "class PointSource"
+        }, 
+        {
+            "location": "/api/#virtual-getpointcount-size_t", 
+            "text": "Returns the number of points in the path.", 
+            "title": "virtual getPointCount(): size_t"
+        }, 
+        {
+            "location": "/api/#virtual-getpoint-size_t-point2d", 
+            "text": "Returns the point at the given step value.     Parameter  Type  Default      step  size_t", 
+            "title": "virtual getPoint( size_t ): Point2D"
+        }, 
+        {
+            "location": "/api/#class-rendererargb32", 
+            "text": "File:   irragg_engine.h  Namespace:  irr::vecg::engine  This class is a self-contained structure that provides a convenient drawing interface for rendering vector graphics onto an IImage. It can render paths designated by descendents of PointSource or ArrayVertexSource. All of the paths drawn are affected by the set drawing color and drawing matrix.     Method  Return      [cstor] ()     [cstor] ( IImage*, bool )     [dstor] ()     setRenderTarget( IImage*, bool )  bool    setDrawingColor( SColor )  void    setDrawingColor( agg::rgba )  void    setStrokeWidth( double )  void    setDrawingMatrixFull( CMatrix4  double   )  void    setDrawingMatrixFull( agg::trans_affine )  void    setDrawingMatrix( double, double, double, double )  void    setDrawingMatrixTranslation( double, double )  void    setDrawingMatrixFull( double, double, double, double, double, double )  void    bufferPoints( PointSource* )  bool    bufferPoints( ArrayVertexSource  )  bool    draw( EPathStroke::Value )  bool    drawNormal()  bool    drawStroked()  bool    drawBSpline()  bool    drawPointSource( PointSource*, EPathStroke::Value )  bool    drawArrayVertexSource( ArrayVertexSource , EPathStroke::Value )  bool    drawTriangle( vector2d  double  , vector2d  double  , vector2d  double  , EPathStroke::Value )  bool    drawRectangle( vector2d  double  , vector2d  double  , EPathStroke::Value )  bool    drawCircle( double, vector2d  double  , EPathStroke::Value )  bool", 
+            "title": "class RendererARGB32"
+        }, 
+        {
+            "location": "/api/#cstor_4", 
+            "text": "", 
+            "title": "(cstor) ()"
+        }, 
+        {
+            "location": "/api/#cstor-iimage-bool", 
+            "text": "Initializes the class with the given image as a render target and sets whether to drop it upon class destruction. It rejects target images of the wrong color format.     Parameter  Type  Default      target  IImage*     drop_with_destruct  bool", 
+            "title": "(cstor) ( IImage*, bool )"
+        }, 
+        {
+            "location": "/api/#dstor", 
+            "text": "Destructor, which also destroys the target if set to do so.", 
+            "title": "(dstor) ()"
+        }, 
+        {
+            "location": "/api/#setrendertarget-iimage-bool-bool", 
+            "text": "Sets the render target (if it is of the correct color format) and whether to drop it on class destruction.     Parameter  Type  Default      target  IImage*     drop_with_destruct  bool", 
+            "title": "setRenderTarget( IImage*, bool ): bool"
+        }, 
+        {
+            "location": "/api/#setdrawingcolor-scolor-void", 
+            "text": "Sets the color for rendering paths and shapes.     Parameter  Type  Default      color  irr::video::SColor", 
+            "title": "setDrawingColor( SColor ): void"
+        }, 
+        {
+            "location": "/api/#setdrawingcolor-rgba-void", 
+            "text": "Sets the color for rendering paths and shapes.     Parameter  Type  Default      color  agg::rgba", 
+            "title": "setDrawingColor( rgba ): void"
+        }, 
+        {
+            "location": "/api/#setstrokewidth-double-void", 
+            "text": "Sets the width of rendered paths.     Parameter  Type  Default      stroke_width  double", 
+            "title": "setStrokeWidth( double ): void"
+        }, 
+        {
+            "location": "/api/#setdrawingmatrixfull-drawing_matrix-irrcorecmatrix4-double-void", 
+            "text": "Sets the matrix used for rendering shapes and paths.     Parameter  Type  Default", 
+            "title": "setDrawingMatrixFull( drawing_matrix: irr::core::CMatrix4&lt; double &gt; ): void"
+        }, 
+        {
+            "location": "/api/#setdrawingmatrixfull-drawing_matrix-aggtrans_affine-void", 
+            "text": "Sets the matrix used for rendering shapes and paths.     Parameter  Type  Default", 
+            "title": "setDrawingMatrixFull( drawing_matrix: agg::trans_affine ): void"
+        }, 
+        {
+            "location": "/api/#setdrawingmatrix-s00-double-s10-double-s01-double-s11-double-void", 
+            "text": "Sets the rotation/scale/shear part of the matrix used for rendering shapes and paths.     Parameter  Type  Default", 
+            "title": "setDrawingMatrix( s00: double, s10: double, s01: double, s11: double ): void"
+        }, 
+        {
+            "location": "/api/#setdrawingmatrixtranslation-x-double-y-double-void", 
+            "text": "Sets the translation part of the matrix used for rendering shapes and paths.     Parameter  Type  Default", 
+            "title": "setDrawingMatrixTranslation( x: double, y: double ): void"
+        }, 
+        {
+            "location": "/api/#setdrawingmatrixfull-s00-double-s10-double-s01-double-s11-double-tx-double-ty-double-void", 
+            "text": "Sets the matrix used for rendering shapes and paths.     Parameter  Type  Default      s00  double     s10  double     s01  double     s11  double     tx  double     ty  double", 
+            "title": "setDrawingMatrixFull( s00: double, s10: double, s01: double, s11: double, tx: double, ty: double ): void"
+        }, 
+        {
+            "location": "/api/#bufferpoints-pointsource-bool", 
+            "text": "Copies and prepares-for-rendering points taken from the given source.     Parameter  Type  Default      source  PointSource*", 
+            "title": "bufferPoints( PointSource* ): bool"
+        }, 
+        {
+            "location": "/api/#bufferpoints-arrayvertexsource-bool", 
+            "text": "Copies and prepares-for-rendering points taken from the given source.     Parameter  Type  Default      source  ArrayVertexSource", 
+            "title": "bufferPoints( ArrayVertexSource&amp; ): bool"
+        }, 
+        {
+            "location": "/api/#draw-epathstrokevalue-bool", 
+            "text": "Draws the path formed by the buffered points onto the target image.     Parameter  Type  Default      path_stroke_type  EPathStroke::Value", 
+            "title": "draw( EPathStroke::Value ): bool"
+        }, 
+        {
+            "location": "/api/#drawnormal-bool", 
+            "text": "Uses standard-fill-style to draw the path formed by the buffered points.", 
+            "title": "drawNormal(): bool"
+        }, 
+        {
+            "location": "/api/#drawstroked-bool", 
+            "text": "Draws as line segments the path formed by the buffered points.", 
+            "title": "drawStroked(): bool"
+        }, 
+        {
+            "location": "/api/#drawbspline-bool", 
+            "text": "Draws as a bezier curve the path formed by the buffered points.", 
+            "title": "drawBSpline(): bool"
+        }, 
+        {
+            "location": "/api/#drawpointsource-pointsource-epathstrokevalue-bool", 
+            "text": "Draws the points from the given point source onto the target image.     Parameter  Type  Default      source  PointSource*     path_stroke_type  EPathStroke::Value", 
+            "title": "drawPointSource( PointSource*, EPathStroke::Value ): bool"
+        }, 
+        {
+            "location": "/api/#drawarrayvertexsource-arrayvertexsource-epathstrokevalue-bool", 
+            "text": "Draws the points from the given array vertex source onto the target image.     Parameter  Type  Default      source  ArrayVertexSource     path_stroke_type  EPathStroke::Value", 
+            "title": "drawArrayVertexSource( ArrayVertexSource&amp;, EPathStroke::Value ): bool"
+        }, 
+        {
+            "location": "/api/#drawtriangle-vector2d-double-vector2d-double-vector2d-double-epathstrokevalue-bool", 
+            "text": "Draws a triangle onto the target image.     Parameter  Type  Default      point_a  irr::core::vector2d  double      point_b  irr::core::vector2d  double      point_c  irr::core::vector2d  double      path_stroke_type  EPathStroke::Value  EPathStroke::NORMAL", 
+            "title": "drawTriangle( vector2d&lt; double &gt;, vector2d&lt; double &gt;, vector2d&lt; double &gt;, EPathStroke::Value ): bool"
+        }, 
+        {
+            "location": "/api/#drawrectangle-vector2d-double-vector2d-double-epathstrokevalue-bool", 
+            "text": "Draws a rectangle onto the target image.     Parameter  Type  Default      upper_left_corner  irr::core::vector2d  double      lower_right_corner  irr::core::vector2d  double      path_stroke_type  EPathStroke::Value  EPathStroke::NORMAL", 
+            "title": "drawRectangle( vector2d&lt; double &gt;, vector2d&lt; double &gt;, EPathStroke::Value ): bool"
+        }, 
+        {
+            "location": "/api/#drawcircle-double-vector2d-double-epathstrokevalue-bool", 
+            "text": "Draws a circle of the given radius and center onto the target image.     Parameter  Type  Default      radius  double     center  irr::core::vector2d  double   irr::core::vector2d  double  (0)    path_stroke_type  EPathStroke::Value  EPathStroke::NORMAL", 
+            "title": "drawCircle( double, vector2d&lt; double &gt;, EPathStroke::Value ): bool"
+        }, 
+        {
+            "location": "/examples/", 
+            "text": "Examples\n\n\nThere are two approaches to using IrrAGG: \nusing the standalone functions\n or \nusing a rendering engine\n. For all of the examples, you should need to create an IImage, which you can do using the \ninitial setup\n.\n\n\n\n\nInitial Setup\n\n\nThe following code can be used to create the IImage and pass it to the drawPath() function shown in all of the examples.\n\n\n// Include Irrlicht\n#include \nirrlicht.h\n\n\n// Include this library\n#include \nirragg.h\n\n\nbool drawPath(irr::video::IImage*  target);\n\nint main()\n{\n  irr::core::dimension2du  screensize(512,512);\n  irr::IrrlichtDevice*  device;\n  irr::video::IVideoDriver*  video_driver;\n  irr::video::IImage*  image;\n  irr::video::ITexture*  texture;\n  irr::video::EColorFormat  color_format = irr::video::ECF_A8R8G8B8;\n  irr::core::vector2di  onscreen_position(0);\n  bool render_success;\n\n  device = irr::createDevice(irr::video::EDT_BURNINGSVIDEO, screensize);\n  if (!device)\n    return 1;\n\n  // Creating the image\n  video_driver = device-\ngetVideoDriver();\n  image = video_driver-\ncreateImage(color_format, screensize);\n  render_success = drawPath(image);\n\n  if ( !render_success )\n    return 1;\n\n  texture = video_driver-\naddTexture(irr::io::path(\ntexture name\n), image);\n\n  // Main rendering loop\n  while( device-\nrun() )\n  {\n    video_driver-\nbeginScene();\n    video_driver-\ndraw2DImage(texture, onscreen_position);\n    video_driver-\nendScene();\n  }\n\n  // cleanup\n  image-\ndrop();\n  device-\ndrop();\n\n  return 0;\n}\n\n\n\n\n\n\nUsing the Standalone Functions\n\n\nRendering a B-Spline from static const arrays.\n\n\n//... Assuming the initial setup\n\nbool drawPath( irr::video::IImage*  target )\n{\n  irr::video::SColor  color(255,255,0,0); // Red\n  irr::f32  width = 2; // width of rendered curve\n  irr::u32  resolution = 20; // number of segments between points for a bspline curve\n\n  static const double  x_values[] = { 10, 100, 200, 300, 400, 500 };\n  static const double  y_values[] = { 50, 200, 350, 400, 200, 100 };\n\n  // Using an irragg structure\n  irr::vecg::ArrayVertexSource  vertex_source(\n    5, // number of points\n    (const double*)\nx_values,\n    (const double*)\ny_values\n  );\n\n  // Using an irragg function\n  return irr::vecg::renderVectorPath(vertex_source, target, color, irr::vecg::EPathStroke::BSPLINE, width, resolution);\n}\n\n\n\n\n\n\nUsing a Rendering Engine\n\n\nDrawing a Skewed Rectangle Outline\n\n\n//... Assuming the initial setup\n\nbool drawPath( irr::video::IImage*  target )\n{\n  irr::video::SColor  green(255,0,255,0); // Green\n\n  // Using an irragg structure\n  irr::vecg::engine::RendererARGB32  renderer;\n\n  // Pre-drawing necessities\n  //   Make the drawing matrix skewed by 0.5 on top\n  renderer.setDrawingMatrix(1.0, 0.5, 0, 1.0);\n\n  //   Set the outline thickness\n  renderer.setStrokeWidth(5);\n\n  //   Drawing color must also be set in advance\n  renderer.setDrawingColor(green);\n\n  // For clarity and convenience\n  typedef irr::core::vector2d\ndouble\n  vector2dd;\n\n  // Draw the actual rectangle outline\n  return renderer.drawRectangle(\n    vector2dd(0,0),\n    vector2dd(100,100),\n    irr::vecg::EPathStroke::BRUSH\n  );\n}\n\n\n\n\n\n\nUsing Helper Classes\n\n\nUsing StaticSizeVertexSource\n\n\nbool drawPath( irr::video::IImage*  target )\n{\n  // Instantiation requires size as the template argument\n  irr::vecg::StaticSizeVertexSource\n3\n triangle;\n\n  // Point value setting can be chained\n  triangle\n    .set(0, 150, 30)\n    .set(1, 300, 150)\n    .set(2, 0, 150);\n\n  // Rendering requires a color\n  irr::video::SColor  blue(255,0,0,255);\n\n  // Render using any function that can render vertex sources\n  // or descendents of PointSource\n  return irr::vecg::renderVectorPath(triangle, target, blue);\n}", 
+            "title": "Examples"
+        }, 
+        {
+            "location": "/examples/#examples", 
+            "text": "There are two approaches to using IrrAGG:  using the standalone functions  or  using a rendering engine . For all of the examples, you should need to create an IImage, which you can do using the  initial setup .", 
+            "title": "Examples"
+        }, 
+        {
+            "location": "/examples/#initial-setup", 
+            "text": "The following code can be used to create the IImage and pass it to the drawPath() function shown in all of the examples.  // Include Irrlicht\n#include  irrlicht.h \n\n// Include this library\n#include  irragg.h \n\nbool drawPath(irr::video::IImage*  target);\n\nint main()\n{\n  irr::core::dimension2du  screensize(512,512);\n  irr::IrrlichtDevice*  device;\n  irr::video::IVideoDriver*  video_driver;\n  irr::video::IImage*  image;\n  irr::video::ITexture*  texture;\n  irr::video::EColorFormat  color_format = irr::video::ECF_A8R8G8B8;\n  irr::core::vector2di  onscreen_position(0);\n  bool render_success;\n\n  device = irr::createDevice(irr::video::EDT_BURNINGSVIDEO, screensize);\n  if (!device)\n    return 1;\n\n  // Creating the image\n  video_driver = device- getVideoDriver();\n  image = video_driver- createImage(color_format, screensize);\n  render_success = drawPath(image);\n\n  if ( !render_success )\n    return 1;\n\n  texture = video_driver- addTexture(irr::io::path( texture name ), image);\n\n  // Main rendering loop\n  while( device- run() )\n  {\n    video_driver- beginScene();\n    video_driver- draw2DImage(texture, onscreen_position);\n    video_driver- endScene();\n  }\n\n  // cleanup\n  image- drop();\n  device- drop();\n\n  return 0;\n}", 
+            "title": "Initial Setup"
+        }, 
+        {
+            "location": "/examples/#using-the-standalone-functions", 
+            "text": "", 
+            "title": "Using the Standalone Functions"
+        }, 
+        {
+            "location": "/examples/#rendering-a-b-spline-from-static-const-arrays", 
+            "text": "//... Assuming the initial setup\n\nbool drawPath( irr::video::IImage*  target )\n{\n  irr::video::SColor  color(255,255,0,0); // Red\n  irr::f32  width = 2; // width of rendered curve\n  irr::u32  resolution = 20; // number of segments between points for a bspline curve\n\n  static const double  x_values[] = { 10, 100, 200, 300, 400, 500 };\n  static const double  y_values[] = { 50, 200, 350, 400, 200, 100 };\n\n  // Using an irragg structure\n  irr::vecg::ArrayVertexSource  vertex_source(\n    5, // number of points\n    (const double*) x_values,\n    (const double*) y_values\n  );\n\n  // Using an irragg function\n  return irr::vecg::renderVectorPath(vertex_source, target, color, irr::vecg::EPathStroke::BSPLINE, width, resolution);\n}", 
+            "title": "Rendering a B-Spline from static const arrays."
+        }, 
+        {
+            "location": "/examples/#using-a-rendering-engine", 
+            "text": "", 
+            "title": "Using a Rendering Engine"
+        }, 
+        {
+            "location": "/examples/#drawing-a-skewed-rectangle-outline", 
+            "text": "//... Assuming the initial setup\n\nbool drawPath( irr::video::IImage*  target )\n{\n  irr::video::SColor  green(255,0,255,0); // Green\n\n  // Using an irragg structure\n  irr::vecg::engine::RendererARGB32  renderer;\n\n  // Pre-drawing necessities\n  //   Make the drawing matrix skewed by 0.5 on top\n  renderer.setDrawingMatrix(1.0, 0.5, 0, 1.0);\n\n  //   Set the outline thickness\n  renderer.setStrokeWidth(5);\n\n  //   Drawing color must also be set in advance\n  renderer.setDrawingColor(green);\n\n  // For clarity and convenience\n  typedef irr::core::vector2d double   vector2dd;\n\n  // Draw the actual rectangle outline\n  return renderer.drawRectangle(\n    vector2dd(0,0),\n    vector2dd(100,100),\n    irr::vecg::EPathStroke::BRUSH\n  );\n}", 
+            "title": "Drawing a Skewed Rectangle Outline"
+        }, 
+        {
+            "location": "/examples/#using-helper-classes", 
+            "text": "", 
+            "title": "Using Helper Classes"
+        }, 
+        {
+            "location": "/examples/#using-staticsizevertexsource", 
+            "text": "bool drawPath( irr::video::IImage*  target )\n{\n  // Instantiation requires size as the template argument\n  irr::vecg::StaticSizeVertexSource 3  triangle;\n\n  // Point value setting can be chained\n  triangle\n    .set(0, 150, 30)\n    .set(1, 300, 150)\n    .set(2, 0, 150);\n\n  // Rendering requires a color\n  irr::video::SColor  blue(255,0,0,255);\n\n  // Render using any function that can render vertex sources\n  // or descendents of PointSource\n  return irr::vecg::renderVectorPath(triangle, target, blue);\n}", 
+            "title": "Using StaticSizeVertexSource"
+        }
+    ]
+}

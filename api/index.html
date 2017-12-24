@@ -1,0 +1,2354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title>API - IrrAgg Documentation</title>
+
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/highlight.css">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">IrrAgg Documentation</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../usage/">Usage</a>
+                    </li>
+                
+                
+                
+                    <li class="active">
+                        <a href="./">API</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../examples/">Examples</a>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="next" href="../usage/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../examples/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="first-level active"><a href="#api">API</a></li>
+        
+            <li class="second-level"><a href="#standard-utilities">Standard Utilities</a></li>
+            
+                <li class="third-level"><a href="#standalone-functions">Standalone functions</a></li>
+            
+                <li class="third-level"><a href="#class-point2d">class Point2D</a></li>
+            
+                <li class="third-level"><a href="#class-staticsizevertexsource-size_t">class StaticSizeVertexSource&lt; size_t &gt;</a></li>
+            
+                <li class="third-level"><a href="#arrayvertexsource">ArrayVertexSource</a></li>
+            
+        
+            <li class="second-level"><a href="#standard-vertex-source-rendering">Standard Vertex Source Rendering</a></li>
+            
+                <li class="third-level"><a href="#standalone-functions_1">Standalone functions</a></li>
+            
+                <li class="third-level"><a href="#vertexsourcebase">VertexSourceBase</a></li>
+            
+                <li class="third-level"><a href="#vertexsourcepump-class-vertexsource">VertexSourcePump &lt; class VertexSource &gt;</a></li>
+            
+                <li class="third-level"><a href="#vertexsourcefunction">VertexSourceFunction</a></li>
+            
+                <li class="third-level"><a href="#vertexsourcefuncpump">VertexSourceFuncPump</a></li>
+            
+                <li class="third-level"><a href="#trianglepath">TrianglePath</a></li>
+            
+        
+            <li class="second-level"><a href="#engine-based-rendering">Engine-Based Rendering</a></li>
+            
+                <li class="third-level"><a href="#class-pointsource">class PointSource</a></li>
+            
+                <li class="third-level"><a href="#class-rendererargb32">class RendererARGB32</a></li>
+            
+        
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<style type="text/css">
+table {
+    border: 1px solid #cccccc;
+    background-color: #eeeeee;
+    margin: 1em;
+    padding-left: 5%;
+    font-size: 1em;
+    /*table-layout: fixed;*/
+    width: 95%;
+}
+</style>
+
+<h1 id="api">API</h1>
+<p>All functions and objects belonging to IrrAgg are within the sub-namespace "vecg" within the namespace "irr" unless otherwise specified. Some exceptions are the conversion functions, which are within the sub-namespace "core" in the namespace "irr".</p>
+<hr />
+<h2 id="standard-utilities">Standard Utilities</h2>
+<hr />
+<h3 id="standalone-functions">Standalone functions</h3>
+<hr />
+<h4 id="isimagesupported-iimage-bool">isImageSupported( IImage* ): bool</h4>
+<p><strong>File:</strong> <em>irragg_format_support.h</em></p>
+<p>Returns true if the current format of the image is supported by IrrAgg.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>image</td>
+<td>irr::video::IImage*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="isimageargb32-irrvideoiimage-bool">isImageARGB32( irr::video::IImage* ): bool</h4>
+<p><strong>File:</strong> <em>irragg_format_support.h</em></p>
+<p>Returns true if the image is in the color format irr::video::ECF_A8R8G8B8, arranged as alpha-red-green-blue with 8 bits each.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>image</td>
+<td>irr::video::IImage*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertscolortoaggrgba-const-scolor-aggrgba">convertSColorToAGGrgba( const SColor&amp; ): agg::rgba</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const irr::video::SColor&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertaggrgbatoscolor-const-rgba-irrvideoscolor">convertAGGrgbaToSColor( const rgba&amp; ): irr::video::SColor</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const agg::rgba&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertscolorftoaggrgba-const-scolorf-aggrgba">convertSColorfToAGGrgba( const SColorf&amp; ): agg::rgba</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const irr::video::SColorf&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertaggrgbatoscolorf-const-rgba-irrvideoscolorf">convertAGGrgbaToSColorf( const rgba&amp; ): irr::video::SColorf</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const ::agg::rgba&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertscolorhsltoscolor-const-scolorhsl-irrvideoscolor">convertSColorHSLtoSColor( const SColorHSL&amp; ): irr::video::SColor</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const irr::video::SColorHSL&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertscolortoscolorhsl-const-scolor-irrvideoscolorhsl">convertSColorToSColorHSL( const SColor&amp; ): irr::video::SColorHSL</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const irr::video::SColor&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertcmatrix4toaggaffine-const-cmatrix4-double-aggtrans_affine">convertCMatrix4ToAGGaffine( const CMatrix4&lt; double &gt;&amp; ): agg::trans_affine</h4>
+<p><strong>File:</strong> <em>irragg_matrix.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>m</td>
+<td>const irr::core::CMatrix4&lt; double &gt;&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertaggaffinetocmatrix4-const-trans_affine-corecmatrix4-double">convertAGGaffineToCMatrix4( const trans_affine&amp; ): core::CMatrix4&lt; double &gt;</h4>
+<p><strong>File:</strong> <em>irragg_matrix.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>m</td>
+<td>const agg::trans_affine&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="class-point2d">class Point2D</h3>
+<p><strong>File:</strong> <em>irragg_point.h</em></p>
+<p>A generic point class used especially for engine-based rendering but also stored in other classes.</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>double</td>
+<td>X-axis coordinate</td>
+</tr>
+<tr>
+<td>y</td>
+<td>double</td>
+<td>Y-axis coordinate</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="class-staticsizevertexsource-size_t">class StaticSizeVertexSource&lt; size_t &gt;</h3>
+<p><strong>File:</strong> <em>irragg_array_path2d.h</em></p>
+<p><strong>Inherits:</strong> <em>VertexSourceBase</em></p>
+<p>A static-size storage class that can be rendered using either renderVectorPath() or a rendering engine. Its template parameter is its size.</p>
+<p>See <a href="../examples/#using-staticsizevertexsource">Example usage</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_x</td>
+<td>double[]</td>
+<td>Contains the X-axis values of the path points</td>
+</tr>
+<tr>
+<td>_y</td>
+<td>double[]</td>
+<td>Contains the Y-axis values of the path points</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(cstor)</td>
+<td></td>
+</tr>
+<tr>
+<td>set( size_t, double, double )</td>
+<td>StaticSizeVertexSource&amp;</td>
+</tr>
+<tr>
+<td>getPointCount()</td>
+<td>size_t</td>
+</tr>
+<tr>
+<td>rewind( unsigned )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>vertex( double<em>, double</em> )</td>
+<td>unsigned</td>
+</tr>
+<tr>
+<td>getPoint( size_t )</td>
+<td>Point2D</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="cstor">(cstor)</h4>
+<p>Initializes the class.</p>
+<hr />
+<h4 id="set-size_t-double-double-staticsizevertexsource">set( size_t, double, double ): StaticSizeVertexSource&amp;</h4>
+<p>Set point coordinates of the point at the given index.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td>size_t</td>
+<td></td>
+</tr>
+<tr>
+<td>x</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y</td>
+<td>double</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="getpointcount-size_t">getPointCount(): size_t</h4>
+<p>Returns the size of the class.</p>
+<hr />
+<h4 id="rewind-unsigned-void">rewind( unsigned ): void</h4>
+<p>Resets the iterator incrementing along the path.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>unsigned</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="vertex-double-double-unsigned">vertex( double<em>, double</em> ): unsigned</h4>
+<p>Sets the axial positions of the next point in the path.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>double*</td>
+<td></td>
+</tr>
+<tr>
+<td>y</td>
+<td>double*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="getpoint-size_t-point2d">getPoint( size_t ): Point2D</h4>
+<p>Get the point at the given index.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td>size_t</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="arrayvertexsource">ArrayVertexSource</h3>
+<p><strong>File:</strong> <em>irragg_array_path2d.h</em></p>
+<p><strong>Inherits:</strong> <em>VertexSourceBase</em></p>
+<p>A dynamically-sized storage class that can be rendered using either renderVectorPath() or a rendering engine.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(cstor)</td>
+<td></td>
+</tr>
+<tr>
+<td>(copy cstor)</td>
+<td></td>
+</tr>
+<tr>
+<td>(cstor) ( const array&lt; Point2D &gt;&amp; )</td>
+<td></td>
+</tr>
+<tr>
+<td>(cstor) ( const array&lt; vector2di &gt;&amp; )</td>
+<td></td>
+</tr>
+<tr>
+<td>(cstor) ( const size_t, const double<em>, const double</em> )</td>
+<td></td>
+</tr>
+<tr>
+<td>setFrom( const ArrayVertexSource&amp; )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>setFrom( const array&lt; Point2D &gt;&amp; )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>setFrom( const array&lt; vector2di &gt;&amp; )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>setFrom( const size_t, const double<em>, const double</em> )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>add( double, double )</td>
+<td>ArrayVertexSource&amp;</td>
+</tr>
+<tr>
+<td>getPointCount()</td>
+<td>size_t</td>
+</tr>
+<tr>
+<td>rewind( unsigned )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>vertex( double<em>, double</em> )</td>
+<td>unsigned</td>
+</tr>
+<tr>
+<td>getPoint( size_t )</td>
+<td>Point2D</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="cstor_1">(cstor)</h4>
+<p>Initializes the class.</p>
+<hr />
+<h4 id="copy-cstor">(copy cstor)</h4>
+<p>Initializes the class by copying data from another instance.</p>
+<hr />
+<h4 id="cstor-const-array-point2d">(cstor) ( const array&lt; Point2D &gt;&amp; )</h4>
+<p>Initializes the class using points data from the given array.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data_array</td>
+<td>const irr::core::array&lt; Point2D &gt;&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="cstor-const-array-vector2di">(cstor) ( const array&lt; vector2di &gt;&amp; )</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data_array</td>
+<td>const irr::core::array&lt; irr::core::vector2di &gt;&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="cstor-const-size_t-const-double-const-double">(cstor) ( const size_t, const double<em>, const double</em> )</h4>
+<p>Construct a vertex source from two arrays of size num_values.</p>
+<p>WARNING: Does NOT check for premature array end!</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>num_values</td>
+<td>const size_t</td>
+<td></td>
+</tr>
+<tr>
+<td>x_values</td>
+<td>const double*</td>
+<td></td>
+</tr>
+<tr>
+<td>y_values</td>
+<td>const double*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="setfrom-const-arrayvertexsource-void">setFrom( const ArrayVertexSource&amp; ): void</h4>
+<p>Sets this vertex source from the points in the given array.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>other</td>
+<td>const ArrayVertexSource&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="setfrom-const-array-point2d-void">setFrom( const array&lt; Point2D &gt;&amp; ): void</h4>
+<p>Initializes the class using points data from the given array.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data_array</td>
+<td>const irr::core::array&lt; Point2D &gt;&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="setfrom-const-array-vector2di-void">setFrom( const array&lt; vector2di &gt;&amp; ): void</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data_array</td>
+<td>const irr::core::array&lt; irr::core::vector2di &gt;&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="setfrom-const-size_t-const-double-const-double-void">setFrom( const size_t, const double<em>, const double</em> ): void</h4>
+<p>Construct a vertex source from two arrays of size num_values.</p>
+<p>WARNING: Does NOT check for premature array end!</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>num_values</td>
+<td>const size_t</td>
+<td></td>
+</tr>
+<tr>
+<td>x_values</td>
+<td>const double*</td>
+<td></td>
+</tr>
+<tr>
+<td>y_values</td>
+<td>const double*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="add-double-double-arrayvertexsource">add( double, double ): ArrayVertexSource&amp;</h4>
+<p>Add the point (x,y) to the array.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y</td>
+<td>double</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="add-const-point2d-arrayvertexsource">add( const Point2D&amp; ): ArrayVertexSource&amp;</h4>
+<p>Add the point (x,y) to the array.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>point</td>
+<td>const Point2D&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="pop-size_t-size_t">pop( size_t ): size_t</h4>
+<p>Remove last points in the array. Returns the number of remaining points.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>num_points_to_remove</td>
+<td>size_t</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="clear-void">clear(): void</h4>
+<p>Delete all points stored in this instance.</p>
+<hr />
+<h4 id="getpointcount-size_t_1">getPointCount(): size_t</h4>
+<p>Return the number of points stored in this instance.</p>
+<hr />
+<h4 id="prepare-size_t-void">prepare( size_t ): void</h4>
+<p>Performs space allocation in preparation for adding points.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>num_points_to_expect</td>
+<td>size_t</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="standard-vertex-source-rendering">Standard Vertex Source Rendering</h2>
+<hr />
+<h3 id="standalone-functions_1">Standalone functions</h3>
+<hr />
+<h4 id="rendervectorpath-vertexsource-iimage-scolor-epathstrokevalue-unsigned-unsigned-bool">renderVectorPath( &lt; VertexSource &gt;&amp;, IImage, SColor, EPathStroke::Value, unsigned, unsigned ): bool</h4>
+<p><strong>File:</strong> <em>irragg_standalone.h</em></p>
+<p>Render the path given by <em>vertex_source</em> onto <em>target</em>. There will automatically be a check for supported image type and rendering will be delegated to the function with the appropriate path stroke type. Returns true if successful.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vertex_source</td>
+<td>template &lt; VertexSource &gt;&amp;</td>
+<td></td>
+</tr>
+<tr>
+<td>target</td>
+<td>irr::video::IImage*</td>
+<td></td>
+</tr>
+<tr>
+<td>color</td>
+<td>irr::video::SColor</td>
+<td></td>
+</tr>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td>EPathStroke::NORMAL</td>
+</tr>
+<tr>
+<td>stroke_width</td>
+<td>unsigned</td>
+<td>1</td>
+</tr>
+<tr>
+<td>resolution</td>
+<td>unsigned</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="rendertriangle-double-double-double-double-double-double-scolor-epathstrokevalue-u32-u32-bool">renderTriangle( double, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool</h4>
+<p><strong>File:</strong> <em>irragg_shapes.h</em></p>
+<p>Render a triangle defined by the points <em>(x1, y1), (x2, y2), (x3, y3)</em> with the given color <em>color</em> onto <em>target</em>. Returns true if successful.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>target</td>
+<td>irr::video::IImage*</td>
+<td></td>
+</tr>
+<tr>
+<td>x1</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y1</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>x2</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y2</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>x3</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y3</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>color</td>
+<td>irr::video::SColor</td>
+<td></td>
+</tr>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td>EPathStroke::NORMAL</td>
+</tr>
+<tr>
+<td>stroke_width</td>
+<td>irr::u32</td>
+<td></td>
+</tr>
+<tr>
+<td>resolution</td>
+<td>irr::u3</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="renderellipse-iimage-double-double-double-double-scolor-epathstrokevalue-u32-u32-bool">renderEllipse( IImage, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool</h4>
+<p><strong>File:</strong> <em>irragg_shapes.h</em></p>
+<p>Render an ellipse centered at the point <em>(x,y)</em> with the given vertical radius of <em>altitude</em>, horizontal radius of <em>radius</em>, and color <em>color</em> onto <em>target</em>. Returns true if successful.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>target</td>
+<td>irr::video::IImage*</td>
+<td></td>
+</tr>
+<tr>
+<td>x</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>altitude</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>color</td>
+<td>irr::video::SColor</td>
+<td></td>
+</tr>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td>EPathStroke::NORMAL</td>
+</tr>
+<tr>
+<td>stroke_width</td>
+<td>irr::u32</td>
+<td></td>
+</tr>
+<tr>
+<td>resolution</td>
+<td>irr::u32</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="renderroundedrectangle-iimage-double-double-double-double-double-scolor-epathstrokevalue-u32-u32-bool">renderRoundedRectangle( IImage*, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool</h4>
+<p><strong>File:</strong> <em>irragg_shapes.h</em></p>
+<p>Render a rectangle - defined by the given x,y coordinates - with rounded corners of the given radius and color onto <em>target</em>. Returns true if successful.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>target</td>
+<td>irr::video::IImage*</td>
+<td></td>
+</tr>
+<tr>
+<td>x1</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y1</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>x2</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y2</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>color</td>
+<td>irr::video::SColor</td>
+<td></td>
+</tr>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td>EPathStroke::NORMAL</td>
+</tr>
+<tr>
+<td>stroke_width</td>
+<td>irr::u32</td>
+<td></td>
+</tr>
+<tr>
+<td>resolution</td>
+<td>irr::u32</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="renderroundedrectangle-iimage-double-double-double-double-double-double-double-double-scolor-epathstrokevalue-u32-u32-bool">renderRoundedRectangle( IImage*, double, double, double, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool</h4>
+<p><strong>File:</strong> <em>irragg_shapes.h</em></p>
+<p>Render a rectangle - defined by the given x,y coordinates - with rounded corners of the given radius and color onto <em>target</em>. Returns true if successful.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>target</td>
+<td>irr::video::IImage*</td>
+<td></td>
+</tr>
+<tr>
+<td>x1</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y1</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>x2</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y2</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_x_bottom</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_y_bottom</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_x_top</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_y_top</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>color</td>
+<td>irr::video::SColor</td>
+<td></td>
+</tr>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td>EPathStroke::NORMAL</td>
+</tr>
+<tr>
+<td>stroke_width</td>
+<td>irr::u32</td>
+<td></td>
+</tr>
+<tr>
+<td>resolution</td>
+<td>irr::u32</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="renderroundedrectangle-iimage-double-double-double-double-double-double-double-double-double-double-double-double-scolor-epathstrokevalue-u32-u32-bool">renderRoundedRectangle( IImage*, double, double, double, double, double, double, double, double, double, double, double, double, SColor, EPathStroke::Value, u32, u32 ): bool</h4>
+<p><strong>File:</strong> <em>irragg_shapes.h</em></p>
+<p>Render a rectangle - defined by the given x,y coordinates - with rounded corners of the given radius and color onto <em>target</em>. Returns true if successful.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>target</td>
+<td>irr::video::IImage*</td>
+<td></td>
+</tr>
+<tr>
+<td>x1</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y1</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>x2</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y2</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_upper_left_x</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_upper_left_y</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_upper_right_x</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_upper_right_y</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_lower_left_x</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_lower_left_y</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_lower_right_x</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>radius_lower_right_y</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>color</td>
+<td>irr::video::SColor</td>
+<td></td>
+</tr>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td>EPathStroke::NORMAL</td>
+</tr>
+<tr>
+<td>stroke_width</td>
+<td>irr::u32</td>
+<td></td>
+</tr>
+<tr>
+<td>resolution</td>
+<td>irr::u32</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="vertexsourcebase">VertexSourceBase</h3>
+<p><strong>File:</strong> <em>irragg_vertexsources.h</em></p>
+<p>Meant to be inherited, it contains two primitives representing a polygon's origin value (absolute positioning) and a "step" value, used for tracking incrementing.</p>
+<p>WARNING: It does not contain any methods necessary for rendering via renderVectorPath. Those methods must be implemented by the class inheriting this one. See <a href="../usage/#creating-a-standard-vertex-source">Creating a Standard Vertex Source</a> for more details.</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_step</td>
+<td>unsigned</td>
+<td>The current increment along the vector path.</td>
+</tr>
+<tr>
+<td>_origin_x</td>
+<td>double</td>
+<td>The X-axis value to which all points along the path are relative.</td>
+</tr>
+<tr>
+<td>_origin_y</td>
+<td>double</td>
+<td>The Y-axis value to which all points along the path are relative.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(cstor) ()</td>
+<td></td>
+</tr>
+<tr>
+<td>(cstor) ( double, double )</td>
+<td></td>
+</tr>
+<tr>
+<td>setOrigin( double, double )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>getOrigin()</td>
+<td>Point2D</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="cstor_2">(cstor)</h4>
+<p>Initializes the class.</p>
+<hr />
+<h4 id="cstor-double-double">(cstor) ( double, double )</h4>
+<p>Initializes the class and sets the coordinates of the origin.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y</td>
+<td>double</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="setorigin-double-double-void">setOrigin( double, double ): void</h4>
+<p>Sets the absolute central position of the polygon (for shapes) or the start of a path.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>y</td>
+<td>double</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="getorigin-point2d">getOrigin(): Point2D</h4>
+<p>Gets the absolute central position of the polygon (for shapes) or the start of a path.</p>
+<hr />
+<h3 id="vertexsourcepump-class-vertexsource">VertexSourcePump &lt; class VertexSource &gt;</h3>
+<p><strong>File:</strong> <em>irragg_vertexsources.h</em></p>
+<p><strong>Inherits:</strong> <em>VertexSourceBase</em></p>
+<p>This class acts as a Vertex Source that can be passed directly to certain rendering functions such as <em>renderVertexSource&lt; VertexSource &gt;</em>. Meant for creating a single polygon, this class is a vertex source template for wrapping a class having the following methods:</p>
+<ul>
+<li><em>getPoint</em>( unsigned ): Point2D</li>
+<li><em>getPointCount</em>(): unsigned</li>
+</ul>
+<p>The method <em>getPoint</em> will be passed <em>step</em> - an unsigned int representing the increment along the path/curve/polygon that is currently being requested. The method must return an instance of Point2D to represent that point.</p>
+<p>The method <em>getPointCount</em> should return the number of points along the path/curve/polygon that the object is able to return. This value can be varied but should not change when the polygon is being rendered.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(cstor) ( template &lt; VertexSource &gt; )</td>
+<td></td>
+</tr>
+<tr>
+<td>rewind( unsigned )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>vertex( double<em>, double</em> )</td>
+<td>void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="cstor-vertexsource">(cstor) ( &lt; VertexSource &gt; )</h4>
+<p>Initializes the class and sets the vertex source.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source</td>
+<td>template &lt; VertexSource &gt;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="rewind-unsigned-void_1">rewind( unsigned ): void</h4>
+<p>Resets the iterator incrementing along the path.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>unsigned</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="vertex-double-double-unsigned_1">vertex( double<em>, double</em> ): unsigned</h4>
+<p>Sets the axial positions of the next point in the path.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>double*</td>
+<td></td>
+</tr>
+<tr>
+<td>y</td>
+<td>double*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="vertexsourcefunction">VertexSourceFunction</h3>
+<p><strong>File:</strong> <em>irragg_vertexsources.h</em></p>
+<p>A function pointer that accepts unsigned and returns Point2D.</p>
+<pre><code class="C++">typedef Point2D (*VertexSourceFunction)(unsigned)
+</code></pre>
+
+<hr />
+<h3 id="vertexsourcefuncpump">VertexSourceFuncPump</h3>
+<p><strong>File:</strong> <em>irragg_vertexsources.h</em></p>
+<p>This class acts as a Vertex Source that can be passed directly to certain rendering functions such as <em>renderVertexSource&lt; VertexSource &gt;</em>. This class acts as a wrapper for functions that define a vector path so that they do not need to be implemented as a class.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(cstor) ( unsigned, VertexSourceFunction )</td>
+<td></td>
+</tr>
+<tr>
+<td>rewind( unsigned )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>vertex( double<em>, double</em> )</td>
+<td>unsigned</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="cstor-unsigned-vertexsourcefunction">(cstor) ( unsigned,  VertexSourceFunction )</h4>
+<p>Initializes the class and sets the point count and the function to be used.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>num_points</td>
+<td>unsigned</td>
+<td></td>
+</tr>
+<tr>
+<td>function</td>
+<td>VertexSourceFunction</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="rewind-unsigned-void_2">rewind( unsigned ): void</h4>
+<p>Resets the iterator incrementing along the path.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>unsigned</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="vertex-double-double-unsigned_2">vertex( double<em>, double</em> ): unsigned</h4>
+<p>Sets the axial positions of the next point in the path.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>double*</td>
+<td></td>
+</tr>
+<tr>
+<td>y</td>
+<td>double*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="trianglepath">TrianglePath</h3>
+<p><strong>File:</strong> <em>irragg_shapes.h</em></p>
+<p><strong>Inherits:</strong> <em>VertexSourceBase</em></p>
+<p>This class acts as a Vertex Source that can be passed directly to <em>renderVertexSource&lt; VertexSource &gt;</em> to render a triangle defined by the points <em>point_a</em>, <em>point_b</em>, and <em>point_c</em>. Its origin can be set via the members it inherits from <em>VertexSourceBase</em>: <em>setOrigin()</em>.</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>point_a</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td></td>
+</tr>
+<tr>
+<td>point_b</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td></td>
+</tr>
+<tr>
+<td>point_c</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(cstor) ()</td>
+<td></td>
+</tr>
+<tr>
+<td>(cstor) ( vector2d&lt; double &gt;, vector2d&lt; double &gt;, vector2d&lt; double &gt; )</td>
+<td></td>
+</tr>
+<tr>
+<td>rewind( unsigned )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>vertex( double<em>, double</em> )</td>
+<td>unsigned</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="cstor_3">(cstor) ()</h4>
+<hr />
+<h4 id="cstor-vector2d-double-vector2d-double-vector2d-double">(cstor) ( vector2d&lt; double &gt;, vector2d&lt; double &gt;, vector2d&lt; double &gt; )</h4>
+<p>Initializes the class and sets the defining points of the triangle.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td></td>
+</tr>
+<tr>
+<td>b</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td></td>
+</tr>
+<tr>
+<td>c</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="rewind-unsigned-void_3">rewind( unsigned ): void</h4>
+<p>Resets the iterator incrementing along the path.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>unsigned</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="vertex-double-double-unsigned_3">vertex( double<em>, double</em> ): unsigned</h4>
+<p>Sets the axial positions of the next point in the path.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>double*</td>
+<td></td>
+</tr>
+<tr>
+<td>y</td>
+<td>double*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="engine-based-rendering">Engine-Based Rendering</h2>
+<hr />
+<h3 id="class-pointsource">class PointSource</h3>
+<p><strong>File:</strong> <em>irragg_point.h</em></p>
+<p><strong>Namespace:</strong> irr::vecg</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>virtual getPointCount</td>
+<td>size_t</td>
+</tr>
+<tr>
+<td>virtual getPoint( size_t )</td>
+<td>Point2D</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="virtual-getpointcount-size_t">virtual getPointCount(): size_t</h4>
+<p>Returns the number of points in the path.</p>
+<hr />
+<h4 id="virtual-getpoint-size_t-point2d">virtual getPoint( size_t ): Point2D</h4>
+<p>Returns the point at the given step value.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>step</td>
+<td>size_t</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="class-rendererargb32">class RendererARGB32</h3>
+<p><strong>File:</strong> <em>irragg_engine.h</em></p>
+<p><strong>Namespace:</strong> irr::vecg::engine</p>
+<p>This class is a self-contained structure that provides a convenient drawing interface for rendering vector graphics onto an IImage. It can render paths designated by descendents of PointSource or ArrayVertexSource. All of the paths drawn are affected by the set drawing color and drawing matrix.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[cstor] ()</td>
+<td></td>
+</tr>
+<tr>
+<td>[cstor] ( IImage*, bool )</td>
+<td></td>
+</tr>
+<tr>
+<td>[dstor] ()</td>
+<td></td>
+</tr>
+<tr>
+<td>setRenderTarget( IImage*, bool )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>setDrawingColor( SColor )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>setDrawingColor( agg::rgba )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>setStrokeWidth( double )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>setDrawingMatrixFull( CMatrix4&lt; double &gt; )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>setDrawingMatrixFull( agg::trans_affine )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>setDrawingMatrix( double, double, double, double )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>setDrawingMatrixTranslation( double, double )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>setDrawingMatrixFull( double, double, double, double, double, double )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>bufferPoints( PointSource* )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>bufferPoints( ArrayVertexSource&amp; )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>draw( EPathStroke::Value )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawNormal()</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawStroked()</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawBSpline()</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawPointSource( PointSource*, EPathStroke::Value )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawArrayVertexSource( ArrayVertexSource&amp;, EPathStroke::Value )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawTriangle( vector2d&lt; double &gt;, vector2d&lt; double &gt;, vector2d&lt; double &gt;, EPathStroke::Value )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawRectangle( vector2d&lt; double &gt;, vector2d&lt; double &gt;, EPathStroke::Value )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawCircle( double, vector2d&lt; double &gt;, EPathStroke::Value )</td>
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="cstor_4">(cstor) ()</h4>
+<hr />
+<h4 id="cstor-iimage-bool">(cstor) ( IImage*, bool )</h4>
+<p>Initializes the class with the given image as a render target and sets whether to drop it upon class destruction. It rejects target images of the wrong color format.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>target</td>
+<td>IImage*</td>
+<td></td>
+</tr>
+<tr>
+<td>drop_with_destruct</td>
+<td>bool</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="dstor">(dstor) ()</h4>
+<p>Destructor, which also destroys the target if set to do so.</p>
+<hr />
+<h4 id="setrendertarget-iimage-bool-bool">setRenderTarget( IImage*, bool ): bool</h4>
+<p>Sets the render target (if it is of the correct color format) and whether to drop it on class destruction.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>target</td>
+<td>IImage*</td>
+<td></td>
+</tr>
+<tr>
+<td>drop_with_destruct</td>
+<td>bool</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="setdrawingcolor-scolor-void">setDrawingColor( SColor ): void</h4>
+<p>Sets the color for rendering paths and shapes.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>irr::video::SColor</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="setdrawingcolor-rgba-void">setDrawingColor( rgba ): void</h4>
+<p>Sets the color for rendering paths and shapes.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>agg::rgba</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="setstrokewidth-double-void">setStrokeWidth( double ): void</h4>
+<p>Sets the width of rendered paths.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stroke_width</td>
+<td>double</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="setdrawingmatrixfull-drawing_matrix-irrcorecmatrix4-double-void">setDrawingMatrixFull( drawing_matrix: irr::core::CMatrix4&lt; double &gt; ): void</h4>
+<p>Sets the matrix used for rendering shapes and paths.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+<hr />
+<h4 id="setdrawingmatrixfull-drawing_matrix-aggtrans_affine-void">setDrawingMatrixFull( drawing_matrix: agg::trans_affine ): void</h4>
+<p>Sets the matrix used for rendering shapes and paths.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+<hr />
+<h4 id="setdrawingmatrix-s00-double-s10-double-s01-double-s11-double-void">setDrawingMatrix( s00: double, s10: double, s01: double, s11: double ): void</h4>
+<p>Sets the rotation/scale/shear part of the matrix used for rendering shapes and paths.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+<hr />
+<h4 id="setdrawingmatrixtranslation-x-double-y-double-void">setDrawingMatrixTranslation( x: double, y: double ): void</h4>
+<p>Sets the translation part of the matrix used for rendering shapes and paths.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+<hr />
+<h4 id="setdrawingmatrixfull-s00-double-s10-double-s01-double-s11-double-tx-double-ty-double-void">setDrawingMatrixFull( s00: double, s10: double, s01: double, s11: double, tx: double, ty: double ): void</h4>
+<p>Sets the matrix used for rendering shapes and paths.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>s00</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>s10</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>s01</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>s11</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>tx</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>ty</td>
+<td>double</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="bufferpoints-pointsource-bool">bufferPoints( PointSource* ): bool</h4>
+<p>Copies and prepares-for-rendering points taken from the given source.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source</td>
+<td>PointSource*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="bufferpoints-arrayvertexsource-bool">bufferPoints( ArrayVertexSource&amp; ): bool</h4>
+<p>Copies and prepares-for-rendering points taken from the given source.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source</td>
+<td>ArrayVertexSource&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="draw-epathstrokevalue-bool">draw( EPathStroke::Value ): bool</h4>
+<p>Draws the path formed by the buffered points onto the target image.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="drawnormal-bool">drawNormal(): bool</h4>
+<p>Uses standard-fill-style to draw the path formed by the buffered points.</p>
+<hr />
+<h4 id="drawstroked-bool">drawStroked(): bool</h4>
+<p>Draws as line segments the path formed by the buffered points.</p>
+<hr />
+<h4 id="drawbspline-bool">drawBSpline(): bool</h4>
+<p>Draws as a bezier curve the path formed by the buffered points.</p>
+<hr />
+<h4 id="drawpointsource-pointsource-epathstrokevalue-bool">drawPointSource( PointSource*, EPathStroke::Value ): bool</h4>
+<p>Draws the points from the given point source onto the target image.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source</td>
+<td>PointSource*</td>
+<td></td>
+</tr>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="drawarrayvertexsource-arrayvertexsource-epathstrokevalue-bool">drawArrayVertexSource( ArrayVertexSource&amp;, EPathStroke::Value ): bool</h4>
+<p>Draws the points from the given array vertex source onto the target image.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source</td>
+<td>ArrayVertexSource&amp;</td>
+<td></td>
+</tr>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="drawtriangle-vector2d-double-vector2d-double-vector2d-double-epathstrokevalue-bool">drawTriangle( vector2d&lt; double &gt;, vector2d&lt; double &gt;, vector2d&lt; double &gt;, EPathStroke::Value ): bool</h4>
+<p>Draws a triangle onto the target image.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>point_a</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td></td>
+</tr>
+<tr>
+<td>point_b</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td></td>
+</tr>
+<tr>
+<td>point_c</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td></td>
+</tr>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td>EPathStroke::NORMAL</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="drawrectangle-vector2d-double-vector2d-double-epathstrokevalue-bool">drawRectangle( vector2d&lt; double &gt;, vector2d&lt; double &gt;, EPathStroke::Value ): bool</h4>
+<p>Draws a rectangle onto the target image.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>upper_left_corner</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td></td>
+</tr>
+<tr>
+<td>lower_right_corner</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td></td>
+</tr>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td>EPathStroke::NORMAL</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="drawcircle-double-vector2d-double-epathstrokevalue-bool">drawCircle( double, vector2d&lt; double &gt;, EPathStroke::Value ): bool</h4>
+<p>Draws a circle of the given radius and center onto the target image.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>radius</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>center</td>
+<td>irr::core::vector2d&lt; double &gt;</td>
+<td>irr::core::vector2d&lt; double &gt;(0)</td>
+</tr>
+<tr>
+<td>path_stroke_type</td>
+<td>EPathStroke::Value</td>
+<td>EPathStroke::NORMAL</td>
+</tr>
+</tbody>
+</table></div>
+        
+    </div>
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+    </footer>
+
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+    var base_url = '..';
+    </script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+    <script src="../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>
