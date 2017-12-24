@@ -618,7 +618,7 @@ The method *getPointCount* should return the number of points along the path/cur
 
 Method | Return
 -------|-------
-(cstor) ( template < VertexSource > )
+(cstor) ( template < VertexSource > ) |
 rewind( unsigned ): void
 vertex( double*, double* ): void
 
