@@ -249,7 +249,7 @@ A dynamically-sized storage class that can be rendered using either renderVector
 Method | Return
 -------|-------
 (cstor) |
-(copy cstor)
+(copy cstor) |
 (cstor) ( const array< Point2D >& ) |
 (cstor) ( const array< vector2di >& ) |
 (cstor) ( const size_t, const double*, const double* ) |
