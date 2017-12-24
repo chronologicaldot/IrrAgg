@@ -174,7 +174,7 @@ _y | double[] | Contains the Y-axis values of the path points
 
 Method | Return
 -------|-------
-(cstor)
+(cstor) |
 set( size_t, double, double ) | StaticSizeVertexSource&
 getPointCount() | size_t
 rewind( unsigned ) | void
@@ -196,8 +196,8 @@ Set point coordinates of the point at the given index.
 Parameter | Type | Default
 ----------|------|--------
 index | size_t
-x : double
-y : double
+x | double
+y | double
 
 ---
 
@@ -248,11 +248,15 @@ A dynamically-sized storage class that can be rendered using either renderVector
 
 Method | Return
 -------|-------
-(cstor)
-(cstor) ( const array< Point2D >& )
-
-setFrom( const ArrayVertexSource&  other ) : void
-
+(cstor) |
+(copy cstor)
+(cstor) ( const array< Point2D >& ) |
+(cstor) ( const array< vector2di >& ) |
+(cstor) ( const size_t, const double*, const double* ) |
+setFrom( const ArrayVertexSource& ) | void
+setFrom( const array< Point2D >& ) | void
+setFrom( const array< vector2di >& ) | void
+setFrom( const size_t, const double*, const double* ) | void
 add( double, double ) | ArrayVertexSource&
 getPointCount() | size_t
 rewind( unsigned ) | void
@@ -556,8 +560,8 @@ _origin_y | double | The Y-axis value to which all points along the path are rel
 
 Method | Return
 -------|-------
-(cstor) ()
-(cstor) ( double, double )
+(cstor) () |
+(cstor) ( double, double ) |
 setOrigin( double, double ) | void
 getOrigin() | Point2D
 
@@ -671,7 +675,7 @@ This class acts as a Vertex Source that can be passed directly to certain render
 
 Method | Return
 -------|-------
-(cstor) ( unsigned, VertexSourceFunction )
+(cstor) ( unsigned, VertexSourceFunction ) |
 rewind( unsigned ) | void
 vertex( double*, double* ) | unsigned
 
@@ -726,8 +730,8 @@ point_c | irr::core::vector2d< double >
 
 Method | Return
 -------|-------
-(cstor) ()
-(cstor) ( vector2d< double >, vector2d< double >, vector2d< double > )
+(cstor) () |
+(cstor) ( vector2d< double >, vector2d< double >, vector2d< double > ) |
 rewind( unsigned ) | void
 vertex( double*, double* ) | unsigned
 
@@ -813,9 +817,9 @@ This class is a self-contained structure that provides a convenient drawing inte
 
 Method | Return
 -------|-------
-[cstor] ()
-[cstor] ( IImage*, bool )
-[dstor] ()
+[cstor] () |
+[cstor] ( IImage*, bool ) |
+[dstor] () |
 setRenderTarget( IImage*, bool ) | bool
 setDrawingColor( SColor ) | void
 setDrawingColor( agg::rgba ) | void
