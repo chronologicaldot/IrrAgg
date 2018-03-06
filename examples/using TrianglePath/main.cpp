@@ -13,7 +13,7 @@ int main()
 	my_vs.point_c.set(30, -10);
 
 	// create Irrlicht device
-	irr::IrrlichtDevice* device = irr::createDevice(irr::video::EDT_BURNINGS, irr::core::dimension2du(0));
+	irr::IrrlichtDevice* device = irr::createDevice(irr::video::EDT_BURNINGS, irr::core::dimension2du(500,500));
 
 	// create image
 	irr::core::dimension2du  image_size(500,500);
