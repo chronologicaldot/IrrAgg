@@ -1,3 +1,18 @@
+2019/1/14
+v 2
+
+- Nearly complete rewrite of the entire thing. (Now focusing on "Painter" class.) Preserved:
+-- irragg_color.h
+-- irragg_matrix.h
+-- irragg_format_support.h
+
+
+================
+2018/10/8
+v 0.1
+
+- FIXED BUG in irragg_vertexsources.h that incorrectly used vertex_source.getVertex() instead of vertex_source.getPoint().
+
 
 ================
 2017/12/22

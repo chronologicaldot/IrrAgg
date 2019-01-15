@@ -1,4 +1,4 @@
-// Copyright 2017 Nicolaus Anderson
+// Copyright 2019 Nicolaus Anderson
 // see license.txt for details
 
 #include "../include/irragg_matrix.h"

@@ -1,24 +1,16 @@
-// Copyright 2017 Nicolaus Anderson
+// Copyright 2019 Nicolaus Anderson
 // See license.txt for details.
-/*
-	Normally, you need merely include files like irragg_standalone.h or irragg_ivs.h
-
-	Include this file in your project if you wish to include everything
-	that is part of IrrAgg.
-*/
 
 #ifndef __IRR_AGG_COLOR_H__
 #define __IRR_AGG_COLOR_H__
 
-//*** Anti-Grain Geometry ***
+// Anti-Grain Geometry ------
 #include <agg_color_rgba.h>
 //#include <agg_color_gray.h> // Eventually
 
-//*** Irrlicht ***
+// Irrlicht -----------------
 #include <SColor.h>
 
-//*** IrrAgg ***
-#include "irragg_config.h"
 
 namespace irr {
 namespace core {
@@ -104,9 +96,8 @@ namespace core {
 	}
 
 
-} // end namespace vecg
+} // end namespace core
 } // end namespace irr
-
 
 
 #endif // __IRR_AGG_COLOR_H__

@@ -1,5 +1,5 @@
-// Copyright 2017 Nicolaus Anderson
-// see license.txt for details
+// Copyright 2019 Nicolaus Anderson
+// See license.txt for details.
 /*
 	Functions for converting to and from CMatrix4 from Irrlicht and trans_affine from AGG.
 */
