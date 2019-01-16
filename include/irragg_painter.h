@@ -64,13 +64,13 @@ struct Painter
 	void  setBSplineResolution( u32 );
 
 	//! Draw a simple path
-	bool  drawNormal( IShape& );
+	bool  drawNormal( const IShape& );
 
 	//! Draw a stroked path
-	bool  drawStroked( IShape& );
+	bool  drawStroked( const IShape& );
 
 	//! Draw a B-Spline path
-	bool  drawBSpline( IShape& );
+	bool  drawBSpline( const IShape& );
 
 	// AGG -----------------------------
 	void rewind(unsigned);
@@ -79,6 +79,15 @@ struct Painter
 protected:
 
 	void  prepareCanvas();
+
+	// Types ---------------------
+	// The choice of ::agg::pixfmt_bgra32 has to do with endianness of the machine.
+#ifdef IRR_AGG_COMPILE_AS_BIG_ENDIAN
+	typedef ::agg::pixfmt_argb32  PixelFormat;
+#else
+	typedef ::agg::pixfmt_bgra32  PixelFormat;
+#endif
+	typedef ::agg::conv_bspline< Painter >  bspline_type;
 
 	// Members -------------------
 
@@ -89,19 +98,12 @@ protected:
 	double				StrokeWidth;
 	double				BSplineStep;
 	size_t				Step;
-	IShape*				Shape;
+	const IShape*		Shape;
 
 	// Anti-Grain rendering mechanisms -------------------
 	::agg::rendering_buffer  Buffer;
-	// Note: The choice of ::agg::pixfmt_bgra32 may have to do with endianness of the machine.
-#ifdef IRR_AGG_COMPILE_AS_BIG_ENDIAN
-	::agg::pixfmt_argb32  Format;
-	::agg::renderer_base< ::agg::pixfmt_argb32 >  Base;
-#else
-	::agg::pixfmt_bgra32  Format;
-	::agg::renderer_base< ::agg::pixfmt_bgra32 >  Base;
-#endif
-	typedef ::agg::conv_bspline< Painter >  bspline_type;
+	PixelFormat  Format;
+	::agg::renderer_base< PixelFormat > Base;
 };
 
 } // end namespace vecg

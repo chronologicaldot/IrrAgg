@@ -5,9 +5,9 @@ Anti-Grain Geometry (AGG) is a collection of C++ utilities that work together to
 
 Irrlicht is an easy-to-use 2D and 3D rendering engine, created with C++ and aimed at game creation.
 
-IrrAgg is a collection of utilities that enable the easy application of AGG functionality to Irrlicht image surfaces with little or no knowledge of the workings of AGG on the part of the user.
+IrrAgg centers on its Painter class, which is used for rendering to Irrlicht IImage surfaces. The Painter class encapsulates AGG rendering tools and is used for rendering objects that inherit IShape and implement its virtual methods.
 
-Most functionality is applied to the IImage implementation (CImage) of Irrlicht so that they can be rendered in Irrlicht.
+In addition, IrrAgg contains conversion methods for colors and matrices.
 
 - [API](api)
 - [Usage Guide](usage)
@@ -30,7 +30,6 @@ Both Anti-Grain Geometry (completed) and Irrlicht (development) are relatively s
     src/          # Source code directory.
     docs/         # Documentation directory.
     debug/        # Debugging files directory.
-    examples/     # Usage examples directory.
 
 ## Further Information
 

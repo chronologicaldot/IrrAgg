@@ -9,7 +9,7 @@ using irr::vecg::Triangle;
 using irr::vecg::Rectangle;
 using irr::vecg::GhostArray;
 
-/*
+
 static const point_t  premadePoints[] = {
 	{ 50, 40 },
 	{ 100, 40 },
@@ -17,7 +17,7 @@ static const point_t  premadePoints[] = {
 	{ 120, 170 },
 	{ 75, 200 }
 };
-*/
+
 
 int main()
 {
@@ -59,9 +59,10 @@ int main()
 	painter.setStrokeWidth(2);
 	painter.setColor( irr::video::SColor(0xff0000ff) );
 
-	//GhostArray  ghostArray(premadePoints, 5); // Cannot initialize
-	GhostArray  ghostArray(points, size);
-	if ( ! painter.drawBSpline( ghostArray ) ) {
+	//GhostArray  ghostArray(premadePoints, 5);
+	//GhostArray  ghostArray(points, size);
+	//if ( ! painter.drawBSpline( ghostArray ) ) {
+	if ( ! painter.drawBSpline( GhostArray{premadePoints, 5} ) ) {
 		image->drop();
 		device->drop();
 		return 1;

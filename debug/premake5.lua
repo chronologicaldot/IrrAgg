@@ -36,6 +36,7 @@ workspace "test irragg"
 project "test irragg"
 	buildoptions {
 		"-Wall"
+		, "-std=c++11"
 	}
 	includedirs {
 		v_aggdir ,

@@ -1,10 +1,11 @@
-2019/1/14
+2019/1/14-15
 v 2
 
 - Nearly complete rewrite of the entire thing. (Now focusing on "Painter" class.) Preserved:
 -- irragg_color.h
 -- irragg_matrix.h
 -- irragg_format_support.h
+- Updated docs.
 
 
 ================

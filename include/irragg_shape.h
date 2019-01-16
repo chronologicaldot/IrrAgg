@@ -14,12 +14,11 @@ struct IShape
 	virtual ~IShape() {}
 
 	//! Return how the polygon must be drawn (indices start at zero)
-	virtual PathMotion  getPathMotion(size_t) = 0;
+	virtual PathMotion  getPathMotion(size_t) const = 0;
 
 	//! Return the number of points in the polygon
 	virtual size_t  getPathStepCount() const = 0;
 
-	// Implicit
 	//operator IShape& () {
 	//	return (IShape&)*this;
 	//}

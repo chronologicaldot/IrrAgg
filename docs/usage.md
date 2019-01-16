@@ -10,28 +10,22 @@ table {
 
 Much of IrrAgg revolves around rendering vector paths onto an IImage, an abstract object created using Irrlicht via IVideoDriver::createImage. Please see [Creating and Using IImage](#creating-and-using-iimage) for more info.
 
-Rendering to an IImage is can be done in one of two ways:
+Rendering to an IImage is done by means of a Painter object. A Painter object can either be initialized with an image or will create one using a given video driver and size. The Painter object contains basic settings, not all of which apply.
 
-1. via the function irr::vecg::renderVectorPath.
-2. via the class irr::vecg::engine::RendererARGB32.
+Setting Method | Application
+---------------|------------
+setColor | Sets a color for all rendered path types
+setStrokeWidth | Sets the thickness of the path for stroked or bspline paths
+setBSplineResolution | Sets the density of increments in a bspline path
 
-Both methods can be used on the same IImage instance.
+The Painter object can take any object inheriting from IShape and implementing its virtual methods. See [Inheriting IShape](#inheriting-ishape) for more details.
 
-A number of other convenience functions and structures are available to aid in rendering with either approach. Please see [Useful Objects and Functions](#useful-objects-and-functions).
-
-Most of your rendering needs can be done using pre-existing components, such as ArrayVertexSource. However, you may wish to create specialized classes for handling vertices. See [AGG Vertex Sources](#agg-vertex-sources) for more details.
-
-**WARNING:** Using templates can hide bugs that only appear as segmentation faults. AGG uses templates for speed, but IrrAgg provides its rendering engine as an alternative to direct rendering (using renderVectorPath) to help prevent these hidden bugs.
-
-## Drawing Modes
-
-Anti-Grain Geometry provides various modes of drawing, most of which are not wrapped by this library.
-
-There are three modes of drawing provided by IrrAgg: *NORMAL*, *BRUSH*, and *BSPLINE*. These are given as values of the enum *EPathStroke* (file: irragg_path_stroke.h) and can be passed to a number of rendering functions to indicate how the path should be drawn.
-
-- NORMAL: Renders a solid, closed polygon.
-- BRUSH: Renders the vector path with lines. Functions rendering this way will also accept a *stroke width* value to determine how thick the lines will be.
-- BSPLINE: Renders a smooth curve. Functions rendering this way will also accept a *stroke width* value and a *resolution* value, which indicates how many segments should be used between primary points in order to smooth out the curve.
+A basic example:
+```C++
+irr::vecg::Triangle  triangle( point_t(10,10), point_t(400,30), point_t(390,450) );
+irr::vecg::Painter  painter( irrlichtDevice->getVideoDriver(), irr::core::dimension2du(512,512) );
+painter.drawNormal(triangle);
+```
 
 ## Creating and Using IImage
 
@@ -74,116 +68,21 @@ videoDriver->writeImageToFile(image, irr::io::path("desired/file/path.png");
 
 ---
 
-## Useful Objects and Functions
+## Inheriting IShape
 
-All functions and objects belonging to IrrAgg are in the sub namespace "vecg" within the namespace "irr" with the exception of the matrix conversion functions.
+The basic purpose of IShape is to provide points to the Painter. IShape has two methods:
 
-### Standard Rendering Functions
+- getPathMotion( size_t ): PathMotion
+- getPathStepCount(): size_t
 
-#### Function List
+*getPathMotion()* returns the actual points belonging to the path as well as a flag indicating what the Painter should do in regard to that point:
 
-- renderVectorPath() < class VertexSource >
-- renderTriangle()
-- renderEllipse()
-- renderRoundedRectangle()
+- LINE_TO - Draw a line from the previous location to this new location.
+- MOVE_TO - Set the start of a new polygon.
+- END_POLY - Reset starting drawing location to the origin.
+- STOP - End painting.
 
-### Standard Rendering Objects
+*getPathStepCount()* should return the number of steps along the path, not necessary the number of points. For closed paths, the return of this function should exceed the number of points in the path by one and that last point should be the same as the first.
 
-Most IrrAgg objects are intended to fulfill the role of VertexSource, which is a generic template name referring to any class with the following methods:
-- void rewind( unsigned )
-- unsigned vertex( double* x, double* y )
+The Painter will automatically end paths once its own progress along the path exceeds *getPathStepCount()*.
 
-See [Creating a Standard Vertex Source](#creating-a-standard-vertex-source) for more information.
-
-#### Object List
-
-- VertexSourceBase
-- VertexSourcePump < class VertexSource >
-- VertexSourceFuncPump
-- TrianglePath
-
-### Engine-Based Rendering
-
-These utilities are form a simple, convenient package for rendering vector graphics.
-
-#### Object List
-
-- PointSource
-- RendererARGB32
-
----
-
-## AGG Vertex Sources
-
-Nearly if not all of the functionality of AGG is based on templates. The basic rendering functions of IrrAgg - such as renderVectorPath - limit the need for templates but are templated in order to mimic the functionality of AGG. On the other hand, structures like RendererARGB32 are not templated and don't require any templates to perform rendering.
-
-For rendering vectors, AGG requires a path of some sort. This path can be created from a standard vertex source (used with renderVectorPath) or by a class inheriting PointSource (and rendered with RendererARGB32).
-
-### Creating a Standard Vertex Source
-
-In this method, the path of vertices for AGG is defined by user-created class with two special methods that are called within AGG. Such classes are called "vertex sources" because they control the vertices that define the path rendered by AGG. IrrAGG has a number of rendering functions that accept these "vertex sources.
-
-The vertex source class must have the following two methods:
-
-- *unsigned vertex( double* x, double* y )*
-- *void rewind( unsigned )*
-
-The vertex method must set the values of "x" and "y" and be "incremented". It must then return an unsigned integer represeting a flag. Flag values are:
-
-- *agg::path_cmd_move_to*
-- *agg::path_cmd_line_to*
-- *agg::path_cmd_end_poly*
-- *agg::path_cmd_stop*
-
-The flag agg::path_cmd_stop must eventually be returned or AGG will run indefinitely.
-
-### Implementing PointSource
-
-In this method, the path of vertices for rendering is defined by the following virtual methods from class irr::vecg::PointSource:
-
-- size_t *getPointCount*()
-- Point2D *getPoint*( unsigned *step* )
-
-Both of these methods should be overridden.
-
-Rather than being passed directly to AGG or renderVectorPath, descendents of PointSource are passed to small rendering engines.
-
-```C++
-
-class MyShape : public irr::vecg::PointSource
-{
-public:
-	virtual size_t
-		getPointCount() const
-	{
-		return 5;
-	}
-
-	virtual irr::vecg::Point2D
-		getPoint( unsigned  step )
-	{
-		switch(step) {
-		case 0: return irr::vecg::Point2D(50, 30);
-		case 1: return irr::vecg::Point2D(200, 50);
-		case 2: return irr::vecg::Point2D(150, 300);
-		case 3: return irr::vecg::Point2D(80, 200);
-		default: return irr::vecg::Point2D(100,100);
-		}
-	}
-};
-
-int main()
-{
-	//...
-
-	MyShape  shape;
-	irr::vecg::engine::RendererARGB32  renderer;
-	renderer.setRenderTarget( image );
-	renderer.setDrawingColor( irr::video::SColor(0xffffffff) );
-	renderer.bufferPoints( shape );
-	renderer.draw();
-
-	//...
-}
-
-```

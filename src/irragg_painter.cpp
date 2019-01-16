@@ -15,6 +15,7 @@ Painter::Painter( video::IVideoDriver*  driver, const core::dimension2du&  size 
 	, StrokeWidth(1)
 	, BSplineStep(1.0/20)
 	, Step(0)
+	, Shape(0)
 	, Buffer()
 	, Format()
 	, Base()
@@ -31,6 +32,7 @@ Painter::Painter( video::IImage*  image )
 	, StrokeWidth(1)
 	, BSplineStep(1.0/20)
 	, Step(0)
+	, Shape(0)
 	, Buffer()
 	, Format()
 	, Base()
@@ -91,7 +93,7 @@ Painter::setBSplineResolution( u32  resolution )
 }
 
 bool
-Painter::drawNormal( IShape&  shape )
+Painter::drawNormal( const IShape&  shape )
 {
 	if ( ! Ready )
 		return false;
@@ -106,11 +108,13 @@ Painter::drawNormal( IShape&  shape )
 	::agg::render_scanlines_aa_solid(
 		rasterizer, scanline, Base, Color
 		);
+
+	Shape = 0; // Cleanup pointer
 	return true;
 }
 
 bool
-Painter::drawStroked( IShape&  shape )
+Painter::drawStroked( const IShape&  shape )
 {
 	if ( ! Ready )
 		return false;
@@ -128,11 +132,13 @@ Painter::drawStroked( IShape&  shape )
 	::agg::render_scanlines_aa_solid(
 		rasterizer, scanline, Base, Color
 		);
+
+	Shape = 0; // Cleanup pointer
 	return true;
 }
 
 bool
-Painter::drawBSpline( IShape&  shape )
+Painter::drawBSpline( const IShape&  shape )
 {
 	if ( ! Ready )
 		return false;
@@ -153,6 +159,8 @@ Painter::drawBSpline( IShape&  shape )
 	::agg::render_scanlines_aa_solid(
 		rasterizer, scanline, Base, Color
 		);
+
+	Shape = 0; // Cleanup pointer
 	return true;
 }
 

@@ -14,17 +14,17 @@ namespace vecg {
 /*
 	A shape meant for wrapping an array and being passed directly to a Painter.
 	NOTE: It does not copy the array it is given because it is meant for transient usage.
-	Example Usage:
+	Example Usage: (C++11)
 	[code]
 		point_t  points[] = { point_t(0,0), point_t(1,3), point_t(2,0) };
-		painter.drawNormal( GhostArray( points, 3 ) );
+		painter.drawNormal( GhostArray{ points, 3 } );
 	[/code]
 */
 struct GhostArray
 	: public IShape
 {
 	//! Constructor
-	GhostArray( point_t*  points, size_t  size )
+	GhostArray( const point_t*  points, size_t  size )
 		: Points(points)
 		, Size(size)
 	{}
@@ -36,7 +36,7 @@ struct GhostArray
 	{}
 
 	//! Return how the polygon must be drawn (indices start at zero)
-	virtual PathMotion  getPathMotion( size_t  index ) {
+	virtual PathMotion  getPathMotion( size_t  index ) const {
 		if ( index >= Size )
 			return PathMotion();
 
@@ -51,8 +51,8 @@ struct GhostArray
 
 protected:
 
-	point_t*	Points;
-	size_t		Size;
+	const point_t*	Points;
+	size_t			Size;
 };
 
 } // end namespace vecg

@@ -36,7 +36,7 @@ struct Rectangle
 	}
 
 	//! Return how the polygon must be drawn (indices start at zero)
-	virtual PathMotion  getPathMotion( size_t  index ) {
+	virtual PathMotion  getPathMotion( size_t  index ) const {
 		// Drawing motion is clockwise
 		switch(index)
 		{

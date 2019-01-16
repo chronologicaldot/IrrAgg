@@ -32,7 +32,7 @@ struct Triangle
 	{}
 
 	//! Return how the polygon must be drawn (indices start at zero)
-	virtual PathMotion  getPathMotion( size_t  index ) {
+	virtual PathMotion  getPathMotion( size_t  index ) const {
 		switch(index)
 		{
 		case 1: return PathMotion(B.X, B.Y);

@@ -22,14 +22,14 @@ More information about using AGG with Irrlicht can be found in [this blog articl
 ## Current Features
 
 - Rendering arbitrary vector graphic paths onto a 32-bit ARGB IImage.
-- Painter for rendering IShape objects as vector graphics.
+- Premade classes for rendering paths.
 - Functions for conversion of Irrlicht matrix to/from AGG matrix.
 - Functions for conversion between Irrlicht and AGG color types.
 
 ## Planned Features
 
 - Font loading and rendering, especially TTF and UTF-8-complete fonts.
-- Other shapes (rectangles, rounded rectangles)
+- Other shapes (rounded rectangles)
 
 ## Build
 

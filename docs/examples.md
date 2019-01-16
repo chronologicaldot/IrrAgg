@@ -1,6 +1,6 @@
 # Examples
 
-There are two approaches to using IrrAGG: [using the standalone functions](#using-the-standalone-functions) or [using a rendering engine](#using-a-rendering-engine). For all of the examples, you should need to create an IImage, which you can do using the [initial setup](#initial-setup).
+For all of the examples, you should need to create an IImage, which you can do using the [initial setup](#initial-setup).
 
 ---
 
@@ -60,9 +60,9 @@ int main()
 
 ---
 
-## Using the Standalone Functions
+## Using the Painter
 
-### Rendering a B-Spline from static const arrays.
+### Rendering a Triangle
 
 ```C++
 //... Assuming the initial setup
@@ -73,82 +73,13 @@ bool drawPath( irr::video::IImage*  target )
   irr::f32  width = 2; // width of rendered curve
   irr::u32  resolution = 20; // number of segments between points for a bspline curve
 
-  static const double  x_values[] = { 10, 100, 200, 300, 400, 500 };
-  static const double  y_values[] = { 50, 200, 350, 400, 200, 100 };
+  irr::vecg::Triangle  triangle( point_t(10,10), point_t(400,30), point_t(390,450) );
+  Painter  painter(target);
+  painter.setColor(color);
+  painter.setStrokeWidth(width);
+  painter.setBSplineResolution(resolution);
 
-  // Using an irragg structure
-  irr::vecg::ArrayVertexSource  vertex_source(
-    5, // number of points
-    (const double*)&x_values,
-    (const double*)&y_values
-  );
-
-  // Using an irragg function
-  return irr::vecg::renderVectorPath(vertex_source, target, color, irr::vecg::EPathStroke::BSPLINE, width, resolution);
+  return painter.drawBSpline(triangle);
 }
 ```
 
----
-
-## Using a Rendering Engine
-
-### Drawing a Skewed Rectangle Outline
-
-```C++
-//... Assuming the initial setup
-
-bool drawPath( irr::video::IImage*  target )
-{
-  irr::video::SColor  green(255,0,255,0); // Green
-
-  // Using an irragg structure
-  irr::vecg::engine::RendererARGB32  renderer;
-
-  // Pre-drawing necessities
-  //   Make the drawing matrix skewed by 0.5 on top
-  renderer.setDrawingMatrix(1.0, 0.5, 0, 1.0);
-
-  //   Set the outline thickness
-  renderer.setStrokeWidth(5);
-
-  //   Drawing color must also be set in advance
-  renderer.setDrawingColor(green);
-
-  // For clarity and convenience
-  typedef irr::core::vector2d<double>  vector2dd;
-
-  // Draw the actual rectangle outline
-  return renderer.drawRectangle(
-    vector2dd(0,0),
-    vector2dd(100,100),
-    irr::vecg::EPathStroke::BRUSH
-  );
-}
-```
-
----
-
-## Using Helper Classes
-
-### Using StaticSizeVertexSource
-
-```C++
-bool drawPath( irr::video::IImage*  target )
-{
-  // Instantiation requires size as the template argument
-  irr::vecg::StaticSizeVertexSource<3> triangle;
-
-  // Point value setting can be chained
-  triangle
-    .set(0, 150, 30)
-    .set(1, 300, 150)
-    .set(2, 0, 150);
-
-  // Rendering requires a color
-  irr::video::SColor  blue(255,0,0,255);
-
-  // Render using any function that can render vertex sources
-  // or descendents of PointSource
-  return irr::vecg::renderVectorPath(triangle, target, blue);
-}
-```
