@@ -139,8 +139,8 @@
 <p>A collection of utilities for using Anti-Grain Geometry with Irrlicht.</p>
 <p>Anti-Grain Geometry (AGG) is a collection of C++ utilities that work together to render vector graphics, especially into arrays of primitive pixels.</p>
 <p>Irrlicht is an easy-to-use 2D and 3D rendering engine, created with C++ and aimed at game creation.</p>
-<p>IrrAgg is a collection of utilities that enable the easy application of AGG functionality to Irrlicht image surfaces with little or no knowledge of the workings of AGG on the part of the user.</p>
-<p>Most functionality is applied to the IImage implementation (CImage) of Irrlicht so that they can be rendered in Irrlicht.</p>
+<p>IrrAgg centers on its Painter class, which is used for rendering to Irrlicht IImage surfaces. The Painter class encapsulates AGG rendering tools and is used for rendering objects that inherit IShape and implement its virtual methods.</p>
+<p>In addition, IrrAgg contains conversion methods for colors and matrices.</p>
 <ul>
 <li><a href="./api">API</a></li>
 <li><a href="./usage">Usage Guide</a></li>
@@ -161,7 +161,6 @@ include/      # Header files directory.
 src/          # Source code directory.
 docs/         # Documentation directory.
 debug/        # Debugging files directory.
-examples/     # Usage examples directory.
 </code></pre>
 <h2 id="further-information">Further Information</h2>
 <p>More information about using AGG with Irrlicht can be found in <a href="https://magicsnippet.wordpress.com/2017/12/03/rendering-anti-grain-vector-graphics-in-irrlicht/">this blog article</a>.</p></div>
@@ -217,5 +216,5 @@ examples/     # Usage examples directory.
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-12-24 05:29:39
+Build Date UTC : 2019-01-16 01:16:54
 -->
