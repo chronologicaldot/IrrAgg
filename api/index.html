@@ -567,7 +567,7 @@ table {
 <td></td>
 </tr>
 <tr>
-<td>drawNormal( const IShape&amp; )</td>
+<td>drawFilled( const IShape&amp; )</td>
 <td>bool</td>
 </tr>
 <tr>
@@ -576,6 +576,10 @@ table {
 </tr>
 <tr>
 <td>drawBSpline( const IShape&amp; )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawBSplineFilled( const IShape&amp; )</td>
 <td>bool</td>
 </tr>
 <tr>
@@ -730,7 +734,7 @@ table {
 </tbody>
 </table>
 <hr />
-<h4 id="drawnormal-const-ishape-bool">drawNormal( const IShape&amp; ): bool</h4>
+<h4 id="drawfilled-const-ishape-bool">drawFilled( const IShape&amp; ): bool</h4>
 <p>Uses standard-fill-style to draw the path from the given shape.</p>
 <table>
 <thead>
@@ -770,6 +774,25 @@ table {
 <hr />
 <h4 id="drawbspline-const-ishape-bool">drawBSpline( const IShape&amp; ): bool</h4>
 <p>Draws as a bezier curve the path formed by the given shape.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shape</td>
+<td>irr::vecg::IShape&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="drawbsplinefilled-const-ishape-bool">drawBSplineFilled( const IShape&amp; ): bool</h4>
+<p>Draws the given shape as a filled bezier curve.</p>
 <table>
 <thead>
 <tr>
