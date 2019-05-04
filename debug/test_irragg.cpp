@@ -36,7 +36,7 @@ int main()
 	Painter  painter(image);
 	painter.setColor( irr::video::SColor(0xffff0000) );
 
-	if ( ! painter.drawNormal(triangle) ) {
+	if ( ! painter.drawFilled(triangle) ) {
 		image->drop();
 		device->drop();
 		return 1;
@@ -50,19 +50,36 @@ int main()
 		return 1;
 	}
 
-	const size_t  size = 20;
-	point_t  points[size];
-	for ( size_t i = 0; i < size; ++i ) {
-		points[i] = point_t( 20.0 * ((i*3)%13) + 50, 40.0 * ((i+1)%4) + 50 );
-	}
-
 	painter.setStrokeWidth(2);
 	painter.setColor( irr::video::SColor(0xff0000ff) );
+
+	//const size_t  size = 20;
+	//point_t  points[size];
+	//for ( size_t i = 0; i < size; ++i ) {
+	//	points[i] = point_t( 20.0 * ((i*3)%13) + 50, 40.0 * ((i+1)%4) + 50 );
+	//}
 
 	//GhostArray  ghostArray(premadePoints, 5);
 	//GhostArray  ghostArray(points, size);
 	//if ( ! painter.drawBSpline( ghostArray ) ) {
 	if ( ! painter.drawBSpline( GhostArray{premadePoints, 5} ) ) {
+		image->drop();
+		device->drop();
+		return 1;
+	}
+
+	const size_t  size = 7;
+	point_t  points[size];
+	unsigned i = 0;
+	points[i++] = point_t(40,300);
+	points[i++] = point_t(80,400);
+	points[i++] = point_t(240,420);
+	points[i++] = point_t(70,480);
+	points[i++] = point_t(25,350);
+	points[i++] = point_t(30,330);
+	points[i++] = point_t(30,305);
+
+	if ( ! painter.drawBSplineFilled( GhostArray{points, size} ) ) {
 		image->drop();
 		device->drop();
 		return 1;

@@ -1,5 +1,15 @@
+================
+2019/5/4
+v 0.21
+
+- Changed Painter::drawNormal() to drawFilled().
+- Added Painter::drawBSplineFilled().
+- Updated docs.
+
+
+================
 2019/1/14-15
-v 2
+v 0.2
 
 - Nearly complete rewrite of the entire thing. (Now focusing on "Painter" class.) Preserved:
 -- irragg_color.h

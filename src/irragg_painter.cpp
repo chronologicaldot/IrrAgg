@@ -93,7 +93,7 @@ Painter::setBSplineResolution( u32  resolution )
 }
 
 bool
-Painter::drawNormal( const IShape&  shape )
+Painter::drawFilled( const IShape&  shape )
 {
 	if ( ! Ready )
 		return false;
@@ -156,6 +156,30 @@ Painter::drawBSpline( const IShape&  shape )
 	vs_stroke.width( StrokeWidth );
 
 	rasterizer.add_path(vs_stroke);
+	::agg::render_scanlines_aa_solid(
+		rasterizer, scanline, Base, Color
+		);
+
+	Shape = 0; // Cleanup pointer
+	return true;
+}
+
+bool
+Painter::drawBSplineFilled( const IShape&  shape )
+{
+	if ( ! Ready )
+		return false;
+
+	Shape = &shape;
+	rewind(0);
+
+	::agg::scanline_p8  scanline;
+	::agg::rasterizer_scanline_aa<>  rasterizer;
+
+	bspline_type  vs_bspline(*this);
+	vs_bspline.interpolation_step(BSplineStep);
+
+	rasterizer.add_path(vs_bspline);
 	::agg::render_scanlines_aa_solid(
 		rasterizer, scanline, Base, Color
 		);

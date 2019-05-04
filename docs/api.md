@@ -225,9 +225,10 @@ setColor( irr::video::SColor ): void |
 getColor(): irr::video::SColor |
 setStrokeWidth( double ) | void
 setBSplineResolution( u32 ): void |
-drawNormal( const IShape& ) | bool
+drawFilled( const IShape& ) | bool
 drawStroked( const IShape& ) | bool
 drawBSpline( const IShape& ) | bool
+drawBSplineFilled( const IShape& ) | bool
 rewind( unsigned ) | void
 vertex( double*, double* ) | unsigned
 
@@ -310,7 +311,7 @@ resolution | irr::u32
 
 ---
 
-#### drawNormal( const IShape& ): bool
+#### drawFilled( const IShape& ): bool
 
 Uses standard-fill-style to draw the path from the given shape.
 
@@ -333,6 +334,16 @@ shape | irr::vecg::IShape&
 #### drawBSpline( const IShape& ): bool
 
 Draws as a bezier curve the path formed by the given shape.
+
+Parameter | Type | Default
+----------|------|--------
+shape | irr::vecg::IShape&
+
+---
+
+#### drawBSplineFilled( const IShape& ): bool
+
+Draws the given shape as a filled bezier curve.
 
 Parameter | Type | Default
 ----------|------|--------

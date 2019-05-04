@@ -24,7 +24,7 @@ A basic example:
 ```C++
 irr::vecg::Triangle  triangle( point_t(10,10), point_t(400,30), point_t(390,450) );
 irr::vecg::Painter  painter( irrlichtDevice->getVideoDriver(), irr::core::dimension2du(512,512) );
-painter.drawNormal(triangle);
+painter.drawFilled(triangle);
 ```
 
 ## Creating and Using IImage

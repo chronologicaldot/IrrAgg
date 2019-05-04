@@ -63,14 +63,17 @@ struct Painter
 	//! Set resolution (lines per increment) for drawing BSplines
 	void  setBSplineResolution( u32 );
 
-	//! Draw a simple path
-	bool  drawNormal( const IShape& );
+	//! Draw a simple shape
+	bool  drawFilled( const IShape& );
 
 	//! Draw a stroked path
 	bool  drawStroked( const IShape& );
 
 	//! Draw a B-Spline path
 	bool  drawBSpline( const IShape& );
+
+	//! Draw a B-Spline-Outlined shape
+	bool  drawBSplineFilled( const IShape& );
 
 	// AGG -----------------------------
 	void rewind(unsigned);
