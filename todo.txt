@@ -1,0 +1,7 @@
+
+TO-DOs:
+
+- Create a loader for standard vector graphics (SVG). Ignore Adobe and Inkscape extension data.
+- Create a font loader and renderer.
+- Create a GUI skin using the font loader and maybe icons from open source locations. (This might become a separate project.)
+- Support AGG grey color conversions to/from Irrlicht SColor, SColorf, and SColorHSL.

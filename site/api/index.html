@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title>API - IrrAgg Documentation</title>
+
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/highlight.css">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">IrrAgg Documentation</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../usage/">Usage</a>
+                    </li>
+                
+                
+                
+                    <li class="active">
+                        <a href="./">API</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../examples/">Examples</a>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="next" href="../usage/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../examples/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="first-level active"><a href="#api">API</a></li>
+        
+            <li class="second-level"><a href="#standard-utilities">Standard Utilities</a></li>
+            
+                <li class="third-level"><a href="#standalone-functions">Standalone functions</a></li>
+            
+                <li class="third-level"><a href="#struct-pathmotion">struct PathMotion</a></li>
+            
+                <li class="third-level"><a href="#struct-ishape">struct IShape</a></li>
+            
+                <li class="third-level"><a href="#struct-painter">struct Painter</a></li>
+            
+                <li class="third-level"><a href="#setbsplineresolution-u32-void">setBSplineResolution( u32 ): void</a></li>
+            
+        
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<style type="text/css">
+table {
+    border: 1px solid #cccccc;
+    background-color: #eeeeee;
+    margin: 1em;
+    padding-left: 5%;
+    font-size: 1em;
+    /*table-layout: fixed;*/
+    width: 95%;
+}
+</style>
+
+<h1 id="api">API</h1>
+<p>All functions and objects belonging to IrrAgg are within the sub-namespace "vecg" within the namespace "irr" unless otherwise specified. Some exceptions are the conversion functions, which are within the sub-namespace "core" in the namespace "irr".</p>
+<hr />
+<h2 id="standard-utilities">Standard Utilities</h2>
+<hr />
+<h3 id="standalone-functions">Standalone functions</h3>
+<hr />
+<h4 id="isimagesupported-iimage-bool">isImageSupported( IImage* ): bool</h4>
+<p><strong>File:</strong> <em>irragg_format_support.h</em></p>
+<p>Returns true if the current format of the image is supported by IrrAgg.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>image</td>
+<td>irr::video::IImage*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="isimageargb32-irrvideoiimage-bool">isImageARGB32( irr::video::IImage* ): bool</h4>
+<p><strong>File:</strong> <em>irragg_format_support.h</em></p>
+<p>Returns true if the image is in the color format irr::video::ECF_A8R8G8B8, arranged as alpha-red-green-blue with 8 bits each.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>image</td>
+<td>irr::video::IImage*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="topoint_t-irrcorevector2df-point_t">toPoint_t( irr::core::vector2df ): point_t</h4>
+<p><strong>File:</strong> *irragg_types.h"</p>
+<p>Converts The given vector into a point_t.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v</td>
+<td>irr::core::vector2df</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertscolortoaggrgba-const-scolor-aggrgba">convertSColorToAGGrgba( const SColor&amp; ): agg::rgba</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const irr::video::SColor&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertaggrgbatoscolor-const-rgba-irrvideoscolor">convertAGGrgbaToSColor( const rgba&amp; ): irr::video::SColor</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const agg::rgba&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertscolorftoaggrgba-const-scolorf-aggrgba">convertSColorfToAGGrgba( const SColorf&amp; ): agg::rgba</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const irr::video::SColorf&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertaggrgbatoscolorf-const-rgba-irrvideoscolorf">convertAGGrgbaToSColorf( const rgba&amp; ): irr::video::SColorf</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const ::agg::rgba&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertscolorhsltoscolor-const-scolorhsl-irrvideoscolor">convertSColorHSLtoSColor( const SColorHSL&amp; ): irr::video::SColor</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const irr::video::SColorHSL&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertscolortoscolorhsl-const-scolor-irrvideoscolorhsl">convertSColorToSColorHSL( const SColor&amp; ): irr::video::SColorHSL</h4>
+<p><strong>File:</strong> <em>irragg_color.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>const irr::video::SColor&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertcmatrix4toaggaffine-const-cmatrix4-double-aggtrans_affine">convertCMatrix4ToAGGaffine( const CMatrix4&lt; double &gt;&amp; ): agg::trans_affine</h4>
+<p><strong>File:</strong> <em>irragg_matrix.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>m</td>
+<td>const irr::core::CMatrix4&lt; double &gt;&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="convertaggaffinetocmatrix4-const-trans_affine-corecmatrix4-double">convertAGGaffineToCMatrix4( const trans_affine&amp; ): core::CMatrix4&lt; double &gt;</h4>
+<p><strong>File:</strong> <em>irragg_matrix.h</em></p>
+<p><strong>Namespace:</strong> irr::core</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>m</td>
+<td>const agg::trans_affine&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="struct-pathmotion">struct PathMotion</h3>
+<p><strong>File:</strong> <em>irragg_types.h</em></p>
+<p><strong>Namespace:</strong> irr::vecg</p>
+<p>This class is used for indicating the next point along a path as well as what that point signifies in the path. What it signifies is indicated by the motion flags, LINE_TO, MOVE_TO, END_POLY, and STOP.</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LINE_TO</td>
+<td>static const unsigned</td>
+<td>Indicates a line should be drawn to this point</td>
+</tr>
+<tr>
+<td>MOVE_TO</td>
+<td>static const unsigned</td>
+<td>Indicates the start of a new polygon</td>
+</tr>
+<tr>
+<td>END_POLY</td>
+<td>static const unsigned</td>
+<td>Reset to zero</td>
+</tr>
+<tr>
+<td>STOP</td>
+<td>static const unsigned</td>
+<td>Close the polygon (and maybe fill)</td>
+</tr>
+<tr>
+<td>motion</td>
+<td>unsigned</td>
+<td></td>
+</tr>
+<tr>
+<td>x</td>
+<td>double</td>
+<td>X-axis coordinate</td>
+</tr>
+<tr>
+<td>y</td>
+<td>double</td>
+<td>Y-axis coordinate</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="struct-ishape">struct IShape</h3>
+<p><strong>File:</strong> <em>irragg_shape.h</em></p>
+<p><strong>Namespace:</strong> irr::vecg</p>
+<p>This class is meant to be inherited from and its member functions overridden.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getPathMotion( size_t )</td>
+<td>PathMotion</td>
+</tr>
+<tr>
+<td>getPathStepCount()</td>
+<td>size_t</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="struct-painter">struct Painter</h3>
+<p><strong>File:</strong> <em>irragg_painter.h</em></p>
+<p><strong>Namespace:</strong> irr::vecg</p>
+<p>The primary class for rendering IShape objects to an Irrlicht image (IImage).</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ready</td>
+<td>bool</td>
+<td>Indicates when rendering can be performed.</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>core::dimension2du</td>
+<td>Size of the canvas.</td>
+</tr>
+<tr>
+<td>Canvas</td>
+<td>video::IImage*</td>
+<td>Target on which the vector graphics will be rendered.</td>
+</tr>
+<tr>
+<td>Color</td>
+<td>agg::rgba</td>
+<td>Color used for rendering.</td>
+</tr>
+<tr>
+<td>StrokeWidth</td>
+<td>double</td>
+<td>Thickness of rendered vector graphic lines.</td>
+</tr>
+<tr>
+<td>BSplineStep</td>
+<td>double</td>
+<td>The amount to increment when spacing points on a BSpline</td>
+</tr>
+<tr>
+<td>Step</td>
+<td>size_t</td>
+<td>Index of the current point on the vector path being rendered.</td>
+</tr>
+<tr>
+<td>Shape</td>
+<td>const IShape*</td>
+<td>Pointer to the vector path provider.</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>agg::rendering_buffer</td>
+<td>Accessor to the data of the canvas.</td>
+</tr>
+<tr>
+<td>Format</td>
+<td>PixelFormat</td>
+<td>Coloring mechanism for how to treat the buffer.</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>agg::renderer_base<PixelFormat></td>
+<td>Provides an interface for the rasterize functions.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(cstor)( irr::video::IVideoDriver*, irr::core::dimension2du )</td>
+<td></td>
+</tr>
+<tr>
+<td>(cstor)( irr::video::IImage* )</td>
+<td></td>
+</tr>
+<tr>
+<td>(dstor)</td>
+<td></td>
+</tr>
+<tr>
+<td>setCanvas( irr::video::IImage* ): void</td>
+<td></td>
+</tr>
+<tr>
+<td>getCanvas(): irr::video::IImage*</td>
+<td></td>
+</tr>
+<tr>
+<td>setColor( irr::video::SColor ): void</td>
+<td></td>
+</tr>
+<tr>
+<td>getColor(): irr::video::SColor</td>
+<td></td>
+</tr>
+<tr>
+<td>setStrokeWidth( double )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>setBSplineResolution( u32 ): void</td>
+<td></td>
+</tr>
+<tr>
+<td>drawFilled( const IShape&amp; )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawStroked( const IShape&amp; )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawBSpline( const IShape&amp; )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>drawBSplineFilled( const IShape&amp; )</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>rewind( unsigned )</td>
+<td>void</td>
+</tr>
+<tr>
+<td>vertex( double<em>, double</em> )</td>
+<td>unsigned</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="cstor-ivideodriver-dimension2du">(cstor) ( IVideoDriver*, dimension2du )</h4>
+<p>Initializes the class by creating a canvas of the given dimension using the given video driver.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>driver</td>
+<td>irr::video::IVideoDriver*</td>
+<td></td>
+</tr>
+<tr>
+<td>size</td>
+<td>irr::core::dimension2du</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="cstor-iimage">(cstor) ( IImage* )</h4>
+<p>Initializes the class with the given image as a render target and sets whether to drop it upon class destruction. It rejects target images of the wrong color format.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>image</td>
+<td>IImage*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="dstor">(dstor) ()</h4>
+<p>Destructor, which deferences the canvas image.</p>
+<hr />
+<h4 id="setcanvas-iimage-bool">setCanvas( IImage* ): bool</h4>
+<p>Sets the canvas image. The image must be of format irr::video::ECF_A8R8G8B8, or the canvas will be set to null.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>image</td>
+<td>irr::video::IImage*</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="setcolor-scolor-void">setColor( SColor ): void</h4>
+<p>Sets the color for rendering paths and shapes.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>irr::video::SColor</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="getcolor-irrvideoscolor">getColor(): irr::video::SColor</h4>
+<p>Sets the color for rendering paths and shapes.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>agg::rgba</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="setstrokewidth-double-void">setStrokeWidth( double ): void</h4>
+<p>Sets the thickness of paths rendered as strokes or bsplines.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>width</td>
+<td>double</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="setbsplineresolution-u32-void">setBSplineResolution( u32 ): void</h3>
+<p>Sets the density of points in a bspline path rendering.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resolution</td>
+<td>irr::u32</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="drawfilled-const-ishape-bool">drawFilled( const IShape&amp; ): bool</h4>
+<p>Uses standard-fill-style to draw the path from the given shape.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shape</td>
+<td>irr::vecg::IShape&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="drawstroked-const-ishape-bool">drawStroked( const IShape&amp; ): bool</h4>
+<p>Draws as line segments the path from the given shape.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shape</td>
+<td>irr::vecg::IShape&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="drawbspline-const-ishape-bool">drawBSpline( const IShape&amp; ): bool</h4>
+<p>Draws as a bezier curve the path formed by the given shape.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shape</td>
+<td>irr::vecg::IShape&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="drawbsplinefilled-const-ishape-bool">drawBSplineFilled( const IShape&amp; ): bool</h4>
+<p>Draws the given shape as a filled bezier curve.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shape</td>
+<td>irr::vecg::IShape&amp;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="rewindunsigned-void">rewind(unsigned): void</h4>
+<p>AGG-required method. Do not use.</p>
+<hr />
+<h4 id="vertexdouble-double-unsigned">vertex(double, double): unsigned</h4>
+<p>AGG-required method. Do not use because the shape will not be set.</p></div>
+        
+    </div>
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+    </footer>
+
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+    var base_url = '..';
+    </script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+    <script src="../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>

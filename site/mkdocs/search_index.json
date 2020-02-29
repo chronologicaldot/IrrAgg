@@ -1,0 +1,249 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "IrrAgg\n\n\nA collection of utilities for using Anti-Grain Geometry with Irrlicht.\n\n\nAnti-Grain Geometry (AGG) is a collection of C++ utilities that work together to render vector graphics, especially into arrays of primitive pixels.\n\n\nIrrlicht is an easy-to-use 2D and 3D rendering engine, created with C++ and aimed at game creation.\n\n\nIrrAgg centers on its Painter class, which is used for rendering to Irrlicht IImage surfaces. The Painter class encapsulates AGG rendering tools and is used for rendering objects that inherit IShape and implement its virtual methods.\n\n\nIn addition, IrrAgg contains conversion methods for colors and matrices.\n\n\n\n\nAPI\n\n\nUsage Guide\n\n\nExamples\n\n\n\n\nRequirements\n\n\n\n\nAnti-Grain Geometry (2.5 or similar)\n\n\nIrrlicht (1.8, 1.9 or similar)\n\n\n\n\nBoth Anti-Grain Geometry (completed) and Irrlicht (development) are relatively stable in regards to the relevant APIs, so multiple versions of these two libraries will likely be compatible.\n\n\nProject layout\n\n\nchangelog.txt # Change log.\nlicense.txt   # Licensing.\nReadme.md     # Project summary page (for Github).\nmkdocs.yml    # Documentation configuration file.\ninclude/      # Header files directory.\nsrc/          # Source code directory.\ndocs/         # Documentation directory.\ndebug/        # Debugging files directory.\n\n\n\nFurther Information\n\n\nMore information about using AGG with Irrlicht can be found in \nthis blog article\n.", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#irragg", 
+            "text": "A collection of utilities for using Anti-Grain Geometry with Irrlicht.  Anti-Grain Geometry (AGG) is a collection of C++ utilities that work together to render vector graphics, especially into arrays of primitive pixels.  Irrlicht is an easy-to-use 2D and 3D rendering engine, created with C++ and aimed at game creation.  IrrAgg centers on its Painter class, which is used for rendering to Irrlicht IImage surfaces. The Painter class encapsulates AGG rendering tools and is used for rendering objects that inherit IShape and implement its virtual methods.  In addition, IrrAgg contains conversion methods for colors and matrices.   API  Usage Guide  Examples", 
+            "title": "IrrAgg"
+        }, 
+        {
+            "location": "/#requirements", 
+            "text": "Anti-Grain Geometry (2.5 or similar)  Irrlicht (1.8, 1.9 or similar)   Both Anti-Grain Geometry (completed) and Irrlicht (development) are relatively stable in regards to the relevant APIs, so multiple versions of these two libraries will likely be compatible.", 
+            "title": "Requirements"
+        }, 
+        {
+            "location": "/#project-layout", 
+            "text": "changelog.txt # Change log.\nlicense.txt   # Licensing.\nReadme.md     # Project summary page (for Github).\nmkdocs.yml    # Documentation configuration file.\ninclude/      # Header files directory.\nsrc/          # Source code directory.\ndocs/         # Documentation directory.\ndebug/        # Debugging files directory.", 
+            "title": "Project layout"
+        }, 
+        {
+            "location": "/#further-information", 
+            "text": "More information about using AGG with Irrlicht can be found in  this blog article .", 
+            "title": "Further Information"
+        }, 
+        {
+            "location": "/usage/", 
+            "text": "table {\n    border: 1px solid #cccccc;\n    background-color: #eeeeee;\n    margin: 1em;\n}\n\n\n\n\nUsage\n\n\nMuch of IrrAgg revolves around rendering vector paths onto an IImage, an abstract object created using Irrlicht via IVideoDriver::createImage. Please see \nCreating and Using IImage\n for more info.\n\n\nRendering to an IImage is done by means of a Painter object. A Painter object can either be initialized with an image or will create one using a given video driver and size. The Painter object contains basic settings, not all of which apply.\n\n\n\n\n\n\n\n\nSetting Method\n\n\nApplication\n\n\n\n\n\n\n\n\n\n\nsetColor\n\n\nSets a color for all rendered path types\n\n\n\n\n\n\nsetStrokeWidth\n\n\nSets the thickness of the path for stroked or bspline paths\n\n\n\n\n\n\nsetBSplineResolution\n\n\nSets the density of increments in a bspline path\n\n\n\n\n\n\n\n\nThe Painter object can take any object inheriting from IShape and implementing its virtual methods. See \nInheriting IShape\n for more details.\n\n\nA basic example:\n\n\nirr::vecg::Triangle  triangle( point_t(10,10), point_t(400,30), point_t(390,450) );\nirr::vecg::Painter  painter( irrlichtDevice-\ngetVideoDriver(), irr::core::dimension2du(512,512) );\npainter.drawFilled(triangle);\n\n\n\n\nCreating and Using IImage\n\n\nCreating\n\n\nAn IImage is created using the \nIVideoDriver\n interface method \ncreateImage\n. Once the IImage has been created, you can render to it with IrrAgg functions. Currently, IrrAgg only supports the color format ECF_A8R8G8B8.\n\n\nirr::video::E_DRIVER_TYPE  driverType = irr::video::EDT_BURNINGSVIDEO;\nirr::core::dimension2d  screenSize(1200, 800);\nirr::core::dimension2d  imageSize(512, 512);\n\nirr::IrrlichtDevice*  device = irr::createDevice(driverType, screenSize);\nirr::IVideoDriver*  videoDriver = device-\ngetVideoDriver();\nirr::video::IImage*  image = videoDriver-\ncreateImage(irr::video::ECF_A8R8G8B8, imageSize);\n\n\n\n\nRendering\n\n\nThese images must be converted to driver textures prior to rendering. By default, Irrlicht will resize images to powers of 2. This can be changed by setting a driver feature. The following example is a continuation of the previous one and shows disabling mipmap creation, power-of-two resizing, and rendering.\n\n\nirr::video::ITexture*  texture;\nirr::core::vectore2di  placeOnScreen(30,30);\n\nvideoDriver-\nsetTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS, false);\nvideoDriver-\nsetTextureCreationFlag(irr::video::ETCF_ALLOW_NON_POWER_2, true);\ntexture = videoDriver-\naddTexture(irr::io::path(\ntexture name\n), image);\n\n// ... Later, usually within the main rendering loop\nvideoDriver-\ndraw2DImage(texture, placeOnScreen);\n\n\n\n\nExporting\n\n\nAn IImage can be written to file using the \nIVideoDriver\n interface of Irrlicht. Some common formats such as PNG and JPEG are supported. The following example illustrates how to do this and assumes the image creation example code has been used.\n\n\nvideoDriver-\nwriteImageToFile(image, irr::io::path(\ndesired/file/path.png\n);\n\n\n\n\n\n\nInheriting IShape\n\n\nThe basic purpose of IShape is to provide points to the Painter. IShape has two methods:\n\n\n\n\ngetPathMotion( size_t ): PathMotion\n\n\ngetPathStepCount(): size_t\n\n\n\n\ngetPathMotion()\n returns the actual points belonging to the path as well as a flag indicating what the Painter should do in regard to that point:\n\n\n\n\nLINE_TO - Draw a line from the previous location to this new location.\n\n\nMOVE_TO - Set the start of a new polygon.\n\n\nEND_POLY - Reset starting drawing location to the origin.\n\n\nSTOP - End painting.\n\n\n\n\ngetPathStepCount()\n should return the number of steps along the path, not necessary the number of points. For closed paths, the return of this function should exceed the number of points in the path by one and that last point should be the same as the first.\n\n\nThe Painter will automatically end paths once its own progress along the path exceeds \ngetPathStepCount()\n.", 
+            "title": "Usage"
+        }, 
+        {
+            "location": "/usage/#usage", 
+            "text": "Much of IrrAgg revolves around rendering vector paths onto an IImage, an abstract object created using Irrlicht via IVideoDriver::createImage. Please see  Creating and Using IImage  for more info.  Rendering to an IImage is done by means of a Painter object. A Painter object can either be initialized with an image or will create one using a given video driver and size. The Painter object contains basic settings, not all of which apply.     Setting Method  Application      setColor  Sets a color for all rendered path types    setStrokeWidth  Sets the thickness of the path for stroked or bspline paths    setBSplineResolution  Sets the density of increments in a bspline path     The Painter object can take any object inheriting from IShape and implementing its virtual methods. See  Inheriting IShape  for more details.  A basic example:  irr::vecg::Triangle  triangle( point_t(10,10), point_t(400,30), point_t(390,450) );\nirr::vecg::Painter  painter( irrlichtDevice- getVideoDriver(), irr::core::dimension2du(512,512) );\npainter.drawFilled(triangle);", 
+            "title": "Usage"
+        }, 
+        {
+            "location": "/usage/#creating-and-using-iimage", 
+            "text": "", 
+            "title": "Creating and Using IImage"
+        }, 
+        {
+            "location": "/usage/#creating", 
+            "text": "An IImage is created using the  IVideoDriver  interface method  createImage . Once the IImage has been created, you can render to it with IrrAgg functions. Currently, IrrAgg only supports the color format ECF_A8R8G8B8.  irr::video::E_DRIVER_TYPE  driverType = irr::video::EDT_BURNINGSVIDEO;\nirr::core::dimension2d  screenSize(1200, 800);\nirr::core::dimension2d  imageSize(512, 512);\n\nirr::IrrlichtDevice*  device = irr::createDevice(driverType, screenSize);\nirr::IVideoDriver*  videoDriver = device- getVideoDriver();\nirr::video::IImage*  image = videoDriver- createImage(irr::video::ECF_A8R8G8B8, imageSize);", 
+            "title": "Creating"
+        }, 
+        {
+            "location": "/usage/#rendering", 
+            "text": "These images must be converted to driver textures prior to rendering. By default, Irrlicht will resize images to powers of 2. This can be changed by setting a driver feature. The following example is a continuation of the previous one and shows disabling mipmap creation, power-of-two resizing, and rendering.  irr::video::ITexture*  texture;\nirr::core::vectore2di  placeOnScreen(30,30);\n\nvideoDriver- setTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS, false);\nvideoDriver- setTextureCreationFlag(irr::video::ETCF_ALLOW_NON_POWER_2, true);\ntexture = videoDriver- addTexture(irr::io::path( texture name ), image);\n\n// ... Later, usually within the main rendering loop\nvideoDriver- draw2DImage(texture, placeOnScreen);", 
+            "title": "Rendering"
+        }, 
+        {
+            "location": "/usage/#exporting", 
+            "text": "An IImage can be written to file using the  IVideoDriver  interface of Irrlicht. Some common formats such as PNG and JPEG are supported. The following example illustrates how to do this and assumes the image creation example code has been used.  videoDriver- writeImageToFile(image, irr::io::path( desired/file/path.png );", 
+            "title": "Exporting"
+        }, 
+        {
+            "location": "/usage/#inheriting-ishape", 
+            "text": "The basic purpose of IShape is to provide points to the Painter. IShape has two methods:   getPathMotion( size_t ): PathMotion  getPathStepCount(): size_t   getPathMotion()  returns the actual points belonging to the path as well as a flag indicating what the Painter should do in regard to that point:   LINE_TO - Draw a line from the previous location to this new location.  MOVE_TO - Set the start of a new polygon.  END_POLY - Reset starting drawing location to the origin.  STOP - End painting.   getPathStepCount()  should return the number of steps along the path, not necessary the number of points. For closed paths, the return of this function should exceed the number of points in the path by one and that last point should be the same as the first.  The Painter will automatically end paths once its own progress along the path exceeds  getPathStepCount() .", 
+            "title": "Inheriting IShape"
+        }, 
+        {
+            "location": "/api/", 
+            "text": "table {\n    border: 1px solid #cccccc;\n    background-color: #eeeeee;\n    margin: 1em;\n    padding-left: 5%;\n    font-size: 1em;\n    /*table-layout: fixed;*/\n    width: 95%;\n}\n\n\n\n\nAPI\n\n\nAll functions and objects belonging to IrrAgg are within the sub-namespace \"vecg\" within the namespace \"irr\" unless otherwise specified. Some exceptions are the conversion functions, which are within the sub-namespace \"core\" in the namespace \"irr\".\n\n\n\n\nStandard Utilities\n\n\n\n\nStandalone functions\n\n\n\n\nisImageSupported( IImage* ): bool\n\n\nFile:\n \nirragg_format_support.h\n\n\nReturns true if the current format of the image is supported by IrrAgg.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nimage\n\n\nirr::video::IImage*\n\n\n\n\n\n\n\n\n\n\n\n\nisImageARGB32( irr::video::IImage* ): bool\n\n\nFile:\n \nirragg_format_support.h\n\n\nReturns true if the image is in the color format irr::video::ECF_A8R8G8B8, arranged as alpha-red-green-blue with 8 bits each.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nimage\n\n\nirr::video::IImage*\n\n\n\n\n\n\n\n\n\n\n\n\ntoPoint_t( irr::core::vector2df ): point_t\n\n\nFile:\n *irragg_types.h\"\n\n\nConverts The given vector into a point_t.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nv\n\n\nirr::core::vector2df\n\n\n\n\n\n\n\n\n\n\n\n\nconvertSColorToAGGrgba( const SColor\n ): agg::rgba\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst irr::video::SColor\n\n\n\n\n\n\n\n\n\n\n\n\nconvertAGGrgbaToSColor( const rgba\n ): irr::video::SColor\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst agg::rgba\n\n\n\n\n\n\n\n\n\n\n\n\nconvertSColorfToAGGrgba( const SColorf\n ): agg::rgba\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst irr::video::SColorf\n\n\n\n\n\n\n\n\n\n\n\n\nconvertAGGrgbaToSColorf( const rgba\n ): irr::video::SColorf\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst ::agg::rgba\n\n\n\n\n\n\n\n\n\n\n\n\nconvertSColorHSLtoSColor( const SColorHSL\n ): irr::video::SColor\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst irr::video::SColorHSL\n\n\n\n\n\n\n\n\n\n\n\n\nconvertSColorToSColorHSL( const SColor\n ): irr::video::SColorHSL\n\n\nFile:\n \nirragg_color.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nconst irr::video::SColor\n\n\n\n\n\n\n\n\n\n\n\n\nconvertCMatrix4ToAGGaffine( const CMatrix4\n double \n ): agg::trans_affine\n\n\nFile:\n \nirragg_matrix.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nm\n\n\nconst irr::core::CMatrix4\n double \n\n\n\n\n\n\n\n\n\n\n\n\nconvertAGGaffineToCMatrix4( const trans_affine\n ): core::CMatrix4\n double \n\n\nFile:\n \nirragg_matrix.h\n\n\nNamespace:\n irr::core\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nm\n\n\nconst agg::trans_affine\n\n\n\n\n\n\n\n\n\n\n\n\nstruct PathMotion\n\n\nFile:\n \nirragg_types.h\n\n\nNamespace:\n irr::vecg\n\n\nThis class is used for indicating the next point along a path as well as what that point signifies in the path. What it signifies is indicated by the motion flags, LINE_TO, MOVE_TO, END_POLY, and STOP.\n\n\n\n\n\n\n\n\nMember\n\n\nType\n\n\nPurpose\n\n\n\n\n\n\n\n\n\n\nLINE_TO\n\n\nstatic const unsigned\n\n\nIndicates a line should be drawn to this point\n\n\n\n\n\n\nMOVE_TO\n\n\nstatic const unsigned\n\n\nIndicates the start of a new polygon\n\n\n\n\n\n\nEND_POLY\n\n\nstatic const unsigned\n\n\nReset to zero\n\n\n\n\n\n\nSTOP\n\n\nstatic const unsigned\n\n\nClose the polygon (and maybe fill)\n\n\n\n\n\n\nmotion\n\n\nunsigned\n\n\n\n\n\n\n\n\nx\n\n\ndouble\n\n\nX-axis coordinate\n\n\n\n\n\n\ny\n\n\ndouble\n\n\nY-axis coordinate\n\n\n\n\n\n\n\n\n\n\nstruct IShape\n\n\nFile:\n \nirragg_shape.h\n\n\nNamespace:\n irr::vecg\n\n\nThis class is meant to be inherited from and its member functions overridden.\n\n\n\n\n\n\n\n\nMethod\n\n\nReturn\n\n\n\n\n\n\n\n\n\n\ngetPathMotion( size_t )\n\n\nPathMotion\n\n\n\n\n\n\ngetPathStepCount()\n\n\nsize_t\n\n\n\n\n\n\n\n\n\n\nstruct Painter\n\n\nFile:\n \nirragg_painter.h\n\n\nNamespace:\n irr::vecg\n\n\nThe primary class for rendering IShape objects to an Irrlicht image (IImage).\n\n\n\n\n\n\n\n\nMember\n\n\nType\n\n\nPurpose\n\n\n\n\n\n\n\n\n\n\nReady\n\n\nbool\n\n\nIndicates when rendering can be performed.\n\n\n\n\n\n\nSize\n\n\ncore::dimension2du\n\n\nSize of the canvas.\n\n\n\n\n\n\nCanvas\n\n\nvideo::IImage*\n\n\nTarget on which the vector graphics will be rendered.\n\n\n\n\n\n\nColor\n\n\nagg::rgba\n\n\nColor used for rendering.\n\n\n\n\n\n\nStrokeWidth\n\n\ndouble\n\n\nThickness of rendered vector graphic lines.\n\n\n\n\n\n\nBSplineStep\n\n\ndouble\n\n\nThe amount to increment when spacing points on a BSpline\n\n\n\n\n\n\nStep\n\n\nsize_t\n\n\nIndex of the current point on the vector path being rendered.\n\n\n\n\n\n\nShape\n\n\nconst IShape*\n\n\nPointer to the vector path provider.\n\n\n\n\n\n\nBuffer\n\n\nagg::rendering_buffer\n\n\nAccessor to the data of the canvas.\n\n\n\n\n\n\nFormat\n\n\nPixelFormat\n\n\nColoring mechanism for how to treat the buffer.\n\n\n\n\n\n\nBase\n\n\nagg::renderer_base\n\n\nProvides an interface for the rasterize functions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMethod\n\n\nReturn\n\n\n\n\n\n\n\n\n\n\n(cstor)( irr::video::IVideoDriver*, irr::core::dimension2du )\n\n\n\n\n\n\n\n\n(cstor)( irr::video::IImage* )\n\n\n\n\n\n\n\n\n(dstor)\n\n\n\n\n\n\n\n\nsetCanvas( irr::video::IImage* ): void\n\n\n\n\n\n\n\n\ngetCanvas(): irr::video::IImage*\n\n\n\n\n\n\n\n\nsetColor( irr::video::SColor ): void\n\n\n\n\n\n\n\n\ngetColor(): irr::video::SColor\n\n\n\n\n\n\n\n\nsetStrokeWidth( double )\n\n\nvoid\n\n\n\n\n\n\nsetBSplineResolution( u32 ): void\n\n\n\n\n\n\n\n\ndrawFilled( const IShape\n )\n\n\nbool\n\n\n\n\n\n\ndrawStroked( const IShape\n )\n\n\nbool\n\n\n\n\n\n\ndrawBSpline( const IShape\n )\n\n\nbool\n\n\n\n\n\n\ndrawBSplineFilled( const IShape\n )\n\n\nbool\n\n\n\n\n\n\nrewind( unsigned )\n\n\nvoid\n\n\n\n\n\n\nvertex( double\n, double\n )\n\n\nunsigned\n\n\n\n\n\n\n\n\n\n\n(cstor) ( IVideoDriver*, dimension2du )\n\n\nInitializes the class by creating a canvas of the given dimension using the given video driver.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ndriver\n\n\nirr::video::IVideoDriver*\n\n\n\n\n\n\n\n\nsize\n\n\nirr::core::dimension2du\n\n\n\n\n\n\n\n\n\n\n\n\n(cstor) ( IImage* )\n\n\nInitializes the class with the given image as a render target and sets whether to drop it upon class destruction. It rejects target images of the wrong color format.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nimage\n\n\nIImage*\n\n\n\n\n\n\n\n\n\n\n\n\n(dstor) ()\n\n\nDestructor, which deferences the canvas image.\n\n\n\n\nsetCanvas( IImage* ): bool\n\n\nSets the canvas image. The image must be of format irr::video::ECF_A8R8G8B8, or the canvas will be set to null.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nimage\n\n\nirr::video::IImage*\n\n\n\n\n\n\n\n\n\n\n\n\nsetColor( SColor ): void\n\n\nSets the color for rendering paths and shapes.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nirr::video::SColor\n\n\n\n\n\n\n\n\n\n\n\n\ngetColor(): irr::video::SColor\n\n\nSets the color for rendering paths and shapes.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ncolor\n\n\nagg::rgba\n\n\n\n\n\n\n\n\n\n\n\n\nsetStrokeWidth( double ): void\n\n\nSets the thickness of paths rendered as strokes or bsplines.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nwidth\n\n\ndouble\n\n\n\n\n\n\n\n\n\n\n\n\nsetBSplineResolution( u32 ): void\n\n\nSets the density of points in a bspline path rendering.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nresolution\n\n\nirr::u32\n\n\n\n\n\n\n\n\n\n\n\n\ndrawFilled( const IShape\n ): bool\n\n\nUses standard-fill-style to draw the path from the given shape.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nshape\n\n\nirr::vecg::IShape\n\n\n\n\n\n\n\n\n\n\n\n\ndrawStroked( const IShape\n ): bool\n\n\nDraws as line segments the path from the given shape.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nshape\n\n\nirr::vecg::IShape\n\n\n\n\n\n\n\n\n\n\n\n\ndrawBSpline( const IShape\n ): bool\n\n\nDraws as a bezier curve the path formed by the given shape.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nshape\n\n\nirr::vecg::IShape\n\n\n\n\n\n\n\n\n\n\n\n\ndrawBSplineFilled( const IShape\n ): bool\n\n\nDraws the given shape as a filled bezier curve.\n\n\n\n\n\n\n\n\nParameter\n\n\nType\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\nshape\n\n\nirr::vecg::IShape\n\n\n\n\n\n\n\n\n\n\n\n\nrewind(unsigned): void\n\n\nAGG-required method. Do not use.\n\n\n\n\nvertex(double, double): unsigned\n\n\nAGG-required method. Do not use because the shape will not be set.", 
+            "title": "API"
+        }, 
+        {
+            "location": "/api/#api", 
+            "text": "All functions and objects belonging to IrrAgg are within the sub-namespace \"vecg\" within the namespace \"irr\" unless otherwise specified. Some exceptions are the conversion functions, which are within the sub-namespace \"core\" in the namespace \"irr\".", 
+            "title": "API"
+        }, 
+        {
+            "location": "/api/#standard-utilities", 
+            "text": "", 
+            "title": "Standard Utilities"
+        }, 
+        {
+            "location": "/api/#standalone-functions", 
+            "text": "", 
+            "title": "Standalone functions"
+        }, 
+        {
+            "location": "/api/#isimagesupported-iimage-bool", 
+            "text": "File:   irragg_format_support.h  Returns true if the current format of the image is supported by IrrAgg.     Parameter  Type  Default      image  irr::video::IImage*", 
+            "title": "isImageSupported( IImage* ): bool"
+        }, 
+        {
+            "location": "/api/#isimageargb32-irrvideoiimage-bool", 
+            "text": "File:   irragg_format_support.h  Returns true if the image is in the color format irr::video::ECF_A8R8G8B8, arranged as alpha-red-green-blue with 8 bits each.     Parameter  Type  Default      image  irr::video::IImage*", 
+            "title": "isImageARGB32( irr::video::IImage* ): bool"
+        }, 
+        {
+            "location": "/api/#topoint_t-irrcorevector2df-point_t", 
+            "text": "File:  *irragg_types.h\"  Converts The given vector into a point_t.     Parameter  Type  Default      v  irr::core::vector2df", 
+            "title": "toPoint_t( irr::core::vector2df ): point_t"
+        }, 
+        {
+            "location": "/api/#convertscolortoaggrgba-const-scolor-aggrgba", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const irr::video::SColor", 
+            "title": "convertSColorToAGGrgba( const SColor&amp; ): agg::rgba"
+        }, 
+        {
+            "location": "/api/#convertaggrgbatoscolor-const-rgba-irrvideoscolor", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const agg::rgba", 
+            "title": "convertAGGrgbaToSColor( const rgba&amp; ): irr::video::SColor"
+        }, 
+        {
+            "location": "/api/#convertscolorftoaggrgba-const-scolorf-aggrgba", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const irr::video::SColorf", 
+            "title": "convertSColorfToAGGrgba( const SColorf&amp; ): agg::rgba"
+        }, 
+        {
+            "location": "/api/#convertaggrgbatoscolorf-const-rgba-irrvideoscolorf", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const ::agg::rgba", 
+            "title": "convertAGGrgbaToSColorf( const rgba&amp; ): irr::video::SColorf"
+        }, 
+        {
+            "location": "/api/#convertscolorhsltoscolor-const-scolorhsl-irrvideoscolor", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const irr::video::SColorHSL", 
+            "title": "convertSColorHSLtoSColor( const SColorHSL&amp; ): irr::video::SColor"
+        }, 
+        {
+            "location": "/api/#convertscolortoscolorhsl-const-scolor-irrvideoscolorhsl", 
+            "text": "File:   irragg_color.h  Namespace:  irr::core     Parameter  Type  Default      color  const irr::video::SColor", 
+            "title": "convertSColorToSColorHSL( const SColor&amp; ): irr::video::SColorHSL"
+        }, 
+        {
+            "location": "/api/#convertcmatrix4toaggaffine-const-cmatrix4-double-aggtrans_affine", 
+            "text": "File:   irragg_matrix.h  Namespace:  irr::core     Parameter  Type  Default      m  const irr::core::CMatrix4  double", 
+            "title": "convertCMatrix4ToAGGaffine( const CMatrix4&lt; double &gt;&amp; ): agg::trans_affine"
+        }, 
+        {
+            "location": "/api/#convertaggaffinetocmatrix4-const-trans_affine-corecmatrix4-double", 
+            "text": "File:   irragg_matrix.h  Namespace:  irr::core     Parameter  Type  Default      m  const agg::trans_affine", 
+            "title": "convertAGGaffineToCMatrix4( const trans_affine&amp; ): core::CMatrix4&lt; double &gt;"
+        }, 
+        {
+            "location": "/api/#struct-pathmotion", 
+            "text": "File:   irragg_types.h  Namespace:  irr::vecg  This class is used for indicating the next point along a path as well as what that point signifies in the path. What it signifies is indicated by the motion flags, LINE_TO, MOVE_TO, END_POLY, and STOP.     Member  Type  Purpose      LINE_TO  static const unsigned  Indicates a line should be drawn to this point    MOVE_TO  static const unsigned  Indicates the start of a new polygon    END_POLY  static const unsigned  Reset to zero    STOP  static const unsigned  Close the polygon (and maybe fill)    motion  unsigned     x  double  X-axis coordinate    y  double  Y-axis coordinate", 
+            "title": "struct PathMotion"
+        }, 
+        {
+            "location": "/api/#struct-ishape", 
+            "text": "File:   irragg_shape.h  Namespace:  irr::vecg  This class is meant to be inherited from and its member functions overridden.     Method  Return      getPathMotion( size_t )  PathMotion    getPathStepCount()  size_t", 
+            "title": "struct IShape"
+        }, 
+        {
+            "location": "/api/#struct-painter", 
+            "text": "File:   irragg_painter.h  Namespace:  irr::vecg  The primary class for rendering IShape objects to an Irrlicht image (IImage).     Member  Type  Purpose      Ready  bool  Indicates when rendering can be performed.    Size  core::dimension2du  Size of the canvas.    Canvas  video::IImage*  Target on which the vector graphics will be rendered.    Color  agg::rgba  Color used for rendering.    StrokeWidth  double  Thickness of rendered vector graphic lines.    BSplineStep  double  The amount to increment when spacing points on a BSpline    Step  size_t  Index of the current point on the vector path being rendered.    Shape  const IShape*  Pointer to the vector path provider.    Buffer  agg::rendering_buffer  Accessor to the data of the canvas.    Format  PixelFormat  Coloring mechanism for how to treat the buffer.    Base  agg::renderer_base  Provides an interface for the rasterize functions.        Method  Return      (cstor)( irr::video::IVideoDriver*, irr::core::dimension2du )     (cstor)( irr::video::IImage* )     (dstor)     setCanvas( irr::video::IImage* ): void     getCanvas(): irr::video::IImage*     setColor( irr::video::SColor ): void     getColor(): irr::video::SColor     setStrokeWidth( double )  void    setBSplineResolution( u32 ): void     drawFilled( const IShape  )  bool    drawStroked( const IShape  )  bool    drawBSpline( const IShape  )  bool    drawBSplineFilled( const IShape  )  bool    rewind( unsigned )  void    vertex( double , double  )  unsigned", 
+            "title": "struct Painter"
+        }, 
+        {
+            "location": "/api/#cstor-ivideodriver-dimension2du", 
+            "text": "Initializes the class by creating a canvas of the given dimension using the given video driver.     Parameter  Type  Default      driver  irr::video::IVideoDriver*     size  irr::core::dimension2du", 
+            "title": "(cstor) ( IVideoDriver*, dimension2du )"
+        }, 
+        {
+            "location": "/api/#cstor-iimage", 
+            "text": "Initializes the class with the given image as a render target and sets whether to drop it upon class destruction. It rejects target images of the wrong color format.     Parameter  Type  Default      image  IImage*", 
+            "title": "(cstor) ( IImage* )"
+        }, 
+        {
+            "location": "/api/#dstor", 
+            "text": "Destructor, which deferences the canvas image.", 
+            "title": "(dstor) ()"
+        }, 
+        {
+            "location": "/api/#setcanvas-iimage-bool", 
+            "text": "Sets the canvas image. The image must be of format irr::video::ECF_A8R8G8B8, or the canvas will be set to null.     Parameter  Type  Default      image  irr::video::IImage*", 
+            "title": "setCanvas( IImage* ): bool"
+        }, 
+        {
+            "location": "/api/#setcolor-scolor-void", 
+            "text": "Sets the color for rendering paths and shapes.     Parameter  Type  Default      color  irr::video::SColor", 
+            "title": "setColor( SColor ): void"
+        }, 
+        {
+            "location": "/api/#getcolor-irrvideoscolor", 
+            "text": "Sets the color for rendering paths and shapes.     Parameter  Type  Default      color  agg::rgba", 
+            "title": "getColor(): irr::video::SColor"
+        }, 
+        {
+            "location": "/api/#setstrokewidth-double-void", 
+            "text": "Sets the thickness of paths rendered as strokes or bsplines.     Parameter  Type  Default      width  double", 
+            "title": "setStrokeWidth( double ): void"
+        }, 
+        {
+            "location": "/api/#setbsplineresolution-u32-void", 
+            "text": "Sets the density of points in a bspline path rendering.     Parameter  Type  Default      resolution  irr::u32", 
+            "title": "setBSplineResolution( u32 ): void"
+        }, 
+        {
+            "location": "/api/#drawfilled-const-ishape-bool", 
+            "text": "Uses standard-fill-style to draw the path from the given shape.     Parameter  Type  Default      shape  irr::vecg::IShape", 
+            "title": "drawFilled( const IShape&amp; ): bool"
+        }, 
+        {
+            "location": "/api/#drawstroked-const-ishape-bool", 
+            "text": "Draws as line segments the path from the given shape.     Parameter  Type  Default      shape  irr::vecg::IShape", 
+            "title": "drawStroked( const IShape&amp; ): bool"
+        }, 
+        {
+            "location": "/api/#drawbspline-const-ishape-bool", 
+            "text": "Draws as a bezier curve the path formed by the given shape.     Parameter  Type  Default      shape  irr::vecg::IShape", 
+            "title": "drawBSpline( const IShape&amp; ): bool"
+        }, 
+        {
+            "location": "/api/#drawbsplinefilled-const-ishape-bool", 
+            "text": "Draws the given shape as a filled bezier curve.     Parameter  Type  Default      shape  irr::vecg::IShape", 
+            "title": "drawBSplineFilled( const IShape&amp; ): bool"
+        }, 
+        {
+            "location": "/api/#rewindunsigned-void", 
+            "text": "AGG-required method. Do not use.", 
+            "title": "rewind(unsigned): void"
+        }, 
+        {
+            "location": "/api/#vertexdouble-double-unsigned", 
+            "text": "AGG-required method. Do not use because the shape will not be set.", 
+            "title": "vertex(double, double): unsigned"
+        }, 
+        {
+            "location": "/examples/", 
+            "text": "Examples\n\n\nFor all of the examples, you should need to create an IImage, which you can do using the \ninitial setup\n.\n\n\n\n\nInitial Setup\n\n\nThe following code can be used to create the IImage and pass it to the drawPath() function shown in all of the examples.\n\n\n// Include Irrlicht\n#include \nirrlicht.h\n\n\n// Include this library\n#include \nirragg.h\n\n\nbool drawPath(irr::video::IImage*  target);\n\nint main()\n{\n  irr::core::dimension2du  screensize(512,512);\n  irr::IrrlichtDevice*  device;\n  irr::video::IVideoDriver*  video_driver;\n  irr::video::IImage*  image;\n  irr::video::ITexture*  texture;\n  irr::video::EColorFormat  color_format = irr::video::ECF_A8R8G8B8;\n  irr::core::vector2di  onscreen_position(0);\n  bool render_success;\n\n  device = irr::createDevice(irr::video::EDT_BURNINGSVIDEO, screensize);\n  if (!device)\n    return 1;\n\n  // Creating the image\n  video_driver = device-\ngetVideoDriver();\n  image = video_driver-\ncreateImage(color_format, screensize);\n  render_success = drawPath(image);\n\n  if ( !render_success )\n    return 1;\n\n  texture = video_driver-\naddTexture(irr::io::path(\ntexture name\n), image);\n\n  // Main rendering loop\n  while( device-\nrun() )\n  {\n    video_driver-\nbeginScene();\n    video_driver-\ndraw2DImage(texture, onscreen_position);\n    video_driver-\nendScene();\n  }\n\n  // cleanup\n  image-\ndrop();\n  device-\ndrop();\n\n  return 0;\n}\n\n\n\n\n\n\nUsing the Painter\n\n\nRendering a Triangle\n\n\n//... Assuming the initial setup\n\nbool drawPath( irr::video::IImage*  target )\n{\n  irr::video::SColor  color(255,255,0,0); // Red\n  irr::f32  width = 2; // width of rendered curve\n  irr::u32  resolution = 20; // number of segments between points for a bspline curve\n\n  irr::vecg::Triangle  triangle( point_t(10,10), point_t(400,30), point_t(390,450) );\n  Painter  painter(target);\n  painter.setColor(color);\n  painter.setStrokeWidth(width);\n  painter.setBSplineResolution(resolution);\n\n  return painter.drawBSpline(triangle);\n}", 
+            "title": "Examples"
+        }, 
+        {
+            "location": "/examples/#examples", 
+            "text": "For all of the examples, you should need to create an IImage, which you can do using the  initial setup .", 
+            "title": "Examples"
+        }, 
+        {
+            "location": "/examples/#initial-setup", 
+            "text": "The following code can be used to create the IImage and pass it to the drawPath() function shown in all of the examples.  // Include Irrlicht\n#include  irrlicht.h \n\n// Include this library\n#include  irragg.h \n\nbool drawPath(irr::video::IImage*  target);\n\nint main()\n{\n  irr::core::dimension2du  screensize(512,512);\n  irr::IrrlichtDevice*  device;\n  irr::video::IVideoDriver*  video_driver;\n  irr::video::IImage*  image;\n  irr::video::ITexture*  texture;\n  irr::video::EColorFormat  color_format = irr::video::ECF_A8R8G8B8;\n  irr::core::vector2di  onscreen_position(0);\n  bool render_success;\n\n  device = irr::createDevice(irr::video::EDT_BURNINGSVIDEO, screensize);\n  if (!device)\n    return 1;\n\n  // Creating the image\n  video_driver = device- getVideoDriver();\n  image = video_driver- createImage(color_format, screensize);\n  render_success = drawPath(image);\n\n  if ( !render_success )\n    return 1;\n\n  texture = video_driver- addTexture(irr::io::path( texture name ), image);\n\n  // Main rendering loop\n  while( device- run() )\n  {\n    video_driver- beginScene();\n    video_driver- draw2DImage(texture, onscreen_position);\n    video_driver- endScene();\n  }\n\n  // cleanup\n  image- drop();\n  device- drop();\n\n  return 0;\n}", 
+            "title": "Initial Setup"
+        }, 
+        {
+            "location": "/examples/#using-the-painter", 
+            "text": "", 
+            "title": "Using the Painter"
+        }, 
+        {
+            "location": "/examples/#rendering-a-triangle", 
+            "text": "//... Assuming the initial setup\n\nbool drawPath( irr::video::IImage*  target )\n{\n  irr::video::SColor  color(255,255,0,0); // Red\n  irr::f32  width = 2; // width of rendered curve\n  irr::u32  resolution = 20; // number of segments between points for a bspline curve\n\n  irr::vecg::Triangle  triangle( point_t(10,10), point_t(400,30), point_t(390,450) );\n  Painter  painter(target);\n  painter.setColor(color);\n  painter.setStrokeWidth(width);\n  painter.setBSplineResolution(resolution);\n\n  return painter.drawBSpline(triangle);\n}", 
+            "title": "Rendering a Triangle"
+        }
+    ]
+}
