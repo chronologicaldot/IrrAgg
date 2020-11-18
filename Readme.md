@@ -3,7 +3,7 @@ A collection of utilities for using Anti-Grain Geometry (AGG) with Irrlicht.
 The primary utility is a Painter class into which instances of objects inheriting IShape can be given for drawing.
 
 Complete Example
-[code]
+```C++
 irr::IImage*
 paintTriangle( irr::IVideoDriver* driver, vector2df a, vector2df b, vector2df c)
 {
@@ -15,7 +15,7 @@ paintTriangle( irr::IVideoDriver* driver, vector2df a, vector2df b, vector2df c)
 	image->grab();
 	return image;
 }
-[/code]
+```
 
 More information about using AGG with Irrlicht can be found in [this blog article](https://magicsnippet.wordpress.com/2017/12/03/rendering-anti-grain-vector-graphics-in-irrlicht/).
 
