@@ -182,8 +182,8 @@ painter.drawFilled(triangle);
 <h3 id="creating">Creating</h3>
 <p>An IImage is created using the <em>IVideoDriver</em> interface method <em>createImage</em>. Once the IImage has been created, you can render to it with IrrAgg functions. Currently, IrrAgg only supports the color format ECF_A8R8G8B8.</p>
 <pre><code class="C++">irr::video::E_DRIVER_TYPE  driverType = irr::video::EDT_BURNINGSVIDEO;
-irr::core::dimension2d  screenSize(1200, 800);
-irr::core::dimension2d  imageSize(512, 512);
+irr::core::dimension2du  screenSize(1200, 800);
+irr::core::dimension2du  imageSize(512, 512);
 
 irr::IrrlichtDevice*  device = irr::createDevice(driverType, screenSize);
 irr::IVideoDriver*  videoDriver = device-&gt;getVideoDriver();
