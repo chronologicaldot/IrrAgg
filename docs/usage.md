@@ -35,8 +35,8 @@ An IImage is created using the *IVideoDriver* interface method *createImage*. On
 
 ```C++
 irr::video::E_DRIVER_TYPE  driverType = irr::video::EDT_BURNINGSVIDEO;
-irr::core::dimension2d  screenSize(1200, 800);
-irr::core::dimension2d  imageSize(512, 512);
+irr::core::dimension2du  screenSize(1200, 800);
+irr::core::dimension2du  imageSize(512, 512);
 
 irr::IrrlichtDevice*  device = irr::createDevice(driverType, screenSize);
 irr::IVideoDriver*  videoDriver = device->getVideoDriver();
