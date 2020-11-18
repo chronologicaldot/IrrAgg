@@ -301,7 +301,7 @@ width | double
 
 ---
 
-### setBSplineResolution( u32 ): void
+#### setBSplineResolution( u32 ): void
 
 Sets the density of points in a bspline path rendering.
 
